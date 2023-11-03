@@ -334,8 +334,8 @@ vcp <- cor.test(dm$VolumeA3,dm$CAISslopeNEWproteome_Estimates, method='pearson')
 rescs <- cor.test(dm$resid_LKmarch22,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.382, p=0.1
 rescp <- cor.test(dm$resid_LKmarch22,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.469, p=0.04
 
-raics <- cor.test(dm$RaifordAerobicCost,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=-0.350, p=0.131
-raicp <- cor.test(dm$RaifordAerobicCost,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=-0.288, p=0.218
+raics <- cor.test(dm$RaifordAerobicCost,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=-0.350, p=0.1
+raicp <- cor.test(dm$RaifordAerobicCost,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=-0.288, p=0.2
 
 t.test(x=subset(dm, Essential_Costa2015=="Essential")$CAISslopeNEWproteome_Estimates, y=subset(dm, Essential_Costa2015=="Non-essential")$CAISslopeNEWproteome_Estimates, var.equal = T) #p=0.2
 
