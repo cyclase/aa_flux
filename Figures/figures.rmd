@@ -104,7 +104,7 @@ Fig2a <- ggplot(dm, aes(x=Pnoratio, y=Rnoratio))+
   labs( x = "Primate flux", y = "Rodent flux") + 
   coord_equal() +
   geom_abline(data=subset(reg, Method=="MA"), aes(intercept=Intercept, slope=Slope), color="red", size=1.5) + 
-  annotate(geom="text", x=0.2, y=ypos_lo(dm$Rnoratio), label=paste("R = ", signif(prs$estimate, digits=3), "\n p = ", signif(prs$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=0.2, y=ypos_lo(dm$Rnoratio), label=paste("R = ", signif(prp$estimate, digits=3), "\n p = ", signif(prp$p.value, digits=1)), color="black", size=6) + 
   geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
   geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
   geom_point(size=3) + 
@@ -119,7 +119,7 @@ Fig2b <- ggplot(dm, aes(x=Pnoratio, y=Pjordan)) +
   annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
   annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
   geom_abline(aes(intercept=0, slope=1), color="black") + 
-  annotate(geom="text", x=0.25, y=-0.3, label=paste("R = ", signif(pps$estimate, digits=3), "\n p = ", signif(pps$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=0.25, y=-0.3, label=paste("R = ", signif(ppp$estimate, digits=3), "\n p = ", signif(ppp$p.value, digits=1)), color="black", size=6) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
   geom_point(size=3) + 
@@ -133,7 +133,7 @@ Fig2c <- ggplot(dm, aes(x=Rnoratio, y=Rjordan)) +
   annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
   annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
   geom_abline(aes(intercept=0, slope=1), color="black") + 
-  annotate(geom="text", x=0.25, y=-0.3, label=paste("R = ", signif(rrs$estimate, digits=3), "\n p = ", signif(rrs$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=0.25, y=-0.3, label=paste("R = ", signif(rrp$estimate, digits=3), "\n p = ", signif(rrp$p.value, digits=1)), color="black", size=6) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   geom_pointrange(aes(x=Rnoratio, xmin=Rnoratio-Rerror, xmax=Rnoratio+Rerror)) + 
   geom_point(size=3) + 
@@ -176,7 +176,7 @@ rjp <- cor.test(dm$residuals_m2,dm$Jordan_st1_D, method='pearson') #R=-0.182 p=0
 Fig3a<-ggplot(dm, aes(x=projections_m2, y=Jordan_st1_D)) +
   labs( x = "Shared flux", y = "Average flux (Jordan et al.)") +
   scale_x_continuous(limits=c(-0.28,0.28), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
-  annotate(geom="text", x=xpos_hi(dm$projections_m2), y=-0.28, label=paste("R = ", signif(pjs_st1$estimate, digits=3), "\n p = ", signif(pjs_st1$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=xpos_hi(dm$projections_m2), y=-0.28, label=paste("R = ", signif(pjp_st1$estimate, digits=3), "\n p = ", signif(pjp_st1$p.value, digits=1)), color="black", size=6) + 
   geom_pointrange(aes(xmin=projections_m2-projection_error, xmax=projections_m2+projection_error)) +
   geom_pointrange(aes(ymin=Jordan_st1_D-Jordan_st1_Derr, ymax=Jordan_st1_D+Jordan_st1_Derr)) + 
   geom_point(size=3) + 
@@ -187,7 +187,7 @@ Fig3a<-ggplot(dm, aes(x=projections_m2, y=Jordan_st1_D)) +
 
 Fig3b<-ggplot(dm, aes(x=residuals_m2, y=Jordan_st1_D)) +
   labs( x = "Species flux", y = "Average flux (Jordan et al.)") +
-  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=-0.28, label=paste("R = ", signif(rjs$estimate, digits=3), "\n p = ", signif(rjs$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=-0.28, label=paste("R = ", signif(rjp$estimate, digits=3), "\n p = ", signif(rjp$p.value, digits=1)), color="black", size=6) + 
   geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
   geom_pointrange(aes(ymin=Jordan_st1_D-Jordan_st1_Derr, ymax=Jordan_st1_D+Jordan_st1_Derr)) + 
   geom_point(size=3) + 
@@ -244,7 +244,7 @@ srp_wm <- lm(formula=projections_m2 ~ Levy_Stickiness + Mean_RSA + Polarity, dat
 Fig3c<-ggplot(dm, aes(x=Disorder_Propensity, y=projections_m2)) +
   labs( x = "Disorder propensity", y = "Shared flux") +
   scale_y_continuous(limits=c(-0.28,0.28), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
-  annotate(geom="text", x=0.125, y=ypos_lo(dm$projections_m2), label=paste("R = ", signif(dps$estimate, digits=3), "\n p = ", signif(dps$p.value, digits=1)), color="black", size=6) +
+  annotate(geom="text", x=0.125, y=ypos_lo(dm$projections_m2), label=paste("R = ", signif(dpp$estimate, digits=3), "\n p = ", signif(dpp$p.value, digits=1)), color="black", size=6) +
   #geom_text(aes(x = 0.15, y = -0.2, label = paste("R = ", signif(dpp$estimate, digits=3), "\n p = ", signif(dpp$p.value, digits=3))),size=5, colour = 'black') +
   geom_pointrange(aes(ymin=projections_m2-projection_error, ymax=projections_m2+projection_error)) +
   geom_point(size=3) + 
@@ -308,8 +308,7 @@ Fig4<-ggplot(dm, aes(x=residuals_m2, y=CAISslopeNEWproteome_Estimates)) +
                  y=subset(dm, aa=="I")$CAISslopeNEWproteome_Estimates, 
                  xend=subset(dm, aa=="V")$residuals_m2, 
                  yend=subset(dm, aa=="V")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
-  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=ypos_lo(dm$CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(prrcs$estimate, digits=3), "\n p = ", signif(prrcs$p.value, digits=1)), color="black", size=6) +
-  #geom_text(aes(x = -0.11, y = 0.07, label = paste("R = ", signif(rcp$estimate, digits=3), "\n p = ", signif(rcp$p.value, digits=3))),size=5, colour = 'black') +
+  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=ypos_lo(dm$CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(prrcp$estimate, digits=3), "\n p = ", signif(prrcp$p.value, digits=1)), color="black", size=6) +
   geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
@@ -362,7 +361,7 @@ craicp <- cor.test(dm$RaifordAerobicCost,dm$clrCAISslopeNEWproteome_Estimates, m
 Fig5a <- ggplot(dm, aes(x=mean_LKmarch22, y=CAISslopeNEWproteome_Estimates)) + 
   #labs( x = expression(paste("Fitness effect in ", italic("E. coli"))), y = "Preferred in\n more-adapted species") + 
   labs( x = "Fitness effect in *E. coli*", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=0.03, y=-0.2, label = paste("R = ", signif(lcs$estimate, digits=3), "\n p = ", signif(lcs$p.value, digits=1)), size=5,  colour = 'black') +
+  annotate(geom="text", x=0.03, y=-0.2, label = paste("R = ", signif(lcp$estimate, digits=3), "\n p = ", signif(lcp$p.value, digits=1)), size=5,  colour = 'black') +
   geom_pointrange(aes(xmin=mean_LKmarch22-stderr_LKmarch22, xmax=mean_LKmarch22+stderr_LKmarch22)) +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
@@ -372,7 +371,7 @@ Fig5a <- ggplot(dm, aes(x=mean_LKmarch22, y=CAISslopeNEWproteome_Estimates)) +
 
 Fig5b <- ggplot(dm, aes(x=Disorder_Propensity, y=CAISslopeNEWproteome_Estimates)) + 
   labs( x = "Disorder propensity", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=0.92, y=-0.2, label = paste("R = ", signif(dcs$estimate, digits=3), "\n p = ", signif(dcs$p.value, digits=1)), size=5,  colour = 'black') +
+  annotate(geom="text", x=0.92, y=-0.2, label = paste("R = ", signif(dcp$estimate, digits=3), "\n p = ", signif(dcp$p.value, digits=1)), size=5,  colour = 'black') +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
@@ -380,7 +379,7 @@ Fig5b <- ggplot(dm, aes(x=Disorder_Propensity, y=CAISslopeNEWproteome_Estimates)
 
 Fig5c <- ggplot(dm, aes(x=VolumeA3, y=CAISslopeNEWproteome_Estimates)) + 
   labs( x = "Molecular volume (\u00C5\u00b3)", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=215, y=-0.2, label = paste("R = ", signif(vcs$estimate, digits=3), "\n p = ", signif(vcs$p.value, digits=1)), size=5,  colour = 'black') +
+  annotate(geom="text", x=215, y=-0.2, label = paste("R = ", signif(vcp$estimate, digits=3), "\n p = ", signif(vcp$p.value, digits=1)), size=5,  colour = 'black') +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
@@ -388,7 +387,7 @@ Fig5c <- ggplot(dm, aes(x=VolumeA3, y=CAISslopeNEWproteome_Estimates)) +
 
 Fig5d <- ggplot(dm, aes(x=resid_LKmarch22, y=CAISslopeNEWproteome_Estimates)) + 
   labs( x = "Residuals of fitness effects", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=0.045, y=-0.2, label = paste("R = ", signif(rescs$estimate, digits=3), "\n p = ", signif(rescs$p.value, digits=1)), size=5,  colour = 'black') +
+  annotate(geom="text", x=0.045, y=-0.2, label = paste("R = ", signif(rescp$estimate, digits=3), "\n p = ", signif(rescp$p.value, digits=1)), size=5,  colour = 'black') +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
@@ -396,7 +395,7 @@ Fig5d <- ggplot(dm, aes(x=resid_LKmarch22, y=CAISslopeNEWproteome_Estimates)) +
 
 Fig5e <- ggplot(dm, aes(x=RaifordAerobicCost, y=CAISslopeNEWproteome_Estimates)) + 
   labs( x = "Aerobic cost", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=70, y=-0.2, label = paste("R = ", signif(raics$estimate, digits=3), "\n p = ", signif(raics$p.value, digits=1)), size=5,  colour = 'black') +
+  annotate(geom="text", x=70, y=-0.2, label = paste("R = ", signif(raicp$estimate, digits=3), "\n p = ", signif(raicp$p.value, digits=1)), size=5,  colour = 'black') +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa, color=Essential_Costa2015),hjust=-0.1, vjust=0, size = 6) + 
@@ -425,7 +424,7 @@ Fig6a<-ggplot(dm, aes(x=OldNEW_Estimates, y=YoungNEW_Estimates)) +
   labs( x = "Preference in\n more-adapted species\n in old Pfams", y = "Preference in\n more-adapted species\n in young Pfams") + 
   annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
   annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
-  annotate(geom="text", x=0.025, y=ypos_lo(dm$YoungNEW_Estimates), label=paste("R = ", signif(oys$estimate, digits=3), "\np = ", signif(oys$p.value, digits=1)), color="black", size=6) +
+  annotate(geom="text", x=0.025, y=ypos_lo(dm$YoungNEW_Estimates), label=paste("R = ", signif(oyp$estimate, digits=3), "\np = ", signif(oyp$p.value, digits=1)), color="black", size=6) +
   geom_pointrange(aes(xmin=OldNEW_Estimates-OldNEW_Std.Error, xmax=OldNEW_Estimates+OldNEW_Std.Error)) +
   geom_pointrange(aes(ymin=YoungNEW_Estimates-YoungNEW_Std.Error, ymax=YoungNEW_Estimates+YoungNEW_Std.Error)) +
   geom_abline(aes(intercept=0, slope=1), color="black") + 
@@ -437,7 +436,7 @@ Fig6b<-ggplot(dm, aes(x=NonTransNEW_Estimates, y=TransNEW_Estimates)) +
   labs( x = "Preference in\n more-adapted species\n in non-transmembrane Pfams", y = "Preference in\n more-adapted species\n in transmembrane Pfams") + 
   annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
   annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
-  annotate(geom="text", x=0.025, y=ypos_lo(dm$TransNEW_Estimates), label=paste("R = ", signif(ntts$estimate, digits=3), "\np = ", signif(ntts$p.value, digits=1)), color="black", size=6) +
+  annotate(geom="text", x=0.025, y=ypos_lo(dm$TransNEW_Estimates), label=paste("R = ", signif(nttp$estimate, digits=3), "\np = ", signif(nttp$p.value, digits=1)), color="black", size=6) +
   geom_pointrange(aes(xmin=NonTransNEW_Estimates-NonTransNEW_Std.Error, xmax=NonTransNEW_Estimates+NonTransNEW_Std.Error)) +
   geom_pointrange(aes(ymin=TransNEW_Estimates-TransNEW_Std.Error, ymax=TransNEW_Estimates+TransNEW_Std.Error)) +
   geom_abline(aes(intercept=0, slope=1), color="black") + 
@@ -507,7 +506,7 @@ FigS1a <- ggplot(mrhc, aes(x=mouse_noratio, y=rat_noratio))+
   scale_y_continuous(limits=c(-0.3,0.3), breaks=c(-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3)) + 
   coord_equal() + 
   #geom_abline(data=subset(reg, Method=="MA"), aes(intercept=Intercept, slope=Slope), color="red", size=1.5) + 
-  annotate(geom="text", x=0.2, y=-0.25, label=paste("R = ", signif(mrs$estimate, digits=3), "\np = ", signif(mrs$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=0.2, y=-0.25, label=paste("R = ", signif(mrp$estimate, digits=3), "\np = ", signif(mrp$p.value, digits=1)), color="black", size=6) + 
   geom_pointrange(aes(xmin=mouse_noratio-mouse_error, xmax=mouse_noratio+mouse_error)) + 
   geom_pointrange(aes(ymin=rat_noratio-rat_error, ymax=rat_noratio+rat_error)) + 
   geom_point(size=3) + 
@@ -521,7 +520,7 @@ FigS1b <- ggplot(mrhc, aes(x=human_noratio, y=chimp_noratio))+
   scale_y_continuous(limits=c(-0.3,0.3), breaks=c(-0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3)) + 
   coord_equal() + 
   #geom_abline(data=subset(reg, Method=="MA"), aes(intercept=Intercept, slope=Slope), color="red", size=1.5) + 
-  annotate(geom="text", x=0.2, y=-0.25, label=paste("R = ", signif(hcs$estimate, digits=3), "\np < 2e-16"), color="black", size=6) + 
+  annotate(geom="text", x=0.2, y=-0.25, label=paste("R = ", signif(hcp$estimate, digits=3), "\np = ", signif(hcp$p.value, digits=1)), color="black", size=6) + 
   geom_pointrange(aes(xmin=human_noratio-human_error, xmax=human_noratio+human_error)) + 
   geom_pointrange(aes(ymin=chimp_noratio-chimp_error, ymax=chimp_noratio+chimp_error)) + 
   geom_point(size=3) + 
@@ -544,7 +543,7 @@ FigS2<-ggplot(dm, aes(x=CAISslopeNEWPfam_Estimates, y=CAISslopeNEWproteome_Estim
     scale_x_continuous(limits=c(-0.2,0.2), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
   scale_y_continuous(limits=c(-0.2,0.2), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
   coord_equal() + 
-  annotate(geom="text", x=0.12, y=-0.15, label=paste("R = ", signif(pfprs$estimate, digits=3), "\n p = ", signif(pfprs$p.value, digits=1)), color="black", size=6) +
+  annotate(geom="text", x=0.12, y=-0.15, label=paste("R = ", signif(pfprp$estimate, digits=3), "\n p = ", signif(pfprp$p.value, digits=1)), color="black", size=6) +
   geom_pointrange(aes(xmin=CAISslopeNEWPfam_Estimates-CAISslopeNEWPfam_Std.Error, xmax=CAISslopeNEWPfam_Estimates+CAISslopeNEWPfam_Std.Error)) +
   geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
   geom_point(size=3) + 
@@ -558,21 +557,21 @@ FigS2
 ###S3
 ```{r supp fig 3}
 
-cts <- cor.test(dm$CAISslopeNEWproteome_Estimates,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.98, p=6e-06
-ctp <- cor.test(dm$CAISslopeNEWproteome_Estimates,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.98, p=4e-14
+#cts <- cor.test(dm$CAISslopeNEWproteome_Estimates,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.98, p=6e-06
+#ctp <- cor.test(dm$CAISslopeNEWproteome_Estimates,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.98, p=4e-14
 #looks good
 
-FigS3<-ggplot(dm, aes(x=clrCAISslopeNEWproteome_Estimates, y=CAISslopeNEWproteome_Estimates)) +
-  labs( x = "Preference in \nmore adapted species \n(centered log-ratio transform)", y = "Preference in \nmore adapted species") +
-  annotate(geom="text", x=xpos_hi(dm$clrCAISslopeNEWproteome_Estimates), y=-0.2, label=paste("R = ", signif(cts$estimate, digits=3), "\n p = ", signif(cts$p.value, digits=1)), color="black", size=6) +
-  geom_pointrange(aes(xmin=clrCAISslopeNEWproteome_Estimates-clrCAISslopeNEWproteome_Std.Error, xmax=clrCAISslopeNEWproteome_Estimates+clrCAISslopeNEWproteome_Std.Error)) +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
-  geom_point(size=3) + 
+#FigS3<-ggplot(dm, aes(x=clrCAISslopeNEWproteome_Estimates, y=CAISslopeNEWproteome_Estimates)) +
+#  labs( x = "Preference in \nmore adapted species \n(centered log-ratio transform)", y = "Preference in \nmore adapted species") +
+#  annotate(geom="text", x=xpos_hi(dm$clrCAISslopeNEWproteome_Estimates), y=-0.2, label=paste("R = ", signif(ctp$estimate, digits=3), "\n p = ", signif(ctp$p.value, digits=1)), color="black", size=6) +
+#  geom_pointrange(aes(xmin=clrCAISslopeNEWproteome_Estimates-clrCAISslopeNEWproteome_Std.Error, xmax=clrCAISslopeNEWproteome_Estimates+clrCAISslopeNEWproteome_Std.Error)) +
+#  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+#  geom_point(size=3) + 
   #geom_abline(aes(intercept=0, slope=1), color="black") + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  mytheme
+#  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+#  mytheme
   
-FigS3
+#FigS3
 ```
 
 ## Export the figures
@@ -580,17 +579,17 @@ FigS3
 ```{r save}
 #Set your own paths!
 myggsave_sq <- function(x){
-  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/", device="svg", height=5, width=5, units="in")
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=5, units="in")
 }
 
 myggsave_m <- function(x){
-  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/", device="svg", height=5, width=7, units="in")
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=7, units="in")
 }
 
 #was 3.5x3.5 and 3.5x5
 
 myggsave_gr <- function(x){
-  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/", device="svg", height=5, width=8.09, units="in")
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=8.09, units="in")
 }
 
 
@@ -616,5 +615,5 @@ myggsave_sq(Fig6b)
 myggsave_sq(FigS1a)
 myggsave_sq(FigS1b)
 myggsave_m(FigS2)
-myggsave_m(FigS3)
+#myggsave_m(FigS3)
 ```
