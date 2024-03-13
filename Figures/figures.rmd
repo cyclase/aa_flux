@@ -14,12 +14,12 @@ knitr::opts_chunk$set(eval=T, warning=F, error=F, message=F)
 ### 0.1 Install the necessary packages and load their libraries
 
 ```{r, packages, echo=F, include=F}
-pkgs_needed = c("Rpdb", "rgl", "Rcpp", "tidyverse", "Biostrings",
-                "RColorBrewer", "magrittr", "plyr", "reshape2", "ade4", "ggplot2", "rowr", "ggpubr", "backports", "flextable", "svglite", "compositions")
-letsinstall = setdiff(pkgs_needed, installed.packages()) 
-if (length(letsinstall) > 0) {
-  BiocManager::install(setdiff(pkgs_needed, installed.packages()))
-}
+#pkgs_needed = c("Rpdb", "rgl", "Rcpp", "tidyverse", "Biostrings",
+#                "RColorBrewer", "magrittr", "plyr", "reshape2", "ade4", "ggplot2", "rowr", "ggpubr", "backports", "flextable", "svglite", "compositions")
+#letsinstall = setdiff(pkgs_needed, installed.packages()) 
+#if (length(letsinstall) > 0) {
+#  BiocManager::install(setdiff(pkgs_needed, installed.packages()))
+#}
 
 library("dplyr")
 library("ggplot2")
@@ -32,7 +32,7 @@ library("svglite")
 library("compositions")
 
 #Set your working directory
-setwd("C:/Users/hanon/Documents/Github/aa_flux/Figures/")
+setwd("C:/Users/hanon/Documents/GitHub/aa_flux/Figures/")
 ```
 
 ### 0.2 Load data and calculate Kosinski residuals
@@ -51,8 +51,7 @@ metrics2 <- cbind(metrics, resid_LKmarch22)
 #read in flux data
 d <- read.delim(file = "../Flux/all_fluxes.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 
-dm <- cbind(d, metrics2[,2:89])
-dm
+dm <- cbind(d, metrics2[,2:101]) %>% mutate(fc_rodent = ns_rodent-ns_root, fc_primate = ns_primate-ns_root)
 ```
 
 ### 0.3 Set up global figure presets
@@ -263,6 +262,10 @@ prrcs <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spe
 prrcp <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.709, p=0.0005
 prwrcs <- weightedCorr(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman', weights=dm$residual_error) #R=0.605
 
+prrcs <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.702, p=0.0008
+prrcp <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.709, p=0.0005
+prwrcs <- weightedCorr(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman', weights=dm$residual_error) #R=0.605
+
 cprrcs <- cor.test(dm$residuals_m2,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.695, p=0.0009
 cprrcp <- cor.test(dm$residuals_m2,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.700, p=0.0006
 cprwrcs <- weightedCorr(dm$residuals_m2,dm$clrCAISslopeNEWproteome_Estimates, method='spearman', weights=dm$residual_error) #R=0.586
@@ -298,7 +301,7 @@ cor.test(dm$num_Codons,dm$CAISslopeNEWPfam_Estimates, method='spearman') #R=0.61
 cor.test(dm$N3redun,dm$CAISslope_proteomeEstimates, method='spearman') #R=0.681, p=0.001
 cor.test(dm$num_Codons,dm$CAISslope_proteomeEstimates, method='spearman') #R=0.671, p=0.001
 
-Fig4<-ggplot(dm, aes(x=residuals_m2, y=CAISslopeNEWproteome_Estimates)) +
+Fig4a<-ggplot(dm, aes(x=residuals_m2, y=CAISslopeNEWproteome_Estimates)) +
   labs( x = "Species flux", y = "Preferred in \nmore-adapted species") +
   geom_segment(aes(x=subset(dm, aa=="K")$residuals_m2, 
                  y=subset(dm, aa=="K")$CAISslopeNEWproteome_Estimates, 
@@ -315,7 +318,44 @@ Fig4<-ggplot(dm, aes(x=residuals_m2, y=CAISslopeNEWproteome_Estimates)) +
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig4
+Fig4b<-ggplot(dm, aes(x=fc_rodent, y=CAISslopeNEWproteome_Estimates)) +
+  labs( x = "Frequency change in rodents", y = "Preferred in \nmore-adapted species") +
+  geom_segment(aes(x=subset(dm, aa=="K")$fc_rodent, 
+                 y=subset(dm, aa=="K")$CAISslopeNEWproteome_Estimates, 
+                 xend=subset(dm, aa=="R")$fc_rodent, 
+                 yend=subset(dm, aa=="R")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
+  geom_segment(aes(x=subset(dm, aa=="I")$fc_rodent, 
+                 y=subset(dm, aa=="I")$CAISslopeNEWproteome_Estimates, 
+                 xend=subset(dm, aa=="V")$fc_rodent, 
+                 yend=subset(dm, aa=="V")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
+  annotate(geom="text", x=0.005, y=ypos_lo(dm$CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(cor.test(dm$fc_rodent,dm$clrCAISslopeNEWPfam_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$fc_rodent,dm$clrCAISslopeNEWPfam_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) +
+  #geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
+  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  mytheme
+
+Fig4c<-ggplot(dm, aes(x=fc_rodent, y=residuals_m2)) +
+  labs( x = "Frequency change in rodents", y = "Species flux") +
+  geom_segment(aes(x=subset(dm, aa=="K")$fc_rodent, 
+                 y=subset(dm, aa=="K")$residuals_m2, 
+                 xend=subset(dm, aa=="R")$fc_rodent, 
+                 yend=subset(dm, aa=="R")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
+  geom_segment(aes(x=subset(dm, aa=="I")$fc_rodent, 
+                 y=subset(dm, aa=="I")$residuals_m2, 
+                 xend=subset(dm, aa=="V")$fc_rodent, 
+                 yend=subset(dm, aa=="V")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
+  annotate(geom="text", x=0.005, y=ypos_lo(dm$residuals_m2), label=paste("R = ", signif(cor.test(dm$fc_rodent,dm$residuals_m2, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$fc_rodent,dm$residuals_m2, method='pearson')$p.value, digits=1)), color="black", size=6) +
+  #geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
+  geom_pointrange(aes(ymin=residuals_m2-residual_error, ymax=residuals_m2+residual_error)) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  mytheme
+
+
+Fig4a
+Fig4b
+Fig4c
 ```
 
 ### Figure 5
@@ -533,7 +573,6 @@ FigS1b
 ```
 
 ###S2
-
 ```{r supp fig 2}
 pfprs <- cor.test(dm$CAISslopeNEWPfam_Estimates,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.962, p=6e-06
 pfprp <- cor.test(dm$CAISslopeNEWPfam_Estimates,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.960, p=2e-10
@@ -575,7 +614,6 @@ FigS2
 ```
 
 ## Export the figures
-
 ```{r save}
 #Set your own paths!
 myggsave_sq <- function(x){
@@ -592,6 +630,10 @@ myggsave_gr <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=8.09, units="in")
 }
 
+myggsave_sm <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=3, width=4.04, units="in")
+}
+
 
 myggsave_m(Fig2a)
 myggsave_sq(Fig2b)
@@ -601,7 +643,9 @@ myggsave_m(Fig3a)
 myggsave_m(Fig3b)
 myggsave_m(Fig3c)
 
-myggsave_gr(Fig4)
+myggsave_gr(Fig4a)
+myggsave_sm(Fig4b)
+myggsave_sm(Fig4c)
 
 myggsave_m(Fig5a)
 myggsave_m(Fig5b)
