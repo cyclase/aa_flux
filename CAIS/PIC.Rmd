@@ -43,84 +43,29 @@ species<-read.csv(file="SpeciesList_11_7_2019.txt",header=T)
 colnames(cais)[1] <- 'SpeciesUID'
 
 #decide from here on out whether to use Pfam or proteome
-aaf <- pf_aaf
+aaf <- pr_aaf
 
-#pf_aaf <- merge(pf_aaf, species, by.y="SpeciesUID")
-#pf_aaf <- merge(pf_aaf, cais, by.y="SpeciesUID")
-#pf_aaf <- subset(pf_aaf, NewickName != "Pantholops_hodgsonii") #remove antelope
-
-#pr_aaf <- merge(pr_aaf, species, by.y="SpeciesUID")
-#pr_aaf <- merge(pr_aaf, cais, by.y="SpeciesUID")
-#pr_aaf <- subset(pr_aaf, NewickName != "Pantholops_hodgsonii") #remove antelope
-
-aaf <- merge(aaf, species, by.y="SpeciesUID")
-aaf <- merge(aaf, cais, by.y="SpeciesUID")
-aaf <- subset(aaf, NewickName != "Pantholops_hodgsonii") #remove antelope
+aaf2 <- merge(aaf, species, by.y="SpeciesUID")
+aaf3 <- merge(aaf2, cais, by.y="SpeciesUID")
+aaf4 <- subset(aaf3, NewickName != "Pantholops_hodgsonii") #remove antelope
 ```
 
 ## Get data in same order as tree tips
 ```{r PIC prep}
-#pf_namevector<-as.vector(pf_aaf$NewickName)#vector of all the vertebrate species names
-#pr_namevector<-as.vector(pr_aaf$NewickName)
-
-#pf_trimmedtree<-keep.tip(tree,pf_namevector)# keeping only the tips with vertebrate species names
-#pr_trimmedtree<-keep.tip(tree,pr_namevector)
-
-#pf_phyloorder <- as.list(pf_trimmedtree$tip.label)
-#pr_phyloorder <- as.list(pr_trimmedtree$tip.label)
-
-#pf_aafo <- arrange(pf_aaf, match(NewickName, pf_phyloorder))
-#pr_aafo <- arrange(pr_aaf, match(NewickName, pr_phyloorder))
-
-#pf_aaf
-#pr_aaf
-
-#pf_aafo
-#pr_aafo
-
-namevector<-as.vector(aaf$NewickName)#vector of all the vertebrate species names
+namevector<-as.vector(aaf4$NewickName)#vector of all the vertebrate species names
 trimmedtree<-keep.tip(tree,namevector)# keeping only the tips with vertebrate species names
 phyloorder <- as.list(trimmedtree$tip.label)
-aafo <- arrange(aaf, match(NewickName, phyloorder))
+#aafo <- arrange(aaf4, match(NewickName, phyloorder))
 
-aafo2 <- filter(aafo, NewickName %in% phyloorder)
-aaf
+aafo <- aaf4[match(phyloorder, aaf4$NewickName),]
+
+aaf4
 aafo
-aafo2
 ```
 
 ## Phylogenetically Independent Constrasts
 ```{r PIC}
-#Set up data into vectors for use in PIC, choosing Pfam or 
-# Intialize dataframe
-#AAstart <- which(colnames(pf_aafo) == 'A')
-#AAend <- which(colnames(pf_aafo) == 'V')
-
-#pictable <- data.frame(matrix(nrow = 116))
-
-# loop model over all amino acids
-#for (aa in 1:ncol(pf_aafo_pic)) {
-#  vec <- nv(as.vector(aa), pf_aafo_pic$NewickName)
-#  vals <- as.data.frame(pic(vec, trimmedtree))
-#  colnames(vals) <- colnames(pf_aafo_pic)[aa]
-#  pictable <- cbind(pictable, vals) }
-
-#vec <- nv(as.vector(pf_aafo_pic$A), pf_aafo_pic$NewickName)
-#  vals <- as.data.frame(pic(vec, trimmedtree))
-#  colnames(vals) <- c("node", colnames(pf_aafo_pic)[pf_aafo_pic$A]
-#  colnames(vals) <- colnames(pf_aafo_pic)[aa]
-#  pictable <- cbind(pictable, vals) 
-
-
-#pf_aafo_pic <- pf_aafo[,2:23]
-
-#for(i in 1:ncol(pf_aafo_pic)) {       # for-loop over columns
-#  pf_aafo_pic[ , i] <- pic(as.vector(pf_aafo_pic[ , i]), trimmedtree)
-#}
-
-#picvals <- apply(pf_aafo, 2, function(data) pic(as.vector(data), trimmedtree))
-
-
+#Set up data into vectors for use in PIC
 #create named vectors
 Avector <- nv(as.vector(aafo$A), aafo$NewickName)
 Cvector <- nv(as.vector(aafo$C), aafo$NewickName)
@@ -146,10 +91,12 @@ caisvector<-nv(as.vector(aafo$CAIS), aafo$NewickName)
 
 vectorlist <- list(Avector, Cvector, Dvector, Evector, Fvector, Gvector, Hvector, Ivector, Kvector, Lvector, Mvector, Nvector, Pvector, Qvector, Rvector, Svector, Tvector, Vvector, Wvector, Yvector, caisvector)
 
+vectorlist2 <- list(log(Avector), log(Cvector), log(Dvector), log(Evector), log(Fvector), log(Gvector), log(Hvector), log(Ivector), log(Kvector), log(Lvector), log(Mvector), log(Nvector), log(Pvector), log(Qvector), log(Rvector), log(Svector), log(Tvector), log(Vvector), log(Wvector), log(Yvector), caisvector)
+
 #aafo_pic <- aafo[,-1]
 pictable <- data.frame(matrix(nrow = 116))
 
-for (i in vectorlist) {
+for (i in vectorlist2) {
   vals <- as.data.frame(pic(i, trimmedtree))
   #colnames(vals) <- gsub('vector', '', deparse(substitute(i)))
   pictable <- cbind(pictable, vals) }
@@ -161,12 +108,6 @@ pictable
 
 
 ######################### pic comparisons, note that the -1 forces the comparisons through the origin
-
-
-#Vertebrate_pic_CAIS_AAC_df <- as.data.frame(do.call(cbind, piclist))
-#names(Vertebrate_pic_CAIS_AAC_df) <- c("picA", "picC", "picD", "picE", "picF", "picG", "picH", "picI", "picK", "picL", "picM", "picN", "picP", "picQ", "picR", "picS", "picT", "picV", "picW", "picY")
-#Vertebrate_pic_CAIS_AAC_df
-
 
 lmiPIC<-lm(pictable$K~ pictable$cais)
 summary(lmiPIC)
@@ -181,9 +122,9 @@ model_estimates <- data.frame(matrix(nrow = 2))
 # loop model over all amino acids
 for (aa in AAstart:AAend) {
 
-model <- lm(pictable[,aa]~pictable$cais)
+model <- lm(pictable[,aa]~pictable$cais-1)
 model_summary <- summary(model)
-model_summary <- as.data.frame(model_summary$coefficients[2,1:2])
+model_summary <- as.data.frame(model_summary$coefficients[,1:2])
 colnames(model_summary) <- colnames(pictable)[aa]
 model_estimates <- cbind(model_estimates, model_summary) }
 
@@ -194,16 +135,7 @@ model_estimates <- as.data.frame(t(model_estimates))
 model_estimates
 
 #save values, be sure name matches amino acid frequencies you used
-write.csv(model_estimates, 'PICcorrected_Pfam_cais_slopes.csv')
-#write.csv(model_estimates, 'PICcorrected_proteome_cais_slopes.csv')
+#write.csv(model_estimates, 'PICcorrected_Pfam_cais_slopes.csv')
+write.csv(model_estimates, 'logPICcorrected_proteome_cais_slopes.csv')
 
-
-
-
-
-#massplot2 <-ggplot(data=lmiPIC, aes(piccais,picK)) + geom_point(size=2) + labs( x = "CAIS [PIC Corrected]", y = "Adult Body Mass\n[PIC Corrected]") + stat_smooth(method = "lm", color="red")
-
-#massplot2 <- massplot2+theme(axis.title=element_text(size=28, face ="bold"),title=element_text(size=18, face ="bold"),panel.background = element_rect(fill = "white", colour = "grey50"),panel.grid.major = element_line(colour = "grey90"),panel.grid.minor = element_line(colour = "grey90"))
-#massplot2<- massplot2 + geom_text(data=lmiPIC, aes(x = -0.0005, y = -0.8, label = "Pearson's R:-0.33\n p-value:0.0065"),size=7, colour = 'black')+ theme(axis.text = element_text(size = 24)) 
-#massplot2
 ```

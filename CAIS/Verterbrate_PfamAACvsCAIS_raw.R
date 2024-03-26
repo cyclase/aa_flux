@@ -8,7 +8,8 @@ setwd('/Users/hanon/Documents/GitHub/aa_flux/CAIS')
 
 # Read input files
 # remove antelope ID 442
-CAIS_values <- read.csv('CAIS_KLD.txt', header = T)
+#CAIS_values <- read.csv('CAIS_weighted_by_AA.csv',header = T)
+CAIS_values <- read.csv('CAIS_KLD.txt',header = T) 
 CAIS_values <-  CAIS_values[-which(CAIS_values$SpeciesUID == '442'),] # remove antelope
 
 #VertebrateAAC_CAIS.csv comes from the protein sequences in vertebrates in sql
@@ -16,22 +17,18 @@ Species_ProteinAAC <- read.csv('VertebrateAAC_CAIS.csv', header = T)
 Species_ProteinAAC <- Species_ProteinAAC[-which(duplicated(Species_ProteinAAC$SpeciesUID)),]
 Species_PFAM_AAC <- read.csv('AllPfam_AAC.csv', header = T)
 Species_PFAM_AAC <- Species_PFAM_AAC[-which(Species_PFAM_AAC$SpeciesUID == '442'),]
-AA_properties <- read.csv('../Figures/Short_amino_acid_properties_Oct23.csv', header = T)
+AA_properties <- read.csv('Short_amino_acid_properties_Oct23.csv', header = T)
 
 
 # choose if the pfam aac df or the protein aac df
-SpeciesAAC_wCAIS <- Species_ProteinAAC
+SpeciesAAC_wCAIS <- Species_PFAM_AAC
 CAIS_values <- CAIS_values[which(CAIS_values$SpeciesUID %in% SpeciesAAC_wCAIS$SpeciesUID),]
 match(CAIS_values$SpeciesUID, SpeciesAAC_wCAIS$SpeciesUID) # match
 
 SpeciesAAC_Acol <- which(colnames(SpeciesAAC_wCAIS) =='A')
-#rm(VertebrateCAIS_AAC_df)
+rm(VertebrateCAIS_AAC_df)
 VertebrateCAIS_AAC_df <- cbind(CAIS_values, SpeciesAAC_wCAIS[,SpeciesAAC_Acol:dim(SpeciesAAC_wCAIS)[2]])
 #write.csv(VertebrateCAIS_AAC_df, 'PfamAAC_CAISvalues_117Vertebrates.csv')
-VertebrateCAIS_AAC_df2 <- merge(CAIS_values, SpeciesAAC_wCAIS, by.y="SpeciesUID")
-
-head(VertebrateCAIS_AAC_df)
-head(VertebrateCAIS_AAC_df2)
 
 rowSums(VertebrateCAIS_AAC_df[,3:24]) # all species AAC add up to 1
 
@@ -57,10 +54,10 @@ model_estimates <- as.data.frame(t(model_estimates))
 
 # Remove O and U
 model_estimates <- model_estimates[-which(model_estimates[,1]== 0),]
-#model_estimates <- data.frame(model_estimates)
+model_estimates <- data.frame(model_estimates)
 model_estimates <- model_estimates[match(AA_properties$aa,rownames(model_estimates)),]
 
-write.csv(model_estimates, 'proteome_CAISeffectonAAfreq_SlopesandStderrors_noAntelope_KLD.csv')
+write.csv(model_estimates, 'Pfam_CAISeffectonAAfreq_SlopesandStderrors_noAntelope_KLD_HM.csv')
 
 
 

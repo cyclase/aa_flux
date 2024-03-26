@@ -39,7 +39,7 @@ setwd("C:/Users/hanon/Documents/GitHub/aa_flux/Figures/")
 
 ```{r Data}
 #read in amino acid metrics
-metrics <- read.delim(file = "Short_amino_acid_properties_Oct23.csv", header=TRUE, stringsAsFactors=FALSE, sep=",") %>% rename(yps="SlopeAnimal..1496", ops="SlopeAnimal..2101")
+metrics <- read.delim(file = "Short_amino_acid_properties_Oct23.csv", header=TRUE, stringsAsFactors=FALSE, sep=",") #%>% rename(yps="SlopeAnimal..1496", ops="SlopeAnimal..2101")
 metrics
 
 #calculate residuals of fitness effects after accounting for mol volume and disorder propensity
@@ -51,7 +51,12 @@ metrics2 <- cbind(metrics, resid_LKmarch22)
 #read in flux data
 d <- read.delim(file = "../Flux/all_fluxes.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 
-dm <- cbind(d, metrics2[,2:101]) %>% mutate(fc_rodent = ns_rodent-ns_root, fc_primate = ns_primate-ns_root)
+ns <- read.delim(file = "../Flux/all_NS.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
+
+dd <- cbind(d, metrics2[,2:118]) %>% mutate(fc_rodent = ns_rodent-ns_root, fc_primate = ns_primate-ns_root)
+
+dm <- cbind(dd, ns[,5:6])
+names(dm)
 ```
 
 ### 0.3 Set up global figure presets
@@ -141,8 +146,47 @@ Fig2c <- ggplot(dm, aes(x=Rnoratio, y=Rjordan)) +
 Fig2a
 Fig2b
 Fig2c
+```
+```{r Figure 2 nonstationary}
+fitII_ns <- lmodel2(ns_rodent ~ ns_primate, data=dm, range.y="interval", range.x="interval", nperm=99)
+reg_ns <- fitII_ns$regression.results
 
-#grid.arrange(Fig1a, Fig1b, Fig1c, ncol=3)
+Fig2d <- ggplot(dm, aes(x=ns_primate, y=ns_rodent))+
+  labs( x = "Primate nonstationary frequency", y = "Rodent nonstationary frequency") + 
+  coord_equal() +
+  geom_abline(data=subset(reg_ns, Method=="MA"), aes(intercept=Intercept, slope=Slope), color="red", size=1.5) + 
+  annotate(geom="text", x=0.085, y=0.025, label=paste("R = ", signif(cor.test(dm$ns_primate, dm$ns_rodent, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$ns_primate, dm$ns_rodent, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
+  mytheme
+
+Fig2e <- ggplot(dm, aes(x=ns_primate, y=Pjordan)) +
+  labs( x = "Primate nonstationary frequency", y = "Primate flux (Jordan et al.)") + 
+  scale_x_continuous(limits=c(0.01,0.11), breaks=c(0.02, 0.06, 0.1)) + 
+  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) +
+  #geom_abline(aes(intercept=0, slope=1), color="black") + 
+  annotate(geom="text", x=0.085, y=0.3, label=paste("R = ", signif(cor.test(dm$ns_primate, dm$Pjordan, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$ns_primate, dm$Pjordan, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  #geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  geom_point(size=3) + 
+  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
+
+Fig2f <- ggplot(dm, aes(x=ns_rodent, y=Rjordan)) +
+  labs( x = "Rodent nonstationary frequency", y = "Rodent flux (Jordan et al.)") + 
+  scale_x_continuous(limits=c(0.01,0.11), breaks=c(0.02, 0.06, 0.1)) + 
+  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) +
+  #geom_abline(aes(intercept=0, slope=1), color="black") + 
+  annotate(geom="text", x=0.085, y=0.3, label=paste("R = ", signif(cor.test(dm$ns_rodent, dm$Rjordan, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$ns_rodent, dm$Rjordan, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  #geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  geom_point(size=3) + 
+  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
+
+Fig2d
+Fig2e
+Fig2f
 ```
 
 ### Figure 3
@@ -574,17 +618,17 @@ FigS1b
 
 ###S2
 ```{r supp fig 2}
-pfprs <- cor.test(dm$CAISslopeNEWPfam_Estimates,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.962, p=6e-06
-pfprp <- cor.test(dm$CAISslopeNEWPfam_Estimates,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.960, p=2e-10
+pfprs <- cor.test(dm$kldCAISslope_Pfam,dm$kldCAISslope_Proteome, method='spearman') #R=0.965, p=7e-06
+pfprp <- cor.test(dm$kldCAISslope_Pfam,dm$kldCAISslope_Proteome, method='pearson') #R=0.960, p=2e-11
 
-FigS2<-ggplot(dm, aes(x=CAISslopeNEWPfam_Estimates, y=CAISslopeNEWproteome_Estimates)) +
+FigS2<-ggplot(dm, aes(x=kldCAISslope_Pfam, y=kldCAISslope_Proteome)) +
   labs( x = "Preference in \nmore adapted species \n(pfams only)", y = "Preference in \nmore adapted species \n(whole proteome)") +
     scale_x_continuous(limits=c(-0.2,0.2), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
   scale_y_continuous(limits=c(-0.2,0.2), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
   coord_equal() + 
   annotate(geom="text", x=0.12, y=-0.15, label=paste("R = ", signif(pfprp$estimate, digits=3), "\n p = ", signif(pfprp$p.value, digits=1)), color="black", size=6) +
-  geom_pointrange(aes(xmin=CAISslopeNEWPfam_Estimates-CAISslopeNEWPfam_Std.Error, xmax=CAISslopeNEWPfam_Estimates+CAISslopeNEWPfam_Std.Error)) +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+  geom_pointrange(aes(xmin=kldCAISslope_Pfam-kldCAISslope_Pfam_Std.Error, xmax=kldCAISslope_Pfam+kldCAISslope_Pfam_Std.Error)) +
+  geom_pointrange(aes(ymin=kldCAISslope_Proteome-kldCAISslope_Proteome_Std.Error, ymax=kldCAISslope_Proteome+kldCAISslope_Proteome_Std.Error)) +
   geom_point(size=3) + 
   #geom_abline(aes(intercept=0, slope=1), color="black") + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
@@ -611,6 +655,42 @@ FigS2
 #  mytheme
   
 #FigS3
+```
+
+###PIC
+```{r PIC}
+FigX <- ggplot(dm, aes(x=kldCAISslope_SW, y=pic2CAISslopeNEWPfam_Estimates))+
+  labs( x = "Pfam CAIS slopes", y = "Pfam CAIS slopes (PIC corrected)") + 
+  annotate(geom="text", x=0.1, y=ypos_lo(dm$pic2CAISslopeNEWPfam_Estimates), label=paste("R = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWPfam_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWPfam_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
+  mytheme
+
+FigY <- ggplot(dm, aes(x=kldCAISslope_SW, y=pic2CAISslopeNEWproteome_Estimates))+
+  labs( x = "Pfam CAIS slopes", y = "proteome CAIS slopes (PIC corrected)") + 
+  coord_equal() +
+  annotate(geom="text", x=0.1, y=ypos_lo(dm$pic2CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
+  mytheme
+
+FigZ <- ggplot(dm, aes(x=pic2CAISslopeNEWPfam_Estimates, y=pic2CAISslopeNEWproteome_Estimates))+
+  labs( x = "Pfam CAIS slopes (PIC corrected)", y = "proteome CAIS slopes (PIC corrected)") + 
+  coord_equal() +
+  annotate(geom="text", x=0.1, y=ypos_lo(dm$picCAISslopeNEWproteome_Estimates), label=paste("R = ", signif(cor.test(dm$pic2CAISslopeNEWPfam_Estimates,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$pic2CAISslopeNEWPfam_Estimates,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
+  mytheme
+
+FigX
+FigY
+FigZ
 ```
 
 ## Export the figures
