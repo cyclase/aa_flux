@@ -4,12 +4,11 @@ library(ggplot2)
 library(seqinr)
 library(ggrepel)
 
-setwd('/Users/sawsanwehbi/Desktop/Masel Lab')
+setwd("C:/Users/hanon/Documents/GitHub/aa_flux/CAIS/")
 
 # Read input files 
 #Species UID 442 is the tibetan antelope; removed bcz its contaminated
-CAIS_values <- read.csv('new_CAIS.csv',header = T) 
-#CAIS_values <- read.csv('Rotation/CAIS_values.csv', header = T)
+CAIS_values <- read.csv('CAIS_KLD.csv',header = T) 
 CAIS_values <-  CAIS_values[-which(CAIS_values$SpeciesUID == '442'),]
 CAIS_values <- CAIS_values[which(CAIS_values$SpeciesUID %in% SpeciesAAC_wCAIS$SpeciesUID),]
 NonTrans_file <- read.csv('NonTransMembranePfam_AAC.csv', header = T)
@@ -129,9 +128,13 @@ Young_model_estimates <- data.frame(Young_model_estimates)
 
 
 # write all 4 model estimates into csv file
+AA_properties <- read.csv('../Figures/Short_amino_acid_properties_Oct23.csv', header = T)
+
 PfamEstimates <- cbind(NonTrans_model_estimates,Trans_model_estimates,
                        Old_model_estimates,Young_model_estimates)
-write.csv(PfamEstimates,'CAISeffectonPfamAAC_Trans_NonTrans_Old_Young_newCAIS.csv')
+PfamEstimates <- PfamEstimates[match(AA_properties$aa,rownames(PfamEstimates)),]
+
+write.csv(PfamEstimates,'CAISeffectonPfamAAC_Trans_NonTrans_Old_Young_KLD.csv')
 
 
                             ##### FIGURE 6 ######

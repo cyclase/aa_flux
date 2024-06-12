@@ -27,7 +27,7 @@ write.csv(pr_clr, file="clr_proteomeAAC.csv", quote=F)
 
 # Read input files
 # remove antelope ID 442
-CAIS_value <- read.csv('new_CAIS.csv',header = T)
+CAIS_value <- read.csv('CAIS_KLD.csv',header = T)
 CAIS_values <-  CAIS_value[-which(CAIS_value$SpeciesUID == '442'),] # remove antelope
 
 clr_proteomeAAC <- read.csv('clr_proteomeAAC.csv', header = T)
@@ -72,7 +72,7 @@ model_estimates <- model_estimates[-which(model_estimates[,1]== 0),]
 model_estimates <- data.frame(model_estimates)
 #model_estimates <- model_estimates[match(AA_properties$Letter,rownames(model_estimates)),]
 
-write.csv(model_estimates, 'clr_proteome_CAISeffectonAAfreq_SlopesandStderrors_noAntelope_new_CAIS.csv')
+write.csv(model_estimates, 'clr_proteome_CAISeffectonAAfreq_SlopesandStderrors_noAntelope_KLD.csv')
 
 
 

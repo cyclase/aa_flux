@@ -24,11 +24,11 @@
 </g>
 <defs>
   <clipPath id='cpMC4wMHwzNjAuMDB8NS41N3wzNTQuNDM='>
-    <rect x='0.00' y='5.57' width='360.00' height='348.85' />
+    <rect x='0.000000000000025' y='5.57' width='360.00' height='348.85' />
   </clipPath>
 </defs>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8NS41N3wzNTQuNDM=)'>
-<rect x='0.00' y='5.57' width='360.00' height='348.85' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
+<rect x='0.000000000000032' y='5.57' width='360.00' height='348.85' style='stroke-width: 1.07; stroke: #FFFFFF; fill: #FFFFFF;' />
 </g>
 <g clip-path='url(#cpMC4wMHwzNjAuMDB8MC4wMHwzNjAuMDA=)'>
 </g>
@@ -47,8 +47,13 @@
 <polyline points='332.94,270.23 332.94,8.41 ' style='stroke-width: 1.07; stroke: #E5E5E5; stroke-linecap: butt;' />
 <rect x='250.61' y='106.22' width='106.56' height='164.01' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #E5E5E5; fill-opacity: 0.50;' />
 <rect x='95.34' y='8.41' width='155.27' height='97.81' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #E5E5E5; fill-opacity: 0.50;' />
-<text x='271.19' y='219.00' text-anchor='middle' style='font-size: 17.07px; font-family: "Arial";' textLength='83.94px' lengthAdjust='spacingAndGlyphs'>R =  0.819 </text>
-<text x='271.19' y='243.58' text-anchor='middle' style='font-size: 17.07px; font-family: "Arial";' textLength='77.31px' lengthAdjust='spacingAndGlyphs'>p =  1e-05</text>
+<text x='235.32' y='219.06' style='font-size: 17.07px; font-family: "Arial";' textLength='12.33px' lengthAdjust='spacingAndGlyphs'>R</text>
+<text x='247.65' y='211.76' style='font-size: 11.95px; font-family: "Arial";' textLength='6.64px' lengthAdjust='spacingAndGlyphs'>2</text>
+<text x='258.23' y='219.06' style='font-size: 17.07px; font-family: "Arial";' textLength='11.67px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='273.85' y='219.06' style='font-size: 17.07px; font-family: "Arial";' textLength='33.21px' lengthAdjust='spacingAndGlyphs'>0.67</text>
+<text x='234.84' y='243.79' style='font-size: 17.07px; font-family: "Arial";' textLength='9.49px' lengthAdjust='spacingAndGlyphs'>p</text>
+<text x='248.28' y='243.79' style='font-size: 17.07px; font-family: "Arial";' textLength='11.67px' lengthAdjust='spacingAndGlyphs'>=</text>
+<text x='263.90' y='243.79' style='font-size: 17.07px; font-family: "Arial";' textLength='43.64px' lengthAdjust='spacingAndGlyphs'>1e-05</text>
 <line x1='265.70' y1='84.14' x2='300.48' y2='84.14' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='228.70' y1='81.61' x2='248.44' y2='81.61' style='stroke-width: 1.07; stroke-linecap: butt;' />
 <line x1='278.95' y1='108.30' x2='298.67' y2='108.30' style='stroke-width: 1.07; stroke-linecap: butt;' />

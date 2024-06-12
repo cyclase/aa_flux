@@ -1,0 +1,79 @@
+---
+title: "ns"
+author: "Hanon McShea"
+date: "2024-03-26"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 0 Setting up R
+
+Install the necessary packages and load their libraries
+
+```{r warning=FALSE, message=FALSE}
+library("dplyr")
+library("ade4")
+library("ggplot2")
+library("ggpubr")
+library("lmodel2")
+library("ggplot2")
+
+#Set your working directory
+setwd("C:/Users/hanon/Documents/Github/aa_flux/Flux/")
+```
+
+```{r read in D data files}
+#read in NS values
+DD <- read.delim(file = "glires_primatomorpha_data.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
+fitII <- lmodel2(Glires ~ Primatomorpha, data=DD, range.y="interval", range.x="interval", nperm=99)
+reg <- fitII$regression.results
+slope <- subset(reg, Method=="MA")$Slope
+intercept <- subset(reg, Method=="MA")$Intercept
+
+#calculate SPECIES COMPONENT: residuals between fluxes in P-R space and the model II regression
+residuals_from_model_2 <- function(x,y,m,b){
+  result<-((b + m*x - y))/sqrt(m**2+1)
+  print(result*-1)
+}
+
+#calculate SHARED COMPONENT: projection of fluxes in P-R space along the model II regression
+projections_from_model_2 <- function(x,y,m,b){
+  result<-sqrt(((x+m*y -m*b)/(m*m+1))**2+((m)*(x+m*y -m*b)/(m*m+1)+b)**2)
+  print(result)
+}
+
+DD$ns_residuals_m2<-residuals_from_model_2(DD$Primatomorpha, DD$Glires, slope, intercept)
+DD$ns_projections_m2<- projections_from_model_2(DD$Primatomorpha, DD$Glires, slope, intercept)
+DD
+
+#Check that calculations were correct
+Dang<-ggplot(DD, aes(x=ns_projections_m2, y=ns_residuals_m2))+
+  labs( x = "Shared Freq", y = "Species Freq")+
+  geom_text(aes(label=AminoAcid),hjust=-0.1, vjust=0, color="blue", size = 6)+
+  geom_point(size=3)+theme(axis.title=element_text(size=24, face ="bold"),title=element_text(size=24, face ="bold"),axis.text=element_text(size=24),panel.background = element_rect(fill = "white", colour = "grey50"),panel.grid.major = element_line(colour = "grey90"),panel.grid.minor = element_line(colour = "grey90"))
+Dang
+```
+
+```{r error on shared and species}
+#ellipse_error <- function(a,b,theta){
+#  result <- (a*b)/sqrt((b*cos(theta))^2 + (a*sin(theta))^2)
+#  print(result)
+#}
+#radslope <- (subset(reg, Method=="MA")$Angle)*(pi/180)
+#radnormal <- radslope+(0.5*pi)
+
+#DD$residual_error <- ellipse_error(DD$Perror, DD$Rerror, radnormal)
+#DD$projection_error <- ellipse_error(DD$Perror, DD$Rerror, radslope)
+
+#Dang_err <- Dang + geom_errorbar(DD, mapping = aes(ymin=residuals_m2-residual_error, ymax=residuals_m2+residual_error)) + geom_errorbarh(DD, mapping = aes(xmin=projections_m2-projection_error, xmax=projections_m2+projection_error))
+#Dang_err
+
+write.csv(DD[,c(1,6)], file="NS_shared.csv", quote=FALSE, row.names=FALSE)
+
+write.csv(DD[,c(1,5)], file="NS_species.csv", quote=FALSE, row.names=FALSE)
+
+write.csv(DD, file="all_NS.csv", quote=FALSE, row.names=FALSE)
+```

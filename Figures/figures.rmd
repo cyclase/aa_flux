@@ -14,13 +14,6 @@ knitr::opts_chunk$set(eval=T, warning=F, error=F, message=F)
 ### 0.1 Install the necessary packages and load their libraries
 
 ```{r, packages, echo=F, include=F}
-#pkgs_needed = c("Rpdb", "rgl", "Rcpp", "tidyverse", "Biostrings",
-#                "RColorBrewer", "magrittr", "plyr", "reshape2", "ade4", "ggplot2", "rowr", "ggpubr", "backports", "flextable", "svglite", "compositions")
-#letsinstall = setdiff(pkgs_needed, installed.packages()) 
-#if (length(letsinstall) > 0) {
-#  BiocManager::install(setdiff(pkgs_needed, installed.packages()))
-#}
-
 library("dplyr")
 library("ggplot2")
 library("ggtext")
@@ -30,6 +23,7 @@ library("gridExtra")
 library("magrittr")
 library("svglite")
 library("compositions")
+library("scales")
 
 #Set your working directory
 setwd("C:/Users/hanon/Documents/GitHub/aa_flux/Figures/")
@@ -49,14 +43,13 @@ resid_LKmarch22 <- model_resid_LKmarch22$residuals
 metrics2 <- cbind(metrics, resid_LKmarch22)
 
 #read in flux data
-d <- read.delim(file = "../Flux/all_fluxes.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
+d <- read.delim(file = "../Parsimony_flux/all_fluxes.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 
-ns <- read.delim(file = "../Flux/all_NS.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
+ns <- read.delim(file = "../Parsimony_flux/all_NS.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 
-dd <- cbind(d, metrics2[,2:118]) %>% mutate(fc_rodent = ns_rodent-ns_root, fc_primate = ns_primate-ns_root)
+dd <- cbind(d, metrics2[,2:141]) %>% mutate(fc_rodent = Glires-Root, fc_primate = Primatomorpha-Root, fc_rp = Glires-Primatomorpha)
 
 dm <- cbind(dd, ns[,5:6])
-names(dm)
 ```
 
 ### 0.3 Set up global figure presets
@@ -65,7 +58,7 @@ names(dm)
 #settings that affect all or most Figs
 
 #theme
-mytheme <- theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.15, 0.3, 0.1, 0.1), "cm"))
+mytheme <- theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.4, 0.4, 0.1, 0.1), "cm"))
 
 #functions for positioning annotations dynamically with axis range
 pos_scale <- 0.05
@@ -89,178 +82,166 @@ ypos_lo <- function(y){
 
 ## Figures
 
-### Figure 2
-
+###Figure 2
 ```{r Figure 2}
+cor.test(dm$Disorder_Propensity,dm$fc_rp, method='pearson') #R=0.68, p=0.0009
+cor.test(dm$VolumeA3,dm$fc_rp, method='pearson') #R=-0.72, p=0.0004
+cor.test(dm$pGC,dm$fc_rp, method='pearson') #R=0.76, p=1e-04
+cor.test(dm$mean_LKmarch22,dm$fc_rp, method='pearson') #R=0.77, p=8e-05
+cor.test(dm$resid_LKmarch22,dm$fc_rp, method='pearson') #R=0.23, p=0.3
+cor.test(dm$RaifordAerobicCost,dm$fc_rp, method='pearson') #R=-0.70, p=0.0005
+cor.test(log10(dm$RaifordAerobicCost),dm$fc_rp, method='pearson') #R=-0.77, p=7e-05
+t.test(x=subset(dm, Essential_Costa2015=="Essential")$fc_rp, y=subset(dm, Essential_Costa2015=="Non-essential")$fc_rp, var.equal = T) #p=0.006
+
+cor.test(dm$fc_rp,dm$pGC, method='pearson') #R=0.76, p=1e-04
+cor.test(dm$residuals_m2,dm$pGC, method='pearson') #R=0.48, p=0.03
+cor.test(dm$kldCAISslope_Proteome,dm$pGC, method='pearson') #R=0.83, p=6e-06
+
+
+Fig2a <- ggplot(dm, aes(x=RaifordAerobicCost, y=fc_rp)) + 
+  labs( x = "log(aerobic cost)", y = "Flux difference (ML)") + 
+  annotate(geom="text", x=50, y=0.013, parse=T, label="atop(R^2==0.59, p==7e-05)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa, color=Essential_Costa2015),hjust=-0.1, vjust=0, size = 6) + 
+  scale_color_manual(labels = c("Essential", "Non-Essential"), values = c("red", "blue"), guide="none") + 
+  scale_x_log10(
+    breaks = c(10, 10^1.5, 100),
+    labels = trans_format("log10", math_format(10^.x)))+
+  mytheme
+
+Fig2b <- ggplot(dm, aes(x=VolumeA3, y=fc_rp)) + 
+  labs( x = "Molecular volume (\u00C5\u00b3)", y = "Flux difference (ML)") + 
+  annotate(geom="text", x=210, y=0.012, parse=T, label="atop(R^2==0.51, p==4e-04)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  mytheme
+
+Fig2c <- ggplot(dm, aes(x=Disorder_Propensity, y=fc_rp)) + 
+  labs( x = "Disorder propensity", y = "Flux difference (ML)") + 
+  annotate(geom="text", x=0.15, y=0.012, parse=T, label="atop(R^2==0.47, p==9e-04)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  mytheme
+
+Fig2d <- ggplot(dm, aes(x=mean_LKmarch22, y=fc_rp)) + 
+  labs( x = "Fitness effect in *E. coli*", y = "Flux difference (ML)") + 
+  annotate(geom="text", x=-0.07, y=0.012, parse=T, label="atop(R^2==0.59, p==8e-05)", color="black", size=6) +
+  geom_pointrange(aes(xmin=mean_LKmarch22-stderr_LKmarch22, xmax=mean_LKmarch22+stderr_LKmarch22)) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  theme(axis.title.x = ggtext::element_markdown()) + 
+  mytheme
+
+Fig_2e <- ggplot(dm, aes(x=pGC, y=fc_rp)) + 
+  labs( x = "%GC", y = "Flux difference (ML)") + 
+  annotate(geom="text", x=0.25, y=0.012, parse=T, label="atop(R^2==0.58, p==1e-04)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  mytheme
+
+Fig2a
+Fig2b
+Fig2c
+Fig2d
+Fig2e
+```
+
+### Figure 3
+```{r Figure 3}
 fitII <- lmodel2(Rnoratio ~ Pnoratio, data=dm, range.y="interval", range.x="interval", nperm=99)
 reg <- fitII$regression.results
 
-prs <- cor.test(dm$Pnoratio, dm$Rnoratio, method='spearman')
-prp <- cor.test(dm$Pnoratio, dm$Rnoratio, method='pearson') #R=0.536 p=0.01
+cor.test(dm$Pnoratio, dm$Rnoratio, method='pearson') #R=0.54 p=0.01
+cor.test(dm$Pnoratio, dm$Pjordan, method='pearson') #R=0.89 p=2e-07
+cor.test(dm$Rnoratio, dm$Rjordan, method='pearson') #R=0.92 p=1e-08
 
-pps <- cor.test(dm$Pnoratio, dm$Pjordan, method='spearman')
-ppp <- cor.test(dm$Pnoratio, dm$Pjordan, method='pearson') #R=0.887 p=2e-07
+Fig3a <- ggplot(dm, aes(x=Pnoratio, y=Pjordan)) +
+  labs( x = "Primate flux (parsimony; this work)", y = "Primate flux \n(parsimony; Jordan et al.)") + 
+  scale_x_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
+  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
+  coord_equal() + 
+  annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
+  annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
+  geom_abline(aes(intercept=0, slope=1), color="black") + 
+  annotate(geom="text", x=0.25, y=-0.3, parse=T, label="atop(R^2==0.79, p==2e-07)", color="black", size=6) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
+  geom_point(size=3) + 
+  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
 
-rrs <- cor.test(dm$Rnoratio, dm$Rjordan, method='spearman')
-rrp <- cor.test(dm$Rnoratio, dm$Rjordan, method='pearson') #R=0.92 p=1e-08
+Fig3b <- ggplot(dm, aes(x=Rnoratio, y=Rjordan)) + 
+  labs( x = "Rodent flux (parsimony; this work)", y = "Rodent flux \n(parsimony; Jordan et al.)") + 
+  scale_x_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
+  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
+  coord_equal() + 
+  annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
+  annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
+  geom_abline(aes(intercept=0, slope=1), color="black") + 
+  annotate(geom="text", x=0.25, y=-0.3, parse=T, label="atop(R^2==0.85, p==1e-08)", color="black", size=6) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  geom_pointrange(aes(x=Rnoratio, xmin=Rnoratio-Rerror, xmax=Rnoratio+Rerror)) + 
+  geom_point(size=3) + 
+  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
 
-Fig2a <- ggplot(dm, aes(x=Pnoratio, y=Rnoratio))+
-  labs( x = "Primate flux", y = "Rodent flux") + 
+Fig3c <- ggplot(dm, aes(x=Pnoratio, y=Rnoratio))+
+  labs( x = "Primate flux (parsimony)", y = "Rodent flux  (parsimony)") + 
   coord_equal() +
   geom_abline(data=subset(reg, Method=="MA"), aes(intercept=Intercept, slope=Slope), color="red", size=1.5) + 
-  annotate(geom="text", x=0.2, y=ypos_lo(dm$Rnoratio), label=paste("R = ", signif(prp$estimate, digits=3), "\n p = ", signif(prp$p.value, digits=1)), color="black", size=6) + 
+  annotate(geom="text", x=0.2, y=ypos_lo(dm$Rnoratio), parse=T, label="atop(R^2==0.29, p==0.01)", color="black", size=6) + 
   geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
   geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
   mytheme
 
-Fig2b <- ggplot(dm, aes(x=Pnoratio, y=Pjordan)) +
-  labs( x = "Primate flux (this work)", y = "Primate flux (Jordan et al.)") + 
-  scale_x_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
-  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
-  coord_equal() + 
-  annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
-  annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
-  geom_abline(aes(intercept=0, slope=1), color="black") + 
-  annotate(geom="text", x=0.25, y=-0.3, label=paste("R = ", signif(ppp$estimate, digits=3), "\n p = ", signif(ppp$p.value, digits=1)), color="black", size=6) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
-  geom_point(size=3) + 
-  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
-
-Fig2c <- ggplot(dm, aes(x=Rnoratio, y=Rjordan)) + 
-  labs( x = "Rodent flux (this work)", y = "Rodent flux (Jordan et al.)") + 
-  scale_x_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
-  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) + 
-  coord_equal() + 
-  annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
-  annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
-  geom_abline(aes(intercept=0, slope=1), color="black") + 
-  annotate(geom="text", x=0.25, y=-0.3, label=paste("R = ", signif(rrp$estimate, digits=3), "\n p = ", signif(rrp$p.value, digits=1)), color="black", size=6) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  geom_pointrange(aes(x=Rnoratio, xmin=Rnoratio-Rerror, xmax=Rnoratio+Rerror)) + 
-  geom_point(size=3) + 
-  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
-
-Fig2a
-Fig2b
-Fig2c
-```
-```{r Figure 2 nonstationary}
-fitII_ns <- lmodel2(ns_rodent ~ ns_primate, data=dm, range.y="interval", range.x="interval", nperm=99)
-reg_ns <- fitII_ns$regression.results
-
-Fig2d <- ggplot(dm, aes(x=ns_primate, y=ns_rodent))+
-  labs( x = "Primate nonstationary frequency", y = "Rodent nonstationary frequency") + 
+Fig3d <- ggplot(dm, aes(x=fc_primate, y=fc_rodent))+
+  labs( x = "Primatomorpha flux (ML)", y = "Glires flux (ML)") + 
   coord_equal() +
-  geom_abline(data=subset(reg_ns, Method=="MA"), aes(intercept=Intercept, slope=Slope), color="red", size=1.5) + 
-  annotate(geom="text", x=0.085, y=0.025, label=paste("R = ", signif(cor.test(dm$ns_primate, dm$ns_rodent, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$ns_primate, dm$ns_rodent, method='pearson')$p.value, digits=1)), color="black", size=6) + 
+  scale_x_continuous(limits=c(-0.015,0.0201), breaks=c(-0.01, 0, 0.01, 0.02)) + 
+  scale_y_continuous(limits=c(-0.015,0.0201), breaks=c(-0.01, 0, 0.01, 0.02)) + 
+  annotate(geom="text", x=0.015, y=-0.01, parse=T, label="atop(R^2==0.28, p==0.02)", color="black", size=6) + 
   #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
   #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
   mytheme
 
-Fig2e <- ggplot(dm, aes(x=ns_primate, y=Pjordan)) +
-  labs( x = "Primate nonstationary frequency", y = "Primate flux (Jordan et al.)") + 
-  scale_x_continuous(limits=c(0.01,0.11), breaks=c(0.02, 0.06, 0.1)) + 
-  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) +
-  #geom_abline(aes(intercept=0, slope=1), color="black") + 
-  annotate(geom="text", x=0.085, y=0.3, label=paste("R = ", signif(cor.test(dm$ns_primate, dm$Pjordan, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$ns_primate, dm$Pjordan, method='pearson')$p.value, digits=1)), color="black", size=6) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  #geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
-  geom_point(size=3) + 
-  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
-
-Fig2f <- ggplot(dm, aes(x=ns_rodent, y=Rjordan)) +
-  labs( x = "Rodent nonstationary frequency", y = "Rodent flux (Jordan et al.)") + 
-  scale_x_continuous(limits=c(0.01,0.11), breaks=c(0.02, 0.06, 0.1)) + 
-  scale_y_continuous(limits=c(-0.4,0.45), breaks=c(-0.4, -0.2, 0, 0.2, 0.4)) +
-  #geom_abline(aes(intercept=0, slope=1), color="black") + 
-  annotate(geom="text", x=0.085, y=0.3, label=paste("R = ", signif(cor.test(dm$ns_rodent, dm$Rjordan, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$ns_rodent, dm$Rjordan, method='pearson')$p.value, digits=1)), color="black", size=6) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  #geom_pointrange(aes(x=Pnoratio, xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
-  geom_point(size=3) + 
-  theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.1, 0.1, 0.5, 0.5), "cm"), aspect.ratio = 1)
-
-Fig2d
-Fig2e
-Fig2f
+Fig3a
+Fig3b
+Fig3c
+Fig3d
 ```
 
-### Figure 3
+```{r serine outlier}
+no_serine <- rbind(dm[1:15,], dm[17:20,])
 
-```{r Figure 3}
-#pjs <- cor.test(dm$projections_m2,dm$text_jordan, method='spearman')
-#pjp <- cor.test(dm$projections_m2,dm$text_jordan, method='pearson')
+fitII_noser <- lmodel2(fc_rodent ~ fc_primate, data=no_serine, range.y="interval", range.x="interval", nperm=99)
+reg_noser <- fitII_noser$regression.results
 
-#pjs2 <- cor.test(dm$projections_m2,dm$supp_jordan, method='spearman')
-#pjp2 <- cor.test(dm$projections_m2,dm$supp_jordan, method='pearson')
+cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='pearson') #R=0.34 p=0.2
+cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='spearman') #R=0.34 p=0.2
+cor.test(dm$fc_primate, dm$fc_rodent, method='pearson') #R=0.52 p=0.02
+cor.test(dm$fc_primate, dm$fc_rodent, method='spearman') #R=0.43 p=0.06
 
-pjs_st1 <- cor.test(dm$projections_m2,dm$Jordan_st1_D, method='spearman') #R=0.772 p=7e-05
-pjp_st1 <- cor.test(dm$projections_m2,dm$Jordan_st1_D, method='pearson') #R=0.789 p=4e-05
+cor.test(no_serine$fc_primate, no_serine$Pnoratio, method='pearson') #R=0.60 p=0.007
+cor.test(no_serine$fc_rodent, no_serine$Rnoratio, method='pearson') #R=0.38 p=0.1
+```
 
-#pjs_t3 <- cor.test(dm$projections_m2,dm$Jordan_t3_D, method='spearman')  #R=0.662 p=0.001
-#pjp_t3 <- cor.test(dm$projections_m2,dm$Jordan_t3_D, method='pearson') #R=0.662 p=0.001
+### Figure 4
+```{r Figure 4}
+cor.test(dm$projections_m2,dm$text_jordan, method='pearson')
+cor.test(dm$projections_m2,dm$supp_jordan, method='pearson')
+cor.test(dm$projections_m2,dm$Jordan_st1_D, method='pearson') #R=0.789 p=4e-05
+cor.test(dm$projections_m2,dm$Jordan_t3_D, method='pearson') #R=0.662 p=0.001
+cor.test(dm$residuals_m2,dm$Jordan_st1_D, method='pearson') #R=-0.182 p=0.4
+cor.test(dm$projections_m2,dm$TrifonovConsensusOrderOfRecruitment, method='pearson')
+cor.test(dm$projections_m2,dm$yps, method='pearson')
 
+cor.test(dm$Disorder_Propensity,dm$projections_m2, method='spearman') #R=-0.643609, p=0.002778
+cor.test(dm$Disorder_Propensity,dm$projections_m2, method='pearson') #R=-0.7125097, p=0.0004233
+weightedCorr(dm$Disorder_Propensity,dm$projections_m2, method='spearman', weights=dm$projection_error) #R=-0.6662545
 
-
-rjs <- cor.test(dm$residuals_m2,dm$Jordan_st1_D, method='spearman') #R=-0.263 p=0.261
-rjp <- cor.test(dm$residuals_m2,dm$Jordan_st1_D, method='pearson') #R=-0.182 p=0.4
-
-#pts <- cor.test(dm$projections_m2,dm$TrifonovConsensusOrderOfRecruitment, method='spearman')
-#ptp <- cor.test(dm$projections_m2,dm$TrifonovConsensusOrderOfRecruitment, method='pearson')
-
-#pps <- cor.test(dm$projections_m2,dm$yps, method='spearman')
-#ppp <- cor.test(dm$projections_m2,dm$yps, method='pearson')
-
-
-Fig3a<-ggplot(dm, aes(x=projections_m2, y=Jordan_st1_D)) +
-  labs( x = "Shared flux", y = "Average flux (Jordan et al.)") +
-  scale_x_continuous(limits=c(-0.28,0.28), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
-  annotate(geom="text", x=xpos_hi(dm$projections_m2), y=-0.28, label=paste("R = ", signif(pjp_st1$estimate, digits=3), "\n p = ", signif(pjp_st1$p.value, digits=1)), color="black", size=6) + 
-  geom_pointrange(aes(xmin=projections_m2-projection_error, xmax=projections_m2+projection_error)) +
-  geom_pointrange(aes(ymin=Jordan_st1_D-Jordan_st1_Derr, ymax=Jordan_st1_D+Jordan_st1_Derr)) + 
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  mytheme
-
-#annotation ypos was -0.028 for Jordan_t3_D
-
-Fig3b<-ggplot(dm, aes(x=residuals_m2, y=Jordan_st1_D)) +
-  labs( x = "Species flux", y = "Average flux (Jordan et al.)") +
-  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=-0.28, label=paste("R = ", signif(rjp$estimate, digits=3), "\n p = ", signif(rjp$p.value, digits=1)), color="black", size=6) + 
-  geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
-  geom_pointrange(aes(ymin=Jordan_st1_D-Jordan_st1_Derr, ymax=Jordan_st1_D+Jordan_st1_Derr)) + 
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  mytheme
-  
-#Fig2c<-ggplot(dm, aes(x=projections_m2, y=TrifonovConsensusOrderOfRecruitment)) +
-#  labs( x = "Shared flux", y = "Consensus order\n of recruitment") + 
-#  annotate(geom="text", x=xpos_hi(dm$projections_m2), y=2.5, label=paste("R = ", signif(pts$estimate, digits=3), "\n p = ", signif(pts$p.value, digits=1)), color="black", size=6) + 
-#  geom_pointrange(aes(xmin=projections_m2-projection_error, xmax=projections_m2+projection_error)) +
-#  geom_point(size=3) + 
-#  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
-#  mytheme
-
-#Fig2d<-ggplot(dm, aes(x=projections_m2, y=yps)) +
-#  labs( x = "Shared flux", y = "Overrepresentation in\n ancient protein domains") + 
-#  annotate(geom="text", x=xpos_hi(dm$projections_m2), y=ypos_lo(dm$yps), label=paste("R = ", signif(pps$estimate, digits=3), "\n p = ", signif(pps$p.value, digits=1)), color="black", size=6) + 
-#  geom_pointrange(aes(xmin=projections_m2-projection_error, xmax=projections_m2+projection_error)) +
-#  geom_pointrange(aes(ymin=yps-StErrAnimal..1496, ymax=yps+StErrAnimal..1496)) +
-#  geom_point(size=3) + 
-#  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
-#  mytheme
-
-
-dps <- cor.test(dm$Disorder_Propensity,dm$projections_m2, method='spearman') #R=-0.643609, p=0.002778
-dpp <- cor.test(dm$Disorder_Propensity,dm$projections_m2, method='pearson') #R=-0.7085511, p=0.0004711
-wdps <- weightedCorr(dm$Disorder_Propensity,dm$projections_m2, method='spearman', weights=dm$projection_error) #R=-0.6662545
-
-
-cor.test(dm$Levy_Stickiness,dm$projections_m2, method='spearman') #!
+cor.test(dm$Levy_Stickiness,dm$projections_m2, method='spearman') #R=0.62 p=0.004
 cor.test(dm$Mean_RSA,dm$projections_m2, method='spearman') #!
 cor.test(dm$Polarity,dm$projections_m2, method='spearman') #!
 cor.test(dm$Hydrophobicity,dm$projections_m2, method='spearman')
@@ -283,119 +264,33 @@ rp_m <- lm(formula=projections_m2 ~ Mean_RSA + Polarity, data=dm) #R2=0.372, p=0
 srp_m <- lm(formula=projections_m2 ~ Levy_Stickiness + Mean_RSA + Polarity, data=dm) #R2=0.416, p=0.0315
 srp_wm <- lm(formula=projections_m2 ~ Levy_Stickiness + Mean_RSA + Polarity, data=dm, weights=(y=(1/projection_error)^(2))) #R2=0.464, p=0.0165
 
-
-Fig3c<-ggplot(dm, aes(x=Disorder_Propensity, y=projections_m2)) +
-  labs( x = "Disorder propensity", y = "Shared flux") +
+Fig4a<-ggplot(dm, aes(x=Jordan_st1_D, y=projections_m2)) +
+  labs( x = "Average flux (Jordan et al.)", y = "Shared flux (parsimony)") +
   scale_y_continuous(limits=c(-0.28,0.28), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
-  annotate(geom="text", x=0.125, y=ypos_lo(dm$projections_m2), label=paste("R = ", signif(dpp$estimate, digits=3), "\n p = ", signif(dpp$p.value, digits=1)), color="black", size=6) +
-  #geom_text(aes(x = 0.15, y = -0.2, label = paste("R = ", signif(dpp$estimate, digits=3), "\n p = ", signif(dpp$p.value, digits=3))),size=5, colour = 'black') +
+  annotate(geom="text", x=0.35, y=-0.2, parse=T, label="atop(R^2==0.62, p==4e-05)", color="black", size=6) + 
+  geom_pointrange(aes(ymin=projections_m2-projection_error, ymax=projections_m2+projection_error)) +
+  geom_pointrange(aes(xmin=Jordan_st1_D-Jordan_st1_Derr, xmax=Jordan_st1_D+Jordan_st1_Derr)) + 
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  mytheme
+
+Fig4b<-ggplot(dm, aes(x=HC_avg_aafreq, y=projections_m2)) +
+  labs( x = "Amino acid frequency", y = "Shared flux (parsimony)") +
+  #scale_y_continuous(limits=c(-0.28,0.28), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
+  annotate(geom="text", x=0.025, y=-0.2, parse=T, label="atop(R^2==0.32, p==0.009)", color="black", size=6) + 
   geom_pointrange(aes(ymin=projections_m2-projection_error, ymax=projections_m2+projection_error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig3a
-Fig3b
-Fig3c
-```
-
-### Figure 4
-
-```{r Figure 4}
-prrcs <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.702, p=0.0008
-prrcp <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.709, p=0.0005
-prwrcs <- weightedCorr(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman', weights=dm$residual_error) #R=0.605
-
-prrcs <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.702, p=0.0008
-prrcp <- cor.test(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.709, p=0.0005
-prwrcs <- weightedCorr(dm$residuals_m2,dm$CAISslopeNEWproteome_Estimates, method='spearman', weights=dm$residual_error) #R=0.605
-
-cprrcs <- cor.test(dm$residuals_m2,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.695, p=0.0009
-cprrcp <- cor.test(dm$residuals_m2,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.700, p=0.0006
-cprwrcs <- weightedCorr(dm$residuals_m2,dm$clrCAISslopeNEWproteome_Estimates, method='spearman', weights=dm$residual_error) #R=0.586
-
-pfrcs <- cor.test(dm$residuals_m2,dm$CAISslopeNEWPfam_Estimates, method='spearman') #R=0.704, p=0.0008
-pfrcp <- cor.test(dm$residuals_m2,dm$CAISslopeNEWPfam_Estimates, method='pearson') #R=0.678, p=0.001
-pfwrcs <- weightedCorr(dm$residuals_m2,dm$CAISslopeNEWPfam_Estimates, method='spearman', weights=dm$residual_error) #R=0.595
-
-cpfrcs <- cor.test(dm$residuals_m2,dm$clrCAISslopeNEWPfam_Estimates, method='spearman') #R=0.728, p=0.0004
-cpfrcp <- cor.test(dm$residuals_m2,dm$clrCAISslopeNEWPfam_Estimates, method='pearson') #R=0.686, p=0.0008
-cpfwrcs <- weightedCorr(dm$residuals_m2,dm$clrCAISslopeNEWPfam_Estimates, method='spearman', weights=dm$residual_error) #R=0.598
-
-
-
-
-cor.test(dm$Levy_Stickiness,dm$residuals_m2, method='spearman')
-cor.test(dm$Mean_RSA,dm$residuals_m2, method='spearman')
-cor.test(dm$Polarity,dm$residuals_m2, method='spearman')
-cor.test(dm$Hydrophobicity,dm$residuals_m2, method='spearman')
-cor.test(dm$TourasseChangeability,dm$residuals_m2, method='spearman')
-cor.test(dm$PAM_sub,dm$residuals_m2, method='spearman')
-cor.test(dm$BLOSUM_sub,dm$residuals_m2, method='spearman')
-cor.test(dm$Mean_TdS_conf,dm$residuals_m2, method='spearman')
-cor.test(dm$Absolute_TS,dm$residuals_m2, method='spearman')
-cor.test(dm$N1redun,dm$residuals_m2, method='spearman')
-cor.test(dm$N2redun,dm$residuals_m2, method='spearman')
-cor.test(dm$N3redun,dm$residuals_m2, method='spearman') #R=0.532, p=0.0158
-cor.test(dm$num_Codons,dm$residuals_m2, method='spearman') #R=0.484, p=0.0308
-
-cor.test(dm$N3redun,dm$CAISslopeNEWPfam_Estimates, method='spearman') #R=0.640, p=0.002
-cor.test(dm$num_Codons,dm$CAISslopeNEWPfam_Estimates, method='spearman') #R=0.613, p=0.004
-
-cor.test(dm$N3redun,dm$CAISslope_proteomeEstimates, method='spearman') #R=0.681, p=0.001
-cor.test(dm$num_Codons,dm$CAISslope_proteomeEstimates, method='spearman') #R=0.671, p=0.001
-
-Fig4a<-ggplot(dm, aes(x=residuals_m2, y=CAISslopeNEWproteome_Estimates)) +
-  labs( x = "Species flux", y = "Preferred in \nmore-adapted species") +
-  geom_segment(aes(x=subset(dm, aa=="K")$residuals_m2, 
-                 y=subset(dm, aa=="K")$CAISslopeNEWproteome_Estimates, 
-                 xend=subset(dm, aa=="R")$residuals_m2, 
-                 yend=subset(dm, aa=="R")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
-  geom_segment(aes(x=subset(dm, aa=="I")$residuals_m2, 
-                 y=subset(dm, aa=="I")$CAISslopeNEWproteome_Estimates, 
-                 xend=subset(dm, aa=="V")$residuals_m2, 
-                 yend=subset(dm, aa=="V")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
-  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=ypos_lo(dm$CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(prrcp$estimate, digits=3), "\n p = ", signif(prrcp$p.value, digits=1)), color="black", size=6) +
-  geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+Fig4c<-ggplot(dm, aes(x=Disorder_Propensity, y=projections_m2)) +
+  labs( x = "Disorder propensity", y = "Shared flux (parsimony)") +
+  scale_y_continuous(limits=c(-0.28,0.28), breaks=c(-0.2, -0.1, 0, 0.1, 0.2)) + 
+  annotate(geom="text", x=0.125, y=-0.2, parse=T, label="atop(R^2==0.51, p==4e-04)", color="black", size=6) + 
+  geom_pointrange(aes(ymin=projections_m2-projection_error, ymax=projections_m2+projection_error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
-
-Fig4b<-ggplot(dm, aes(x=fc_rodent, y=CAISslopeNEWproteome_Estimates)) +
-  labs( x = "Frequency change in rodents", y = "Preferred in \nmore-adapted species") +
-  geom_segment(aes(x=subset(dm, aa=="K")$fc_rodent, 
-                 y=subset(dm, aa=="K")$CAISslopeNEWproteome_Estimates, 
-                 xend=subset(dm, aa=="R")$fc_rodent, 
-                 yend=subset(dm, aa=="R")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
-  geom_segment(aes(x=subset(dm, aa=="I")$fc_rodent, 
-                 y=subset(dm, aa=="I")$CAISslopeNEWproteome_Estimates, 
-                 xend=subset(dm, aa=="V")$fc_rodent, 
-                 yend=subset(dm, aa=="V")$CAISslopeNEWproteome_Estimates), color="grey80", alpha=0.3, size=1.5) + 
-  annotate(geom="text", x=0.005, y=ypos_lo(dm$CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(cor.test(dm$fc_rodent,dm$clrCAISslopeNEWPfam_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$fc_rodent,dm$clrCAISslopeNEWPfam_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) +
-  #geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  mytheme
-
-Fig4c<-ggplot(dm, aes(x=fc_rodent, y=residuals_m2)) +
-  labs( x = "Frequency change in rodents", y = "Species flux") +
-  geom_segment(aes(x=subset(dm, aa=="K")$fc_rodent, 
-                 y=subset(dm, aa=="K")$residuals_m2, 
-                 xend=subset(dm, aa=="R")$fc_rodent, 
-                 yend=subset(dm, aa=="R")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
-  geom_segment(aes(x=subset(dm, aa=="I")$fc_rodent, 
-                 y=subset(dm, aa=="I")$residuals_m2, 
-                 xend=subset(dm, aa=="V")$fc_rodent, 
-                 yend=subset(dm, aa=="V")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
-  annotate(geom="text", x=0.005, y=ypos_lo(dm$residuals_m2), label=paste("R = ", signif(cor.test(dm$fc_rodent,dm$residuals_m2, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$fc_rodent,dm$residuals_m2, method='pearson')$p.value, digits=1)), color="black", size=6) +
-  #geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
-  geom_pointrange(aes(ymin=residuals_m2-residual_error, ymax=residuals_m2+residual_error)) +
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  mytheme
-
 
 Fig4a
 Fig4b
@@ -403,99 +298,84 @@ Fig4c
 ```
 
 ### Figure 5
-
 ```{r Figure 5}
-lcs <- cor.test(dm$mean_LKmarch22,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.553, p=0.01
-lcp <- cor.test(dm$mean_LKmarch22,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.619, p=0.004
+cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.709, p=0.0005
+weightedCorr(dm$residuals_m2,dm$kldCAISslope_Pfam, method='spearman', weights=dm$residual_error) #R=0.597
 
-dcs <- cor.test(dm$Disorder_Propensity,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.290, p=0.2
-dcp <- cor.test(dm$Disorder_Propensity,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.195, p=0.4
+cor.test(dm$residuals_m2,dm$kldCAISslope_Pfam, method='pearson') #R=0.677, p=0.001
+weightedCorr(dm$residuals_m2,dm$kldCAISslope_Pfam, method='spearman', weights=dm$residual_error) #R=0.597
 
-vcs <- cor.test(dm$VolumeA3,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=-0.447, p=0.05
-vcp <- cor.test(dm$VolumeA3,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=-0.396, p=0.08
+cor.test(dm$Levy_Stickiness,dm$residuals_m2, method='spearman') #signif
+cor.test(dm$Mean_RSA,dm$residuals_m2, method='spearman')  #signif
+cor.test(dm$Polarity,dm$residuals_m2, method='spearman')  #signif
+cor.test(dm$Hydrophobicity,dm$residuals_m2, method='spearman')
+cor.test(dm$TourasseChangeability,dm$residuals_m2, method='spearman')
+cor.test(dm$PAM_sub,dm$residuals_m2, method='spearman')  #signif
+cor.test(dm$BLOSUM_sub,dm$residuals_m2, method='spearman')
+cor.test(dm$Mean_TdS_conf,dm$residuals_m2, method='spearman')
+cor.test(dm$Absolute_TS,dm$residuals_m2, method='spearman')
+cor.test(dm$N1redun,dm$residuals_m2, method='spearman')
+cor.test(dm$N2redun,dm$residuals_m2, method='spearman')
+cor.test(dm$N3redun,dm$residuals_m2, method='spearman') #R=0.532, p=0.0158  #signif
+cor.test(dm$num_Codons,dm$residuals_m2, method='spearman') #R=0.484, p=0.0308
 
-rescs <- cor.test(dm$resid_LKmarch22,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=0.382, p=0.1
-rescp <- cor.test(dm$resid_LKmarch22,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=0.469, p=0.04
+cor.test(dm$N3redun,dm$kldCAISslope_Proteome, method='spearman') #R=0.681, p=0.001
+cor.test(dm$num_Codons,dm$kldCAISslope_Proteome, method='spearman') #R=0.671, p=0.001
 
-raics <- cor.test(dm$RaifordAerobicCost,dm$CAISslopeNEWproteome_Estimates, method='spearman') #R=-0.350, p=0.1
-raicp <- cor.test(dm$RaifordAerobicCost,dm$CAISslopeNEWproteome_Estimates, method='pearson') #R=-0.288, p=0.2
-
-t.test(x=subset(dm, Essential_Costa2015=="Essential")$CAISslopeNEWproteome_Estimates, y=subset(dm, Essential_Costa2015=="Non-essential")$CAISslopeNEWproteome_Estimates, var.equal = T) #p=0.2
-
-
-
-clcs <- cor.test(dm$mean_LKmarch22,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.620, p=0.004
-clcp <- cor.test(dm$mean_LKmarch22,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.620, p=0.004
-
-cdcs <- cor.test(dm$Disorder_Propensity,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.298, p=0.2
-cdcp <- cor.test(dm$Disorder_Propensity,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.248, p=0.3
-
-cvcs <- cor.test(dm$VolumeA3,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=-0.455, p=0.04
-cvcp <- cor.test(dm$VolumeA3,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=-0.368, p=0.1
-
-crescs <- cor.test(dm$resid_LKmarch22,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.323, p=0.2
-crescp <- cor.test(dm$resid_LKmarch22,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.464, p=0.04
-
-craics <- cor.test(dm$RaifordAerobicCost,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=-0.371, p=0.1
-craicp <- cor.test(dm$RaifordAerobicCost,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=-0.313, p=0.2
-
-
-
-
-Fig5a <- ggplot(dm, aes(x=mean_LKmarch22, y=CAISslopeNEWproteome_Estimates)) + 
-  #labs( x = expression(paste("Fitness effect in ", italic("E. coli"))), y = "Preferred in\n more-adapted species") + 
-  labs( x = "Fitness effect in *E. coli*", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=0.03, y=-0.2, label = paste("R = ", signif(lcp$estimate, digits=3), "\n p = ", signif(lcp$p.value, digits=1)), size=5,  colour = 'black') +
-  geom_pointrange(aes(xmin=mean_LKmarch22-stderr_LKmarch22, xmax=mean_LKmarch22+stderr_LKmarch22)) +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-  theme(axis.title.x = ggtext::element_markdown()) + 
-  mytheme
-
-Fig5b <- ggplot(dm, aes(x=Disorder_Propensity, y=CAISslopeNEWproteome_Estimates)) + 
-  labs( x = "Disorder propensity", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=0.92, y=-0.2, label = paste("R = ", signif(dcp$estimate, digits=3), "\n p = ", signif(dcp$p.value, digits=1)), size=5,  colour = 'black') +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+Fig5a<-ggplot(dm, aes(x=residuals_m2, y=kldCAISslope_Proteome)) +
+  labs( x = "Flux difference (parsimony)", y = "Preference in vertebrates") +
+  geom_segment(aes(x=subset(dm, aa=="K")$residuals_m2, 
+                 y=subset(dm, aa=="K")$kldCAISslope_Proteome, 
+                 xend=subset(dm, aa=="R")$residuals_m2, 
+                 yend=subset(dm, aa=="R")$kldCAISslope_Proteome), color="grey80", alpha=0.3, size=1.5) + 
+  geom_segment(aes(x=subset(dm, aa=="I")$residuals_m2, 
+                 y=subset(dm, aa=="I")$kldCAISslope_Proteome, 
+                 xend=subset(dm, aa=="V")$residuals_m2, 
+                 yend=subset(dm, aa=="V")$kldCAISslope_Proteome), color="grey80", alpha=0.3, size=1.5) + 
+  annotate(geom="text", x=xpos_hi(dm$residuals_m2), y=ypos_lo(dm$kldCAISslope_Proteome), parse=T, label="atop(R^2==0.50, p==5e-04)", color="black", size=6) +  geom_pointrange(aes(xmin=residuals_m2-residual_error, xmax=residuals_m2+residual_error)) +
+  geom_pointrange(aes(ymin=kldCAISslope_Proteome-kldCAISslope_Proteome_Std.Error, ymax=kldCAISslope_Proteome+kldCAISslope_Proteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig5c <- ggplot(dm, aes(x=VolumeA3, y=CAISslopeNEWproteome_Estimates)) + 
-  labs( x = "Molecular volume (\u00C5\u00b3)", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=215, y=-0.2, label = paste("R = ", signif(vcp$estimate, digits=3), "\n p = ", signif(vcp$p.value, digits=1)), size=5,  colour = 'black') +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+Fig5b<-ggplot(dm, aes(x=fc_rp, y=kldCAISslope_Proteome)) +
+  labs( x = "Flux difference (ML)", y = "Preference in vertebrates") +
+    geom_segment(aes(x=subset(dm, aa=="K")$fc_rp, 
+                 y=subset(dm, aa=="K")$kldCAISslope_Proteome, 
+                 xend=subset(dm, aa=="R")$fc_rp, 
+                 yend=subset(dm, aa=="R")$kldCAISslope_Proteome), color="grey80", alpha=0.3, size=1.5) + 
+  geom_segment(aes(x=subset(dm, aa=="I")$fc_rp, 
+                 y=subset(dm, aa=="I")$kldCAISslope_Proteome, 
+                 xend=subset(dm, aa=="V")$fc_rp, 
+                 yend=subset(dm, aa=="V")$kldCAISslope_Proteome), color="grey80", alpha=0.3, size=1.5) + 
+  annotate(geom="text", x=0.012, y=-0.2, parse=T, label="atop(R^2==0.34, p==0.007)", color="black", size=6) +
+  geom_pointrange(aes(ymin=kldCAISslope_Proteome-kldCAISslope_Proteome_Std.Error, ymax=kldCAISslope_Proteome+kldCAISslope_Proteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig5d <- ggplot(dm, aes(x=resid_LKmarch22, y=CAISslopeNEWproteome_Estimates)) + 
-  labs( x = "Residuals of fitness effects", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=0.045, y=-0.2, label = paste("R = ", signif(rescp$estimate, digits=3), "\n p = ", signif(rescp$p.value, digits=1)), size=5,  colour = 'black') +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
+Fig5c<-ggplot(dm, aes(x=fc_rp, y=residuals_m2)) +
+  labs( x = "Flux difference (ML)", y = "Flux difference (parsimony)") +
+  geom_segment(aes(x=subset(dm, aa=="K")$fc_rp, 
+                 y=subset(dm, aa=="K")$residuals_m2, 
+                 xend=subset(dm, aa=="R")$fc_rp, 
+                 yend=subset(dm, aa=="R")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
+  geom_segment(aes(x=subset(dm, aa=="I")$fc_rp, 
+                 y=subset(dm, aa=="I")$residuals_m2, 
+                 xend=subset(dm, aa=="V")$fc_rp, 
+                 yend=subset(dm, aa=="V")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
+  annotate(geom="text", x=0.012, y=-0.1, parse=T, label="atop(R^2==0.21, p==0.04)", color="black", size=6) +
+  geom_pointrange(aes(ymin=residuals_m2-residual_error, ymax=residuals_m2+residual_error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
-
-Fig5e <- ggplot(dm, aes(x=RaifordAerobicCost, y=CAISslopeNEWproteome_Estimates)) + 
-  labs( x = "Aerobic cost", y = "Preferred in\n more-adapted species") + 
-  annotate(geom="text", x=70, y=-0.2, label = paste("R = ", signif(raicp$estimate, digits=3), "\n p = ", signif(raicp$p.value, digits=1)), size=5,  colour = 'black') +
-  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
-  geom_point(size=3) + 
-  geom_text(aes(label=aa, color=Essential_Costa2015),hjust=-0.1, vjust=0, size = 6) + 
-  scale_color_manual(labels = c("Non-essential", "Essential"), values = c("blue", "red")) + 
-  mytheme
-
 
 Fig5a
 Fig5b
 Fig5c
-Fig5d
-Fig5e
 ```
 
 ### Figure 6
-
 ```{r Figure 6}
 oys <- cor.test(dm$YoungNEW_Estimates,dm$OldNEW_Estimates, method='spearman') #R=0.732, p=0.0004
 oyp <- cor.test(dm$YoungNEW_Estimates,dm$OldNEW_Estimates, method='pearson') #R=0.819, p=1e-05
@@ -508,7 +388,7 @@ Fig6a<-ggplot(dm, aes(x=OldNEW_Estimates, y=YoungNEW_Estimates)) +
   labs( x = "Preference in\n more-adapted species\n in old Pfams", y = "Preference in\n more-adapted species\n in young Pfams") + 
   annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
   annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
-  annotate(geom="text", x=0.025, y=ypos_lo(dm$YoungNEW_Estimates), label=paste("R = ", signif(oyp$estimate, digits=3), "\np = ", signif(oyp$p.value, digits=1)), color="black", size=6) +
+  annotate(geom="text", x=0.025, y=ypos_lo(dm$YoungNEW_Estimates), parse=T, label="atop(R^2==0.67, p==1e-05)", color="black", size=6) +
   geom_pointrange(aes(xmin=OldNEW_Estimates-OldNEW_Std.Error, xmax=OldNEW_Estimates+OldNEW_Std.Error)) +
   geom_pointrange(aes(ymin=YoungNEW_Estimates-YoungNEW_Std.Error, ymax=YoungNEW_Estimates+YoungNEW_Std.Error)) +
   geom_abline(aes(intercept=0, slope=1), color="black") + 
@@ -520,7 +400,7 @@ Fig6b<-ggplot(dm, aes(x=NonTransNEW_Estimates, y=TransNEW_Estimates)) +
   labs( x = "Preference in\n more-adapted species\n in non-transmembrane Pfams", y = "Preference in\n more-adapted species\n in transmembrane Pfams") + 
   annotate("rect", xmin = 0, xmax = Inf, ymin = 0, ymax = -Inf, fill= "grey90", alpha=0.5) + 
   annotate("rect", xmin = 0, xmax = -Inf, ymin = Inf, ymax = 0, fill= "grey90", alpha=0.5) + 
-  annotate(geom="text", x=0.025, y=ypos_lo(dm$TransNEW_Estimates), label=paste("R = ", signif(nttp$estimate, digits=3), "\np = ", signif(nttp$p.value, digits=1)), color="black", size=6) +
+  annotate(geom="text", x=0.025, y=ypos_lo(dm$TransNEW_Estimates), parse=T, label="atop(R^2==0.80, p==1e-07)", color="black", size=6) +
   geom_pointrange(aes(xmin=NonTransNEW_Estimates-NonTransNEW_Std.Error, xmax=NonTransNEW_Estimates+NonTransNEW_Std.Error)) +
   geom_pointrange(aes(ymin=TransNEW_Estimates-TransNEW_Std.Error, ymax=TransNEW_Estimates+TransNEW_Std.Error)) +
   geom_abline(aes(intercept=0, slope=1), color="black") + 
@@ -533,39 +413,37 @@ Fig6a
 Fig6b
 ```
 
-
 ####Signal-to-noise ratios
-
 ```{r signal-to-noise}
 
 #calc signal^2:noise^2: signal^2 is variance among point est for the 20 aas. noise^2 is sum of the 20 se^2, can be /20. for CAIS and for D
 
 #pull relevant data
 n2_flux <- dm[,c("residuals_m2", "residual_error")]
-n2_cais_pfam <- dm[,c("CAISslopeNEWPfam_Estimates","CAISslopeNEWPfam_Std.Error")]
-n2_cais_proteome <- dm[,c("CAISslopeNEWproteome_Estimates","CAISslopeNEWproteome_Std.Error")]
+n2_cais_pfam <- dm[,c("kldCAISslope_Pfam","kldCAISslope_Pfam_Std.Error")]
+n2_cais_proteome <- dm[,c("kldCAISslope_Proteome","kldCAISslope_Proteome_Std.Error")]
 
 #calculate error squared
 n2_flux2 <- mutate(n2_flux, err_sq = residual_error^2)
-n2_cais_pfam2 <- mutate(n2_cais_pfam, err_sq = CAISslopeNEWPfam_Std.Error^2)
-n2_cais_proteome2 <- mutate(n2_cais_proteome, err_sq = CAISslopeNEWproteome_Std.Error^2)
+n2_cais_pfam2 <- mutate(n2_cais_pfam, err_sq = kldCAISslope_Pfam_Std.Error^2)
+n2_cais_proteome2 <- mutate(n2_cais_proteome, err_sq = kldCAISslope_Proteome_Std.Error^2)
 
 #sum of squared errors
-sum(n2_flux2$err_sq) #0.00692863
-sum(n2_cais_pfam2$err_sq) #0.005521011
-sum(n2_cais_proteome2$err_sq) #0.008303926
+sum(n2_flux2$err_sq)/20 #0.0003464315
+sum(n2_cais_pfam2$err_sq)/20 #0.0003090742
+sum(n2_cais_proteome2$err_sq)/20 #0.0004645876
 
 #calculate variance - this formula already divides by n-1
 var(n2_flux2$residuals_m2) #0.005102469
-var(n2_cais_pfam2$CAISslopeNEWPfam_Estimates) #0.005715256
-var(n2_cais_proteome2$CAISslopeNEWproteome_Estimates) #0.00956521
+var(n2_cais_pfam2$kldCAISslope_Pfam) #0.006447818
+var(n2_cais_proteome2$kldC AISslope_Proteome) #0.01081791
 
 s2n2_flux <- var(n2_flux2$residuals_m2)/(sum(n2_flux2$err_sq)/20) #14.72865
-s2n2_cais_pfam <- var(n2_cais_pfam2$CAISslopeNEWPfam_Estimates)/(sum(n2_cais_pfam2$err_sq)/20) #20.70366
-s2n2_cais_proteome <- var(n2_cais_proteome2$CAISslopeNEWproteome_Estimates)/(sum(n2_cais_proteome2$err_sq)/20) #23.0378
+s2n2_cais_pfam <- var(n2_cais_pfam2$kldCAISslope_Pfam)/(sum(n2_cais_pfam2$err_sq)/20) #20.86171
+s2n2_cais_proteome <- var(n2_cais_proteome2$kldCAISslope_Proteome)/(sum(n2_cais_proteome2$err_sq)/20) #23.28498
 
-s2n2_cais_proteome/s2n2_cais_pfam #1.112741
-s2n2_cais_proteome/s2n2_flux #=1.564149
+s2n2_cais_proteome/s2n2_cais_pfam #1.116159
+s2n2_cais_proteome/s2n2_flux #=1.580931
 ```
 
 ## Supplemental
@@ -575,13 +453,7 @@ s2n2_cais_proteome/s2n2_flux #=1.564149
 mrhc <- read.delim(file = "C:/Users/hanon/Documents/Github/aa_flux/Flux/Dall.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 mrhc
 
-#fitII <- lmodel2(Rnoratio ~ Pnoratio, data=dm, range.y="interval", range.x="interval", nperm=99)
-#reg <- fitII$regression.results
-
-mrs <- cor.test(mrhc$mouse_noratio, mrhc$rat_noratio, method='spearman') #R=0.898 p=1e-06
 mrp <- cor.test(mrhc$mouse_noratio, mrhc$rat_noratio, method='pearson') #R=0.893 p=1e-07
-
-hcs <- cor.test(mrhc$human_noratio, mrhc$chimp_noratio, method='spearman') #R=0.844 p<2e-16
 hcp <- cor.test(mrhc$human_noratio, mrhc$chimp_noratio, method='pearson') #R=0.863 p=9e-07
 
 FigS1a <- ggplot(mrhc, aes(x=mouse_noratio, y=rat_noratio))+
@@ -618,7 +490,6 @@ FigS1b
 
 ###S2
 ```{r supp fig 2}
-pfprs <- cor.test(dm$kldCAISslope_Pfam,dm$kldCAISslope_Proteome, method='spearman') #R=0.965, p=7e-06
 pfprp <- cor.test(dm$kldCAISslope_Pfam,dm$kldCAISslope_Proteome, method='pearson') #R=0.960, p=2e-11
 
 FigS2<-ggplot(dm, aes(x=kldCAISslope_Pfam, y=kldCAISslope_Proteome)) +
@@ -637,61 +508,6 @@ FigS2<-ggplot(dm, aes(x=kldCAISslope_Pfam, y=kldCAISslope_Proteome)) +
 FigS2
 ```
 
-###S3
-```{r supp fig 3}
-
-#cts <- cor.test(dm$CAISslopeNEWproteome_Estimates,dm$clrCAISslopeNEWproteome_Estimates, method='spearman') #R=0.98, p=6e-06
-#ctp <- cor.test(dm$CAISslopeNEWproteome_Estimates,dm$clrCAISslopeNEWproteome_Estimates, method='pearson') #R=0.98, p=4e-14
-#looks good
-
-#FigS3<-ggplot(dm, aes(x=clrCAISslopeNEWproteome_Estimates, y=CAISslopeNEWproteome_Estimates)) +
-#  labs( x = "Preference in \nmore adapted species \n(centered log-ratio transform)", y = "Preference in \nmore adapted species") +
-#  annotate(geom="text", x=xpos_hi(dm$clrCAISslopeNEWproteome_Estimates), y=-0.2, label=paste("R = ", signif(ctp$estimate, digits=3), "\n p = ", signif(ctp$p.value, digits=1)), color="black", size=6) +
-#  geom_pointrange(aes(xmin=clrCAISslopeNEWproteome_Estimates-clrCAISslopeNEWproteome_Std.Error, xmax=clrCAISslopeNEWproteome_Estimates+clrCAISslopeNEWproteome_Std.Error)) +
-#  geom_pointrange(aes(ymin=CAISslopeNEWproteome_Estimates-CAISslopeNEWproteome_Std.Error, ymax=CAISslopeNEWproteome_Estimates+CAISslopeNEWproteome_Std.Error)) +
-#  geom_point(size=3) + 
-  #geom_abline(aes(intercept=0, slope=1), color="black") + 
-#  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
-#  mytheme
-  
-#FigS3
-```
-
-###PIC
-```{r PIC}
-FigX <- ggplot(dm, aes(x=kldCAISslope_SW, y=pic2CAISslopeNEWPfam_Estimates))+
-  labs( x = "Pfam CAIS slopes", y = "Pfam CAIS slopes (PIC corrected)") + 
-  annotate(geom="text", x=0.1, y=ypos_lo(dm$pic2CAISslopeNEWPfam_Estimates), label=paste("R = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWPfam_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWPfam_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) + 
-  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
-  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
-  mytheme
-
-FigY <- ggplot(dm, aes(x=kldCAISslope_SW, y=pic2CAISslopeNEWproteome_Estimates))+
-  labs( x = "Pfam CAIS slopes", y = "proteome CAIS slopes (PIC corrected)") + 
-  coord_equal() +
-  annotate(geom="text", x=0.1, y=ypos_lo(dm$pic2CAISslopeNEWproteome_Estimates), label=paste("R = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$kldCAISslope_SW,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) + 
-  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
-  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
-  mytheme
-
-FigZ <- ggplot(dm, aes(x=pic2CAISslopeNEWPfam_Estimates, y=pic2CAISslopeNEWproteome_Estimates))+
-  labs( x = "Pfam CAIS slopes (PIC corrected)", y = "proteome CAIS slopes (PIC corrected)") + 
-  coord_equal() +
-  annotate(geom="text", x=0.1, y=ypos_lo(dm$picCAISslopeNEWproteome_Estimates), label=paste("R = ", signif(cor.test(dm$pic2CAISslopeNEWPfam_Estimates,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$estimate, digits=3), "\n p = ", signif(cor.test(dm$pic2CAISslopeNEWPfam_Estimates,dm$pic2CAISslopeNEWproteome_Estimates, method='pearson')$p.value, digits=1)), color="black", size=6) + 
-  #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
-  #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
-  geom_point(size=3) + 
-  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
-  mytheme
-
-FigX
-FigY
-FigZ
-```
 
 ## Export the figures
 ```{r save}
@@ -700,11 +516,19 @@ myggsave_sq <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=5, units="in")
 }
 
+myggsave_u <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=4.5, units="in")
+}
+
 myggsave_m <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=7, units="in")
 }
 
-#was 3.5x3.5 and 3.5x5
+myggsave_ms <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=4.5, width=5, units="in")
+}
+
+#was 3.5x3.5 and 3.5x5 and 5x6
 
 myggsave_gr <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=8.09, units="in")
@@ -714,24 +538,28 @@ myggsave_sm <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=3, width=4.04, units="in")
 }
 
+#2
+myggsave_ms(Fig2a)
+myggsave_ms(Fig2b)
+myggsave_ms(Fig2c)
+myggsave_ms(Fig2d)
+myggsave_ms(Fig2e)
 
-myggsave_m(Fig2a)
-myggsave_sq(Fig2b)
-myggsave_sq(Fig2c)
-
-myggsave_m(Fig3a)
-myggsave_m(Fig3b)
+#3
+myggsave_sq(Fig3a)
+myggsave_sq(Fig3b)
 myggsave_m(Fig3c)
+myggsave_sq(Fig3d)
 
-myggsave_gr(Fig4a)
-myggsave_sm(Fig4b)
-myggsave_sm(Fig4c)
+#4
+myggsave_ms(Fig4a)
+myggsave_ms(Fig4b)
+myggsave_ms(Fig4c)
 
-myggsave_m(Fig5a)
-myggsave_m(Fig5b)
-myggsave_m(Fig5c)
-myggsave_m(Fig5d)
-myggsave_m(Fig5e)
+#5
+myggsave_u(Fig5a)
+myggsave_u(Fig5b)
+myggsave_u(Fig5c)
 
 myggsave_sq(Fig6a)
 myggsave_sq(Fig6b)
@@ -739,5 +567,4 @@ myggsave_sq(Fig6b)
 myggsave_sq(FigS1a)
 myggsave_sq(FigS1b)
 myggsave_m(FigS2)
-#myggsave_m(FigS3)
 ```

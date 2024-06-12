@@ -8,7 +8,7 @@ setwd('/Users/hanon/Documents/GitHub/aa_flux/CAIS')
 
 # Read input files
 # remove antelope ID 442
-CAIS_values <- read.csv('CAIS_KLD.txt', header = T)
+CAIS_values <- read.csv('CAIS_KLD.csv', header = T)
 CAIS_values <-  CAIS_values[-which(CAIS_values$SpeciesUID == '442'),] # remove antelope
 
 #VertebrateAAC_CAIS.csv comes from the protein sequences in vertebrates in sql
@@ -60,7 +60,7 @@ model_estimates <- model_estimates[-which(model_estimates[,1]== 0),]
 #model_estimates <- data.frame(model_estimates)
 model_estimates <- model_estimates[match(AA_properties$aa,rownames(model_estimates)),]
 
-write.csv(model_estimates, 'proteome_CAISeffectonAAfreq_SlopesandStderrors_noAntelope_KLD.csv')
+write.csv(model_estimates, 'Proteome_CAISeffectonAAfreq_SlopesandStderrors_noAntelope_KLD.csv')
 
 
 

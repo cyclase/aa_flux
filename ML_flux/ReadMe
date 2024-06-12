@@ -1,0 +1,31 @@
+All Cogent3 Python scripts, input files, and output files used to and resulting from calculations for amino acid 
+frequency vector inference of the 31 Primatomorpha and Glires species. 
+
+Steps (for general case of amino acid frequency inference)
+
+1. Generate, locate, or prune desired tree in Newick format
+
+2. Create or locate a concatenated alignment file of genes for the species within the tree file in fasta format
+
+3. Generate or locate a time reversible amino acid exchangeability matrix
+
+3. Write and run Python Script using the Cogent3 library
+
+    Substeps:
+
+    1. Import relevant Cogent3 libraries
+    
+    2. Import the tree, matrix, and alignment files
+
+    3. Create substitution model with matrix file
+
+    4. Designate relevant branch groupings (clades)
+
+    5. Set optimization settings
+
+    6. Create likelihood function with the substitution model, tree, and alignment files
+
+    7. Infer amino acid frequency vectors with the likelihood function and optimization settings
+
+    8. Print relevant results
+
