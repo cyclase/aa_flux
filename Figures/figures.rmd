@@ -85,7 +85,9 @@ ypos_lo <- function(y){
 ###Figure 2
 ```{r Figure 2}
 cor.test(dm$Disorder_Propensity,dm$fc_rp, method='pearson') #R=0.68, p=0.0009
+cor.test(dm$Levy_Stickiness,dm$fc_rp, method='pearson') #R=-0.49, p=0.03
 cor.test(dm$VolumeA3,dm$fc_rp, method='pearson') #R=-0.72, p=0.0004
+cor.test(dm$Polarity,dm$fc_rp, method='pearson') #R=-0.47 p=0.04
 cor.test(dm$pGC,dm$fc_rp, method='pearson') #R=0.76, p=1e-04
 cor.test(dm$mean_LKmarch22,dm$fc_rp, method='pearson') #R=0.77, p=8e-05
 cor.test(dm$resid_LKmarch22,dm$fc_rp, method='pearson') #R=0.23, p=0.3
@@ -93,10 +95,21 @@ cor.test(dm$RaifordAerobicCost,dm$fc_rp, method='pearson') #R=-0.70, p=0.0005
 cor.test(log10(dm$RaifordAerobicCost),dm$fc_rp, method='pearson') #R=-0.77, p=7e-05
 t.test(x=subset(dm, Essential_Costa2015=="Essential")$fc_rp, y=subset(dm, Essential_Costa2015=="Non-essential")$fc_rp, var.equal = T) #p=0.006
 
+cor.test(dm$Mean_RSA,dm$fc_rp, method='pearson') #ns
+cor.test(dm$Hydrophobicity,dm$fc_rp, method='pearson') #ns
+cor.test(dm$TourasseChangeability,dm$fc_rp, method='pearson') #ns
+cor.test(dm$num_Codons,dm$fc_rp, method='pearson') #ns
+cor.test(dm$Mean_TdS_conf,dm$fc_rp, method='pearson') #ns
+cor.test(dm$Absolute_TS,dm$fc_rp, method='pearson') #ns
+cor.test(dm$N1redun,dm$fc_rp, method='pearson') #ns
+cor.test(dm$N2redun,dm$fc_rp, method='pearson') #ns
+cor.test(dm$N3redun,dm$fc_rp, method='pearson') #ns
+
 cor.test(dm$fc_rp,dm$pGC, method='pearson') #R=0.76, p=1e-04
 cor.test(dm$residuals_m2,dm$pGC, method='pearson') #R=0.48, p=0.03
 cor.test(dm$kldCAISslope_Proteome,dm$pGC, method='pearson') #R=0.83, p=6e-06
-
+cor.test(dm$Jansen_Gerstein_enrichmentrank,dm$pGC, method='pearson') #R=0.52, p=0.02
+cor.test(dm$Cherry_cc,dm$pGC, method='pearson') #R=0.44, p=0.05
 
 Fig2a <- ggplot(dm, aes(x=RaifordAerobicCost, y=fc_rp)) + 
   labs( x = "log(aerobic cost)", y = "Flux difference (ML)") + 
@@ -132,7 +145,7 @@ Fig2d <- ggplot(dm, aes(x=mean_LKmarch22, y=fc_rp)) +
   theme(axis.title.x = ggtext::element_markdown()) + 
   mytheme
 
-Fig_2e <- ggplot(dm, aes(x=pGC, y=fc_rp)) + 
+Fig2e <- ggplot(dm, aes(x=pGC, y=fc_rp)) + 
   labs( x = "%GC", y = "Flux difference (ML)") + 
   annotate(geom="text", x=0.25, y=0.012, parse=T, label="atop(R^2==0.58, p==1e-04)", color="black", size=6) +
   geom_point(size=3) + 
@@ -151,9 +164,15 @@ Fig2e
 fitII <- lmodel2(Rnoratio ~ Pnoratio, data=dm, range.y="interval", range.x="interval", nperm=99)
 reg <- fitII$regression.results
 
-cor.test(dm$Pnoratio, dm$Rnoratio, method='pearson') #R=0.54 p=0.01
 cor.test(dm$Pnoratio, dm$Pjordan, method='pearson') #R=0.89 p=2e-07
 cor.test(dm$Rnoratio, dm$Rjordan, method='pearson') #R=0.92 p=1e-08
+cor.test(dm$Pnoratio, dm$Rnoratio, method='pearson') #R=0.54 p=0.01
+cor.test(dm$fc_primate, dm$fc_rodent, method='pearson') #R=0.52 p=0.02
+cor.test(dm$fc_primate, dm$fc_rodent, method='spearman') #R=0.43 p=0.06
+
+no_serine <- rbind(dm[1:15,], dm[17:20,])
+cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='pearson') #R=0.34 p=0.2
+cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='spearman') #R=0.34 p=0.2
 
 Fig3a <- ggplot(dm, aes(x=Pnoratio, y=Pjordan)) +
   labs( x = "Primate flux (parsimony; this work)", y = "Primate flux \n(parsimony; Jordan et al.)") + 
@@ -212,48 +231,39 @@ Fig3c
 Fig3d
 ```
 
-```{r serine outlier}
-no_serine <- rbind(dm[1:15,], dm[17:20,])
-
-fitII_noser <- lmodel2(fc_rodent ~ fc_primate, data=no_serine, range.y="interval", range.x="interval", nperm=99)
-reg_noser <- fitII_noser$regression.results
-
-cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='pearson') #R=0.34 p=0.2
-cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='spearman') #R=0.34 p=0.2
-cor.test(dm$fc_primate, dm$fc_rodent, method='pearson') #R=0.52 p=0.02
-cor.test(dm$fc_primate, dm$fc_rodent, method='spearman') #R=0.43 p=0.06
-
-cor.test(no_serine$fc_primate, no_serine$Pnoratio, method='pearson') #R=0.60 p=0.007
-cor.test(no_serine$fc_rodent, no_serine$Rnoratio, method='pearson') #R=0.38 p=0.1
-```
-
 ### Figure 4
 ```{r Figure 4}
-cor.test(dm$projections_m2,dm$text_jordan, method='pearson')
-cor.test(dm$projections_m2,dm$supp_jordan, method='pearson')
 cor.test(dm$projections_m2,dm$Jordan_st1_D, method='pearson') #R=0.789 p=4e-05
 cor.test(dm$projections_m2,dm$Jordan_t3_D, method='pearson') #R=0.662 p=0.001
 cor.test(dm$residuals_m2,dm$Jordan_st1_D, method='pearson') #R=-0.182 p=0.4
-cor.test(dm$projections_m2,dm$TrifonovConsensusOrderOfRecruitment, method='pearson')
-cor.test(dm$projections_m2,dm$yps, method='pearson')
+cor.test(dm$projections_m2,dm$TrifonovConsensusOrderOfRecruitment, method='pearson') #R=-0.49 p=0.03
 
-cor.test(dm$Disorder_Propensity,dm$projections_m2, method='spearman') #R=-0.643609, p=0.002778
-cor.test(dm$Disorder_Propensity,dm$projections_m2, method='pearson') #R=-0.7125097, p=0.0004233
-weightedCorr(dm$Disorder_Propensity,dm$projections_m2, method='spearman', weights=dm$projection_error) #R=-0.6662545
+cor.test(dm$Disorder_Propensity,dm$projections_m2, method='spearman') #R=-0.64, p=0.003
+cor.test(dm$Disorder_Propensity,dm$projections_m2, method='pearson') #R=-0.71, p=0.0004
+weightedCorr(dm$Disorder_Propensity,dm$projections_m2, method='spearman', weights=dm$projection_error) #R=-0.67
 
-cor.test(dm$Levy_Stickiness,dm$projections_m2, method='spearman') #R=0.62 p=0.004
-cor.test(dm$Mean_RSA,dm$projections_m2, method='spearman') #!
-cor.test(dm$Polarity,dm$projections_m2, method='spearman') #!
-cor.test(dm$Hydrophobicity,dm$projections_m2, method='spearman')
-cor.test(dm$TourasseChangeability,dm$projections_m2, method='spearman')
-cor.test(dm$num_Codons,dm$projections_m2, method='spearman')
-cor.test(dm$PAM_sub,dm$projections_m2, method='spearman')
-cor.test(dm$BLOSUM_sub,dm$projections_m2, method='spearman')
-cor.test(dm$Mean_TdS_conf,dm$projections_m2, method='spearman')
-cor.test(dm$Absolute_TS,dm$projections_m2, method='spearman')
-cor.test(dm$N1redun,dm$projections_m2, method='spearman')
-cor.test(dm$N2redun,dm$projections_m2, method='spearman')
-cor.test(dm$N3redun,dm$projections_m2, method='spearman')
+cor.test(dm$HC_avg_aafreq,dm$projections_m2, method='pearson') #R=-0.57 p=0.008
+cor.test(dm$Levy_Stickiness,dm$projections_m2, method='pearson') #R=0.57 p=0.009
+cor.test(dm$Mean_RSA,dm$projections_m2, method='pearson') #R=0.61 p=0.004
+cor.test(dm$Polarity,dm$projections_m2, method='pearson') #R=0.56 p=0.01
+cor.test(dm$VolumeA3,dm$projections_m2, method='pearson') #ns
+cor.test(dm$RaifordAerobicCost,dm$projections_m2, method='pearson') #ns
+cor.test(dm$pGC,dm$projections_m2, method='pearson') #ns
+cor.test(dm$Hydrophobicity,dm$projections_m2, method='pearson') #ns
+cor.test(dm$TourasseChangeability,dm$projections_m2, method='pearson') #ns
+cor.test(dm$num_Codons,dm$projections_m2, method='pearson') #ns
+cor.test(dm$PAM_sub,dm$projections_m2, method='pearson') #ns
+cor.test(dm$BLOSUM_sub,dm$projections_m2, method='pearson') #ns
+cor.test(dm$Mean_TdS_conf,dm$projections_m2, method='pearson') #ns
+cor.test(dm$Absolute_TS,dm$projections_m2, method='pearson') #ns
+cor.test(dm$N1redun,dm$projections_m2, method='pearson') #ns
+cor.test(dm$N2redun,dm$projections_m2, method='pearson') #ns
+cor.test(dm$N3redun,dm$projections_m2, method='pearson') #ns
+
+cor.test(dm$Disorder_Propensity,dm$Jordan_st1_D, method='pearson') #R=-0.59 p=0.006
+cor.test(dm$Levy_Stickiness,dm$Jordan_st1_D, method='pearson') #ns
+cor.test(dm$Mean_RSA,dm$Jordan_st1_D, method='pearson') #ns
+cor.test(dm$Polarity,dm$Jordan_st1_D, method='pearson') #ns
 
 s_m <- lm(formula=projections_m2 ~ Levy_Stickiness, data=dm) #R2=0.404, p=0.0026
 r_m <- lm(formula=projections_m2 ~ Mean_RSA, data=dm) #R2=0.370, p=0.00446
@@ -299,28 +309,26 @@ Fig4c
 
 ### Figure 5
 ```{r Figure 5}
-cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.709, p=0.0005
-weightedCorr(dm$residuals_m2,dm$kldCAISslope_Pfam, method='spearman', weights=dm$residual_error) #R=0.597
+cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.71, p=0.0005
+cor.test(dm$residuals_m2,dm$fc_rp, method='pearson') #R=0.46, p=0.04
+cor.test(dm$fc_rp,dm$kldCAISslope_Proteome, method='pearson') #R=0.58, p=0.007
 
-cor.test(dm$residuals_m2,dm$kldCAISslope_Pfam, method='pearson') #R=0.677, p=0.001
-weightedCorr(dm$residuals_m2,dm$kldCAISslope_Pfam, method='spearman', weights=dm$residual_error) #R=0.597
+cor.test(dm$mean_LKmarch22,dm$kldCAISslope_Proteome, method='pearson') #R=0.62, p=0.004
+cor.test(dm$VolumeA3,dm$kldCAISslope_Proteome, method='pearson') #ns
+cor.test(dm$Disorder_Propensity,dm$kldCAISslope_Proteome, method='pearson') #ns
+cor.test(dm$resid_LKmarch22,dm$kldCAISslope_Proteome, method='pearson') #R=0.47, p=0.04
 
-cor.test(dm$Levy_Stickiness,dm$residuals_m2, method='spearman') #signif
-cor.test(dm$Mean_RSA,dm$residuals_m2, method='spearman')  #signif
-cor.test(dm$Polarity,dm$residuals_m2, method='spearman')  #signif
-cor.test(dm$Hydrophobicity,dm$residuals_m2, method='spearman')
-cor.test(dm$TourasseChangeability,dm$residuals_m2, method='spearman')
-cor.test(dm$PAM_sub,dm$residuals_m2, method='spearman')  #signif
-cor.test(dm$BLOSUM_sub,dm$residuals_m2, method='spearman')
-cor.test(dm$Mean_TdS_conf,dm$residuals_m2, method='spearman')
-cor.test(dm$Absolute_TS,dm$residuals_m2, method='spearman')
-cor.test(dm$N1redun,dm$residuals_m2, method='spearman')
-cor.test(dm$N2redun,dm$residuals_m2, method='spearman')
-cor.test(dm$N3redun,dm$residuals_m2, method='spearman') #R=0.532, p=0.0158  #signif
-cor.test(dm$num_Codons,dm$residuals_m2, method='spearman') #R=0.484, p=0.0308
+cor.test(dm$num_Codons,dm$kldCAISslope_Proteome, method='pearson') #R=0.51 p=0.02
+cor.test(dm$num_Codons,dm$residuals_m2, method='pearson') #R=0.51 p=0.02
+cor.test(dm$num_Codons,dm$fc_rp, method='pearson') #ns
+cor.test(dm$N3redun,dm$kldCAISslope_Proteome, method='pearson') #R=0.44 p=0.05
+cor.test(dm$N3redun,dm$residuals_m2, method='pearson') #R=0.49 p=0.03
+cor.test(dm$N3redun,dm$fc_rp, method='pearson') #R=0.50 p=0.02
 
-cor.test(dm$N3redun,dm$kldCAISslope_Proteome, method='spearman') #R=0.681, p=0.001
-cor.test(dm$num_Codons,dm$kldCAISslope_Proteome, method='spearman') #R=0.671, p=0.001
+cor.test(dm$Mean_TdS_conf,dm$kldCAISslope_Proteome, method='pearson') #R=0.48 p=0.03
+cor.test(dm$Mean_TdS_conf,dm$residuals_m2, method='pearson') #ns
+cor.test(dm$Mean_TdS_conf,dm$fc_rp, method='pearson') #ns
+
 
 Fig5a<-ggplot(dm, aes(x=residuals_m2, y=kldCAISslope_Proteome)) +
   labs( x = "Flux difference (parsimony)", y = "Preference in vertebrates") +
@@ -436,7 +444,7 @@ sum(n2_cais_proteome2$err_sq)/20 #0.0004645876
 #calculate variance - this formula already divides by n-1
 var(n2_flux2$residuals_m2) #0.005102469
 var(n2_cais_pfam2$kldCAISslope_Pfam) #0.006447818
-var(n2_cais_proteome2$kldC AISslope_Proteome) #0.01081791
+var(n2_cais_proteome2$kldCAISslope_Proteome) #0.01081791
 
 s2n2_flux <- var(n2_flux2$residuals_m2)/(sum(n2_flux2$err_sq)/20) #14.72865
 s2n2_cais_pfam <- var(n2_cais_pfam2$kldCAISslope_Pfam)/(sum(n2_cais_pfam2$err_sq)/20) #20.86171
@@ -447,10 +455,9 @@ s2n2_cais_proteome/s2n2_flux #=1.580931
 ```
 
 ## Supplemental
-
 ###S1
 ```{r supp fig 1}
-mrhc <- read.delim(file = "C:/Users/hanon/Documents/Github/aa_flux/Flux/Dall.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
+mrhc <- read.delim(file = "C:/Users/hanon/Documents/Github/aa_flux/Parsimony_flux/Dall.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 mrhc
 
 mrp <- cor.test(mrhc$mouse_noratio, mrhc$rat_noratio, method='pearson') #R=0.893 p=1e-07
