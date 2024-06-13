@@ -112,14 +112,13 @@ cor.test(dm$Jansen_Gerstein_enrichmentrank,dm$pGC, method='pearson') #R=0.52, p=
 cor.test(dm$Cherry_cc,dm$pGC, method='pearson') #R=0.44, p=0.05
 
 Fig2a <- ggplot(dm, aes(x=RaifordAerobicCost, y=fc_rp)) + 
-  labs( x = "log(aerobic cost)", y = "Flux difference (ML)") + 
+  labs( x = "Cost in phosphate bonds", y = "Flux difference (ML)") + 
   annotate(geom="text", x=50, y=0.013, parse=T, label="atop(R^2==0.59, p==7e-05)", color="black", size=6) +
   geom_point(size=3) + 
   geom_text(aes(label=aa, color=Essential_Costa2015),hjust=-0.1, vjust=0, size = 6) + 
   scale_color_manual(labels = c("Essential", "Non-Essential"), values = c("red", "blue"), guide="none") + 
-  scale_x_log10(
-    breaks = c(10, 10^1.5, 100),
-    labels = trans_format("log10", math_format(10^.x)))+
+  scale_x_log10(breaks = c(10,20,30,40,50,60,70,80)) +
+  annotation_logticks() +
   mytheme
 
 Fig2b <- ggplot(dm, aes(x=VolumeA3, y=fc_rp)) + 
@@ -532,10 +531,13 @@ myggsave_m <- function(x){
 }
 
 myggsave_ms <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=4, width=5, units="in")
+}
+#was 3.5x3.5 and 3.5x5 and 5x6
+
+myggsave_ms2 <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=4.5, width=5, units="in")
 }
-
-#was 3.5x3.5 and 3.5x5 and 5x6
 
 myggsave_gr <- function(x){
   ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=8.09, units="in")
@@ -559,9 +561,9 @@ myggsave_m(Fig3c)
 myggsave_sq(Fig3d)
 
 #4
-myggsave_ms(Fig4a)
-myggsave_ms(Fig4b)
-myggsave_ms(Fig4c)
+myggsave_ms2(Fig4a)
+myggsave_ms2(Fig4b)
+myggsave_ms2(Fig4c)
 
 #5
 myggsave_u(Fig5a)
