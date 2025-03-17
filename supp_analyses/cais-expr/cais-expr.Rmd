@@ -120,11 +120,15 @@ mousedf4 <- merge(mousedf4, caifg2[, c("ENSMUSP", "V2")], by = "ENSMUSP", all.x 
 names(mousedf4)[6] <- "CAI"
 names(mousedf4)[7] <- "CAIf"
 mousedf4
+```
 
+
+
+
+``` {r plotting}
 plot(log(mousedf4$expr), mousedf4$CAIS)
 cor.test(mousedf4$expr, mousedf4$CAIS, method='pearson')
 cor.test(log(mousedf4$expr), mousedf4$CAIS, method='pearson')
-
 
 plot(log(mousedf4$expr), mousedf4$CAI)
 cor.test(mousedf4$expr, mousedf4$CAI, method='pearson')
@@ -134,24 +138,37 @@ loess50cais <- loess(CAIS ~ expr, data=mousedf4, span=.5)
 smooth50cais <- predict(loess50cais) 
 
 
-cais4lm <- lm(log(CAIS) ~ log(expr), data=subset(mousedf4, log(expr) > 4))
-cai4lm <- lm(log(CAI) ~ log(expr), data=subset(mousedf4, log(expr) > 4))
+cais4lm <- lm(log10(CAIS) ~ log10(expr), data=subset(mousedf4, log10(expr) > 1.5))
+cai4lm <- lm(log10(CAI) ~ log10(expr), data=subset(mousedf4, log10(expr) > 1.5))
 
 
+ggplot(mousedf4, aes(x=expr, y=CAIS)) + geom_point(alpha=0.05)
+ggplot(mousedf4, aes(x=log(expr), y=log(CAIS))) + geom_point(alpha=0.05)
+ggplot(mousedf4, aes(x=log10(expr), y=log10(CAIS))) + geom_point(alpha=0.05)
 
-pcais <- ggplot(mousedf4, aes(x=log(expr), y=log(CAIS))) + 
-  labs( x = "log(expression level)", y = "ln(CAIS of gene)") + 
-  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+pcais <- ggplot(mousedf4, aes(x=log10(expr), y=log10(CAIS))) + 
+  labs( x = "log10(expression level in ppm)", y = "log10(CAIS of gene)") + 
+  annotate(geom="text", x=3, y=-1, parse=T, label="atop(R^2==0.10, p<2e-16)", color="black", size=6) +
   geom_point(alpha=0.05) + 
-  geom_abline(slope = coef(cais4lm)[["log(expr)"]], intercept = coef(cais4lm)[["(Intercept)"]]) + 
-  #geom_smooth() +
+  #geom_abline(slope = coef(cais4lm)[["log(expr)"]], intercept = coef(cais4lm)[["(Intercept)"]]) + 
+  geom_smooth(color="gray40") +
+  geom_segment(aes(x=1.5, 
+                 y=(0.141237*1.5)-1.018667, 
+                 xend=log10(max(expr)),
+                 yend=(0.141237*log10(max(expr)))-1.018667), linewidth=1) + 
+  scale_x_continuous(labels = label_math(10^.x)) +
+  scale_y_continuous(labels = label_math(10^.x)) +
   mytheme
 
-pcai <- ggplot(mousedf4, aes(x=log(expr), y=log(CAI))) + 
-  labs( x = "log(expression level)", y = "ln(CAI of gene)") + 
-  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+pcai <- ggplot(mousedf4, aes(x=log10(expr), y=log10(CAI))) + 
+  labs( x = "log10(expression level in ppm)", y = "log10(CAI of gene)") + 
+  annotate(geom="text", x=3, y=-0.2, parse=T, label="atop(R^2==0.07, p<2e-16)", color="black", size=6) +
   geom_point(alpha=0.05) + 
-  geom_smooth() + 
+  geom_smooth(color="gray40") + 
+  geom_segment(aes(x=1.5, 
+                 y=(0.026273*1.5)-0.178934, 
+                 xend=log10(max(expr)),
+                 yend=(0.026273*log10(max(expr)))-0.178934), linewidth=1) + 
   mytheme
 
 #trying permuation inspired by https://stats.stackexchange.com/questions/557381/how-do-i-interpret-or-explain-loess-plot  
@@ -209,11 +226,16 @@ pcais
 pcai
 vslog
 vs
+```
+
+``` {r save}
+myggsave_gr <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/supp_analyses/cais-expr", device="svg", height=5, width=8.09, units="in")
+}
 
 myggsave_gr(pcais)
 myggsave_gr(pcai)
 myggsave_sq(vs)
-
 ```
 
 
