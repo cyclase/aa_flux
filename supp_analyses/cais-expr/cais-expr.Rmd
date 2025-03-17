@@ -1,0 +1,220 @@
+---
+title: "cais-expr"
+author: "Hanon McShea"
+date: "2024-09-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#library(xlsx)
+#library(ggplot2)
+#library(ape)
+#library(rstudioapi)
+#library(taxize)
+#library("coRdon")
+#library("phangorn")
+library("tidyverse")
+library("Biostrings")
+library("seqinr")
+
+knitr::opts_knit$set(root.dir = "C:/Users/hanon/Documents/GitHub/aa_flux/supp_analyses/cais-expr")
+getwd()
+```
+
+``` {r read-data}
+genes <- readDNAStringSet("mouse_genes_100codons.fasta")
+genes
+
+headers <- names(genes)
+sequences <- as.character(genes)
+ENSMUSP <- sapply(strsplit(headers, "\\|"), function(x) x[3])
+
+mousedf <- data.frame(ENSMUSP = ENSMUSP, Sequence = sequences, stringsAsFactors = FALSE)
+
+expression_data <- read.table("mouse_expr.txt", header = FALSE, skip = 12, stringsAsFactors = FALSE)
+
+colnames(expression_data) <- c("ENSMUSP_full", "expr")
+expression_data$ENSMUSP <- sapply(strsplit(expression_data$ENSMUSP_full, "\\."), function(x) x[2])
+
+# Merge the dataframes based on the ENSMUSP column
+mousedf <- merge(mousedf, expression_data[, c("ENSMUSP", "expr")], by = "ENSMUSP", all.x = TRUE)
+mousedf <- mousedf %>% drop_na()
+
+mousedf2 <- arrange(mousedf, expr)
+mousedf2
+
+split_dfs <- split(mousedf2, cut(seq(1, nrow(mousedf2)), breaks = 10, labels = FALSE))
+
+for (i in seq_along(split_dfs)) {
+    # Create a filename for each split
+    filename <- paste0("mouse-expr_", i, ".csv")
+    
+    # Write the dataframe to a CSV file
+    write.csv(split_dfs[[i]], filename, quote=F, row.names=F)
+}
+
+for (i in seq_along(split_dfs)) {
+    # Create a filename for each split
+    filename <- paste0("mouse-expr_", i, ".fasta")
+    
+    # Write the dataframe to a CSV file
+    write.csv(paste(split_dfs[[i]]$Sequence, collapse=""), filename, quote=F, row.names=F)
+}
+
+write.csv(mousedf2, file="mouse-genes-expr.csv", quote=F, row.names=F)
+
+
+tooshort <- 300 
+longgenes <- genes[width(genes) >= tooshort]
+## write a new file with your subet
+writeXStringSet(longgenes,'mouse_genes_100codons.fasta',format='fasta')
+```
+
+``` {r GC of bins}
+bins <- readDNAStringSet("mouse-expr-bins-concat.fasta")
+letterFrequency(bins$bin1, letters="GC", as.prob=T) #0.4977083 
+letterFrequency(bins$bin2, letters="GC", as.prob=T) #0.5083575 
+letterFrequency(bins$bin3, letters="GC", as.prob=T) #0.5201608 
+letterFrequency(bins$bin4, letters="GC", as.prob=T) #0.5206945 
+letterFrequency(bins$bin5, letters="GC", as.prob=T) #0.5305203 
+letterFrequency(bins$bin6, letters="GC", as.prob=T) #0.5287047 
+letterFrequency(bins$bin7, letters="GC", as.prob=T) #0.5225017 
+letterFrequency(bins$bin8, letters="GC", as.prob=T) #0.5179812 
+letterFrequency(bins$bin9, letters="GC", as.prob=T) #0.5168269 
+letterFrequency(bins$bin10, letters="GC", as.prob=T) #0.5206878 
+
+```
+``` {r read-CAIG}
+caisg <- read.table("CAISG-mouseAA-mouseGC-100codons.txt", header=F, stringsAsFactors=F, sep=",")
+names(caisg)
+
+caisg2 <- caisg %>%
+  mutate(ENSMUSP = sapply(strsplit(V1, "\\|"), function(x) x[3]))
+
+caig <- read.table("CAIG-mouseAA-mouseGC-globalRSCU-100codons.txt", header=F, stringsAsFactors=F, sep=",")
+names(caig)
+
+caig2 <- caig %>%
+  mutate(ENSMUSP = sapply(strsplit(V1, "\\|"), function(x) x[3]))
+
+caifg <- read.table("CAI_fixed_mouseAA-mouseGC-globalRSCU-100codons.txt", header=F, stringsAsFactors=F, sep=",")
+names(caifg)
+
+caifg2 <- caig %>%
+  mutate(ENSMUSP = sapply(strsplit(V1, "\\|"), function(x) x[3]))
+
+# Assuming your dataframes are named table1 and table2
+
+# Merge the two tables based on the "ENSMUSP" column
+mousedf3 <- merge(mousedf2, caisg2[, c("ENSMUSP", "V2", "V3")], by = "ENSMUSP", all.x = TRUE)
+
+# Print the resulting table
+print(mousedf3)
+names(mousedf3)[4] <- "CAIS"
+names(mousedf3)[5] <- "CAIS_unweighted"
+mousedf3
+
+mousedf4 <- merge(mousedf3, caig2[, c("ENSMUSP", "V2")], by = "ENSMUSP", all.x = TRUE)
+mousedf4 <- merge(mousedf4, caifg2[, c("ENSMUSP", "V2")], by = "ENSMUSP", all.x = TRUE)
+
+names(mousedf4)[6] <- "CAI"
+names(mousedf4)[7] <- "CAIf"
+mousedf4
+
+plot(log(mousedf4$expr), mousedf4$CAIS)
+cor.test(mousedf4$expr, mousedf4$CAIS, method='pearson')
+cor.test(log(mousedf4$expr), mousedf4$CAIS, method='pearson')
+
+
+plot(log(mousedf4$expr), mousedf4$CAI)
+cor.test(mousedf4$expr, mousedf4$CAI, method='pearson')
+cor.test(log(mousedf4$expr), mousedf4$CAI, method='pearson')
+
+loess50cais <- loess(CAIS ~ expr, data=mousedf4, span=.5)
+smooth50cais <- predict(loess50cais) 
+
+
+cais4lm <- lm(log(CAIS) ~ log(expr), data=subset(mousedf4, log(expr) > 4))
+cai4lm <- lm(log(CAI) ~ log(expr), data=subset(mousedf4, log(expr) > 4))
+
+
+
+pcais <- ggplot(mousedf4, aes(x=log(expr), y=log(CAIS))) + 
+  labs( x = "log(expression level)", y = "ln(CAIS of gene)") + 
+  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+  geom_point(alpha=0.05) + 
+  geom_abline(slope = coef(cais4lm)[["log(expr)"]], intercept = coef(cais4lm)[["(Intercept)"]]) + 
+  #geom_smooth() +
+  mytheme
+
+pcai <- ggplot(mousedf4, aes(x=log(expr), y=log(CAI))) + 
+  labs( x = "log(expression level)", y = "ln(CAI of gene)") + 
+  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+  geom_point(alpha=0.05) + 
+  geom_smooth() + 
+  mytheme
+
+#trying permuation inspired by https://stats.stackexchange.com/questions/557381/how-do-i-interpret-or-explain-loess-plot  
+ind <- log(mousedf4$expr)
+dep <- log(mousedf4$CAIS)
+
+fit_cais <- function(dep, ind) lowess(ind, dep)
+stat_cais <- function(dep, ind) mean((dep -  fit_cais(dep, ind)$y)^2) # Mean squared error loss
+# Mean squared error loss
+
+predicted <- mean(dep)
+residuals <- dep - predicted
+dsample <- replicate(5e3, stat_cais(predicted + sample(residuals), ind))
+
+# Compute the p-value
+  actual <- with(mousedf4, stat_cais(dep, ind))
+  stats <- c(actual, dsample)
+  p <- mean(stats <= actual)
+  p <- 2 * min(1/2, p, 1-p)
+  # Display the results
+  hist(dsample, breaks=10, freq=FALSE, xlim=range(stats),
+       col=gray(.95),
+       sub=paste("p-value is approximately", signif(p, 2)),
+       main="Simulated Null Permutation Distribution",
+       xlab = "Mean Squared Difference")
+  abline(v = actual, lwd=2, col="Red") # The statistic for the data
+
+
+
+
+
+
+vslog <- ggplot(mousedf4, aes(x=log(CAIS), y=log(CAI))) + 
+  labs( x = "log(CAIS of gene)", y = "log(CAI of gene)") + 
+  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+  geom_point(alpha=0.01) + 
+  geom_smooth() + 
+  mytheme
+
+vs <- ggplot(mousedf4, aes(x=CAIS, y=CAI)) + 
+  labs( x = "CAIS of gene", y = "CAI of gene") + 
+  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+  geom_point(alpha=0.01) + 
+  geom_smooth() + 
+  mytheme
+
+ggplot(mousedf4, aes(x=CAIf, y=CAI)) + 
+  labs( x = "CAIS of gene", y = "CAI of gene") + 
+  #annotate(geom="text", x=-12.5, y=0.7, parse=T, label="atop(R^2==0.57, p==0.0001)", color="black", size=6) +
+  geom_point(alpha=0.01) + 
+  geom_smooth() + 
+  mytheme
+
+pcais
+pcai
+vslog
+vs
+
+myggsave_gr(pcais)
+myggsave_gr(pcai)
+myggsave_sq(vs)
+
+```
+
+
+

@@ -17,12 +17,12 @@ knitr::opts_chunk$set(eval=T, warning=F, error=F, message=F)
 library("dplyr")
 library("ggplot2")
 library("ggtext")
-library("lmodel2")
-library("wCorr")
-library("gridExtra")
+#library("lmodel2")
+#library("wCorr")
+#library("gridExtra")
 library("magrittr")
 library("svglite")
-library("compositions")
+#library("compositions")
 library("scales")
 
 #Set your working directory
@@ -42,12 +42,20 @@ resid_LKmarch22 <- model_resid_LKmarch22$residuals
 
 metrics2 <- cbind(metrics, resid_LKmarch22)
 
+logitTransform <- function(p) { log(p/(1-p)) }
+
+norma <- function(a,b) {(a-b)/mean(c(a,b))} #for some reason this gives the WRONG NUMBER. Must be something with running mean through mutate. DO NOT USE
+
+norma2 <- function(a,b) {(2*(a-b))/(a+b)}
+
 #read in flux data
 d <- read.delim(file = "../Parsimony_flux/all_fluxes.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 
 ns <- read.delim(file = "../Parsimony_flux/all_NS.csv", header=TRUE, stringsAsFactors=FALSE, sep=",")
 
-dd <- cbind(d, metrics2[,2:141]) %>% mutate(fc_rodent = Glires-Root, fc_primate = Primatomorpha-Root, fc_rp = Glires-Primatomorpha)
+dd <- cbind(d, metrics2[,2:147]) %>% mutate(fc_rodent = Glires-Root, fc_primate = Primatomorpha-Root, fc_rp = Glires-Primatomorpha, lt_Glires = logitTransform(Glires), lt_Primatomorpha = logitTransform(Primatomorpha), lt_Root = logitTransform(Root))
+
+dd <- mutate(dd, logit_fc_rp = lt_Glires - lt_Primatomorpha, norma_fc_rp = norma(Glires,Primatomorpha), norma2_fc_rp = norma2(Glires,Primatomorpha))
 
 dm <- cbind(dd, ns[,5:6])
 ```
@@ -78,6 +86,82 @@ ypos_hi <- function(y){
 ypos_lo <- function(y){
   ypos = min(y) + pos_scale*diff(range(y))
   return(ypos)}
+```
+
+##Multiple regression
+``` {r multreg}
+model1 <- lm(logit_fc_rp ~ RaifordAerobicCost + VolumeA3 + Disorder_Propensity + mean_LKmarch22 + pGC + Levy_Stickiness + Polarity, data = dm)
+
+vifs <- vif(model1)
+vifs
+
+plot(model1, which=1, main="Model Fit")
+# Visualizing VIF
+barplot(vifs, col = "skyblue", main = "Variance Inflation Factor (VIF)")
+
+# Creating a correlation matrix
+cor_matrix <- cor(dm[c("Cost", "VolumeA3", "Disorder_Propensity", "mean_LKmarch22", "pGC", "Levy_Stickiness", "Polarity")])
+
+# Visualizing the correlation matrix
+image(cor_matrix, main = "Correlation Matrix", col = colorRampPalette(c("blue", "white", "red"))(20))
+
+hist(model1$residuals)
+plot.new()
+qqnorm(model1$residuals) +
+qqline(model1$residuals)
+
+library("ggcorrplot")
+ggcorrplot(cor_matrix, hc.order = TRUE, type = "lower", lab = TRUE)
+
+model2 <- lm(norma2_fc_rp ~ RaifordAerobicCost + VolumeA3 + Disorder_Propensity + mean_LKmarch22 + pGC, data = dm)
+
+model3 <- lm(norma2_fc_rp ~ RaifordAerobicCost + Disorder_Propensity + pGC, data = dm)
+
+model4 <- lm(norma2_fc_rp ~ RaifordAerobicCost + Disorder_Propensity + pGC + Essential_Costa2015, data = dm)
+
+modelc <- lm(fc_rp ~ RaifordAerobicCost, data = dm)
+modeld <- lm(fc_rp ~ Disorder_Propensity, data = dm)
+modelg <- lm(fc_rp ~ pGC, data = dm)
+
+modelv <- lm(norma2_fc_rp ~ VolumeA3, data = dm)
+models <- lm(norma2_fc_rp ~ Levy_Stickiness, data = dm)
+modelp <- lm(norma2_fc_rp ~ Polarity, data = dm)
+modelk <- lm(norma2_fc_rp ~ mean_LKmarch22, data = dm)
+
+summary(model1)
+summary(model2)
+summary(model3)
+summary(model4)
+
+summary(modelc)
+summary(modeld)
+summary(modelg)
+
+summary(modelv)
+summary(models)
+summary(modelp)
+summary(modelk)
+
+
+#anova(model1, model2)
+#anova(model2, model3)
+
+#par(mfrow=c(1,2))
+#plot(model1, which=c(1,2))
+#plot(modelraw, which=c(1,2))
+
+
+cor.test(dm$RaifordAerobicCost,dm$norma2_fc_rp, method='pearson') #R=-0.88, p=3e-07
+cor.test(log10(dm$RaifordAerobicCost),dm$norma2_fc_rp, method='pearson') #R=-0.87, p=6e-07
+cor.test(dm$Disorder_Propensity,dm$norma2_fc_rp, method='pearson') #R=0.75, p=0.0001
+cor.test(dm$pGC,dm$norma2_fc_rp, method='pearson') #R=0.62, p=0.003
+cor.test(dm$VolumeA3,dm$norma2_fc_rp, method='pearson') #R=-0.78, p=4e-05
+cor.test(dm$weight,dm$norma2_fc_rp, method='pearson') #R=-0.70, p=0.0005
+
+t.test(x=subset(dm, Essential_Costa2015=="Essential")$norma2_fc_rp, y=subset(dm, Essential_Costa2015=="Non-essential")$norma2_fc_rp, var.equal = T) #p=0.02
+cor.test(dm$Levy_Stickiness,dm$norma2_fc_rp, method='pearson') #R=-0.60, p=0.005
+cor.test(dm$Polarity,dm$norma2_fc_rp, method='pearson') #R=-0.54, p=0.01
+cor.test(dm$mean_LKmarch22,dm$norma2_fc_rp, method='pearson') #R=0.62, p=0.003
 ```
 
 ## Figures
@@ -111,9 +195,24 @@ cor.test(dm$kldCAISslope_Proteome,dm$pGC, method='pearson') #R=0.83, p=6e-06
 cor.test(dm$Jansen_Gerstein_enrichmentrank,dm$pGC, method='pearson') #R=0.52, p=0.02
 cor.test(dm$Cherry_cc,dm$pGC, method='pearson') #R=0.44, p=0.05
 
-Fig2a <- ggplot(dm, aes(x=RaifordAerobicCost, y=fc_rp)) + 
-  labs( x = "Cost in phosphate bonds", y = "Flux difference (ML)") + 
-  annotate(geom="text", x=50, y=0.013, parse=T, label="atop(R^2==0.59, p==7e-05)", color="black", size=6) +
+cor.test(dm$Jansen_Gerstein_enrichmentrank,dm$norma_fc_rp, method='pearson') #ns
+cor.test(dm$Cherry_cc,dm$norma_fc_rp, method='pearson') #ns
+
+
+cor.test(dm$RaifordAerobicCost,dm$VolumeA3, method='pearson') #s
+cor.test(dm$RaifordAerobicCost,dm$Disorder_Propensity, method='pearson') #s
+cor.test(dm$RaifordAerobicCost,dm$mean_LKmarch22, method='pearson') #ns
+cor.test(dm$RaifordAerobicCost,dm$pGC, method='pearson') #ns
+cor.test(dm$VolumeA3,dm$Disorder_Propensity, method='pearson') #s
+cor.test(dm$VolumeA3,dm$mean_LKmarch22, method='pearson') #s
+cor.test(dm$VolumeA3,dm$pGC, method='pearson') #s
+cor.test(dm$Disorder_Propensity,dm$mean_LKmarch22, method='pearson') #s
+cor.test(dm$Disorder_Propensity,dm$pGC, method='pearson') #ns
+cor.test(dm$mean_LKmarch22,dm$pGC, method='pearson') #s
+
+Fig2a <- ggplot(dm, aes(x=RaifordAerobicCost, y=norma_fc_rp)) + 
+  labs( x = "Cost in phosphate bonds", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=50, y=0.25, parse=T, label="atop(R^2==0.59, p==7e-05)", color="black", size=6) +
   geom_point(size=3) + 
   geom_text(aes(label=aa, color=Essential_Costa2015),hjust=-0.1, vjust=0, size = 6) + 
   scale_color_manual(labels = c("Essential", "Non-Essential"), values = c("red", "blue"), guide="none") + 
@@ -121,21 +220,21 @@ Fig2a <- ggplot(dm, aes(x=RaifordAerobicCost, y=fc_rp)) +
   annotation_logticks() +
   mytheme
 
-Fig2b <- ggplot(dm, aes(x=VolumeA3, y=fc_rp)) + 
+#Fig2b <- ggplot(dm, aes(x=VolumeA3, y=fc_rp)) + 
   labs( x = "Molecular volume (\u00C5\u00b3)", y = "Flux difference (ML)") + 
   annotate(geom="text", x=210, y=0.012, parse=T, label="atop(R^2==0.51, p==4e-04)", color="black", size=6) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig2c <- ggplot(dm, aes(x=Disorder_Propensity, y=fc_rp)) + 
-  labs( x = "Disorder propensity", y = "Flux difference (ML)") + 
-  annotate(geom="text", x=0.15, y=0.012, parse=T, label="atop(R^2==0.47, p==9e-04)", color="black", size=6) +
+Fig2c <- ggplot(dm, aes(x=Disorder_Propensity, y=norma_fc_rp)) + 
+  labs( x = "Disorder propensity", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.15, y=0.25, parse=T, label="atop(R^2==0.47, p==9e-04)", color="black", size=6) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig2d <- ggplot(dm, aes(x=mean_LKmarch22, y=fc_rp)) + 
+#Fig2d <- ggplot(dm, aes(x=mean_LKmarch22, y=fc_rp)) + 
   labs( x = "Fitness effect in *E. coli*", y = "Flux difference (ML)") + 
   annotate(geom="text", x=-0.07, y=0.012, parse=T, label="atop(R^2==0.59, p==8e-05)", color="black", size=6) +
   geom_pointrange(aes(xmin=mean_LKmarch22-stderr_LKmarch22, xmax=mean_LKmarch22+stderr_LKmarch22)) +
@@ -144,9 +243,9 @@ Fig2d <- ggplot(dm, aes(x=mean_LKmarch22, y=fc_rp)) +
   theme(axis.title.x = ggtext::element_markdown()) + 
   mytheme
 
-Fig2e <- ggplot(dm, aes(x=pGC, y=fc_rp)) + 
-  labs( x = "%GC", y = "Flux difference (ML)") + 
-  annotate(geom="text", x=0.25, y=0.012, parse=T, label="atop(R^2==0.58, p==1e-04)", color="black", size=6) +
+Fig2e <- ggplot(dm, aes(x=pGC, y=norma_fc_rp)) + 
+  labs( x = "%GC", y = "Frequency differefnce (ML)") + 
+  annotate(geom="text", x=0.25, y=0.25, parse=T, label="atop(R^2==0.58, p==1e-04)", color="black", size=6) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
@@ -168,6 +267,8 @@ cor.test(dm$Rnoratio, dm$Rjordan, method='pearson') #R=0.92 p=1e-08
 cor.test(dm$Pnoratio, dm$Rnoratio, method='pearson') #R=0.54 p=0.01
 cor.test(dm$fc_primate, dm$fc_rodent, method='pearson') #R=0.52 p=0.02
 cor.test(dm$fc_primate, dm$fc_rodent, method='spearman') #R=0.43 p=0.06
+
+cor.test((dm$lt_Primatomorpha - dm$lt_Root), (dm$lt_Glires - dm$lt_Root), method='pearson') #R=0.43 p=0.06
 
 no_serine <- rbind(dm[1:15,], dm[17:20,])
 cor.test(no_serine$fc_primate, no_serine$fc_rodent, method='pearson') #R=0.34 p=0.2
@@ -212,17 +313,19 @@ Fig3c <- ggplot(dm, aes(x=Pnoratio, y=Rnoratio))+
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
   mytheme
 
-Fig3d <- ggplot(dm, aes(x=fc_primate, y=fc_rodent))+
-  labs( x = "Primatomorpha flux (ML)", y = "Glires flux (ML)") + 
+Fig3d <- ggplot(dm, aes(x=lt_Primatomorpha-lt_Root, y=lt_Glires-lt_Root))+
+  labs( x = "Primatomorpha freq. change (ML)", y = "Glires freq. change (ML)") + 
   coord_equal() +
-  scale_x_continuous(limits=c(-0.015,0.0201), breaks=c(-0.01, 0, 0.01, 0.02)) + 
-  scale_y_continuous(limits=c(-0.015,0.0201), breaks=c(-0.01, 0, 0.01, 0.02)) + 
-  annotate(geom="text", x=0.015, y=-0.01, parse=T, label="atop(R^2==0.28, p==0.02)", color="black", size=6) + 
+  #scale_x_continuous(limits=c(-0.015,0.0201), breaks=c(-0.01, 0, 0.01, 0.02)) + 
+  #scale_y_continuous(limits=c(-0.015,0.0201), breaks=c(-0.01, 0, 0.01, 0.02)) + 
+  annotate(geom="text", x=0.3, y=-0.2, parse=T, label="atop(R^2==0.43, p==0.06)", color="black", size=6) + 
   #geom_pointrange(aes(xmin=Pnoratio-Perror, xmax=Pnoratio+Perror)) + 
   #geom_pointrange(aes(ymin=Rnoratio-Rerror, ymax=Rnoratio+Rerror)) + 
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) +
   mytheme
+
+cor.test(dm$lt_Primatomorpha, dm$lt_Glires, method='pearson') #R=0.52 p=3e-13
 
 Fig3a
 Fig3b
@@ -312,6 +415,18 @@ cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.71, p=
 cor.test(dm$residuals_m2,dm$fc_rp, method='pearson') #R=0.46, p=0.04
 cor.test(dm$fc_rp,dm$kldCAISslope_Proteome, method='pearson') #R=0.58, p=0.007
 
+cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.71, p=0.0005
+cor.test(dm$residuals_m2,dm$norma2_fc_rp, method='pearson') #R=0.52, p=0.02
+cor.test(dm$norma2_fc_rp,dm$kldCAISslope_Proteome, method='pearson') #R=0.50, p=0.02
+
+cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.71, p=0.0005
+cor.test(dm$residuals_m2,dm$logit_fc_rp, method='pearson') #R=0.52, p=0.02
+cor.test(dm$logit_fc_rp,dm$kldCAISslope_Proteome, method='pearson') #R=0.51, p=0.02
+
+
+
+
+
 cor.test(dm$mean_LKmarch22,dm$kldCAISslope_Proteome, method='pearson') #R=0.62, p=0.004
 cor.test(dm$VolumeA3,dm$kldCAISslope_Proteome, method='pearson') #ns
 cor.test(dm$Disorder_Propensity,dm$kldCAISslope_Proteome, method='pearson') #ns
@@ -345,37 +460,41 @@ Fig5a<-ggplot(dm, aes(x=residuals_m2, y=kldCAISslope_Proteome)) +
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig5b<-ggplot(dm, aes(x=fc_rp, y=kldCAISslope_Proteome)) +
-  labs( x = "Flux difference (ML)", y = "Preference in vertebrates") +
-    geom_segment(aes(x=subset(dm, aa=="K")$fc_rp, 
+Fig5b<-ggplot(dm, aes(x=norma_logit_fc_rp, y=kldCAISslope_Proteome)) +
+  labs( x = "Frequency difference (ML)", y = "Preference in vertebrates") +
+    geom_segment(aes(x=subset(dm, aa=="K")$logit_fc_rp, 
                  y=subset(dm, aa=="K")$kldCAISslope_Proteome, 
-                 xend=subset(dm, aa=="R")$fc_rp, 
+                 xend=subset(dm, aa=="R")$logit_fc_rp, 
                  yend=subset(dm, aa=="R")$kldCAISslope_Proteome), color="grey80", alpha=0.3, size=1.5) + 
-  geom_segment(aes(x=subset(dm, aa=="I")$fc_rp, 
+  geom_segment(aes(x=subset(dm, aa=="I")$logit_fc_rp, 
                  y=subset(dm, aa=="I")$kldCAISslope_Proteome, 
-                 xend=subset(dm, aa=="V")$fc_rp, 
+                 xend=subset(dm, aa=="V")$logit_fc_rp, 
                  yend=subset(dm, aa=="V")$kldCAISslope_Proteome), color="grey80", alpha=0.3, size=1.5) + 
-  annotate(geom="text", x=0.012, y=-0.2, parse=T, label="atop(R^2==0.34, p==0.007)", color="black", size=6) +
+  annotate(geom="text", x=0.3, y=-0.2, parse=T, label="atop(R^2==0.27, p==0.02)", color="black", size=6) +
   geom_pointrange(aes(ymin=kldCAISslope_Proteome-kldCAISslope_Proteome_Std.Error, ymax=kldCAISslope_Proteome+kldCAISslope_Proteome_Std.Error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
 
-Fig5c<-ggplot(dm, aes(x=fc_rp, y=residuals_m2)) +
-  labs( x = "Flux difference (ML)", y = "Flux difference (parsimony)") +
-  geom_segment(aes(x=subset(dm, aa=="K")$fc_rp, 
+Fig5c<-ggplot(dm, aes(x=norma_logit_fc_rp, y=residuals_m2)) +
+  labs( x = "Frequency difference (ML)", y = "Flux difference (parsimony)") +
+  geom_segment(aes(x=subset(dm, aa=="K")$logit_fc_rp, 
                  y=subset(dm, aa=="K")$residuals_m2, 
-                 xend=subset(dm, aa=="R")$fc_rp, 
+                 xend=subset(dm, aa=="R")$logit_fc_rp, 
                  yend=subset(dm, aa=="R")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
-  geom_segment(aes(x=subset(dm, aa=="I")$fc_rp, 
+  geom_segment(aes(x=subset(dm, aa=="I")$logit_fc_rp, 
                  y=subset(dm, aa=="I")$residuals_m2, 
-                 xend=subset(dm, aa=="V")$fc_rp, 
+                 xend=subset(dm, aa=="V")$logit_fc_rp, 
                  yend=subset(dm, aa=="V")$residuals_m2), color="grey80", alpha=0.3, size=1.5) + 
-  annotate(geom="text", x=0.012, y=-0.1, parse=T, label="atop(R^2==0.21, p==0.04)", color="black", size=6) +
+  annotate(geom="text", x=0.3, y=-0.1, parse=T, label="atop(R^2==0.26, p==0.02)", color="black", size=6) +
   geom_pointrange(aes(ymin=residuals_m2-residual_error, ymax=residuals_m2+residual_error)) +
   geom_point(size=3) + 
   geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
   mytheme
+
+cor.test(dm$residuals_m2,dm$kldCAISslope_Proteome, method='pearson') #R=0.71, p=0.0005
+cor.test(dm$norma_fc_rp,dm$kldCAISslope_Proteome, method='pearson') #R=0.58, p=0.007
+cor.test(dm$residuals_m2,dm$norma_fc_rp, method='pearson') #R=0.46, p=0.04
 
 Fig5a
 Fig5b
@@ -548,11 +667,11 @@ myggsave_sm <- function(x){
 }
 
 #2
-myggsave_ms(Fig2a)
-myggsave_ms(Fig2b)
-myggsave_ms(Fig2c)
-myggsave_ms(Fig2d)
-myggsave_ms(Fig2e)
+myggsave_ms2(Fig2a)
+#myggsave_ms(Fig2b)
+myggsave_ms2(Fig2c)
+#myggsave_ms(Fig2d)
+myggsave_ms2(Fig2e)
 
 #3
 myggsave_sq(Fig3a)

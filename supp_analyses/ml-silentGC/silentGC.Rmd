@@ -1,0 +1,234 @@
+---
+title: "silent-GC"
+author: "Hanon McShea"
+date: "2024-09-03"
+output: html_document
+---
+
+```{r setup, include=F}
+library("coRdon")
+library("tidyverse")
+library("Biostrings")
+
+knitr::opts_knit$set(root.dir = "C:/Users/hanon/Documents/GitHub/aa_flux/supp_analyses/ml-silentGC/homo_cds_5162")
+#setwd("C:/Users/hanon/Documents/GitHub/aa_flux/supp_analyses/ml-silentGC/homo_cds_5162")
+```
+
+``` {r read-data}
+extract_ENSG_and_sequence <- function(file) {
+  # Extract the ENSG identifier from the file name using a regex pattern
+  ensg_id <- str_extract(basename(file), "ENSG[0-9]+")
+  
+  # Read the sequence from the FASTA file
+  sequence <- readDNAStringSet(file)
+  
+   if (length(sequence) == 0) {
+    return(NULL)
+   }
+  
+  # Return a data frame with ENSG and sequence
+  data.frame(ENSG = ensg_id, Sequence = as.character(sequence))
+}
+
+# List all .fasta files
+fasta_files <- list.files(path= ".")
+
+extract_ENSG_and_sequence("homo_back_cds_ENSG00000000419dna_trimmed_removed.fasta")
+
+# Apply the function to each file and combine the results into a single data frame
+result_df <- bind_rows(lapply(fasta_files, extract_ENSG_and_sequence))
+result_df
+
+
+ENSG419 <- extract_ENSG_and_sequence("homo_back_cds_ENSG00000000419dna_trimmed_removed.fasta")
+ENSG419
+
+ens419 <- readSet(file= "homo_back_cds_ENSG00000000419dna_trimmed_removed.fasta")
+cod419 <- codonTable(ens419)
+```
+
+
+``` {r count-codons}
+count_codon <- function(sequence, codon) {
+  dna <- DNAString(sequence)
+  
+  # Find the position of the first "ATG" (start codon)
+  start_pos <- start(matchPattern("ATG", dna))
+  
+  if (length(start_pos) == 0) {
+    return(0)  # No start codon found
+  }
+  
+  # Extract the sequence starting from the first "ATG"
+  start_pos <- start_pos[1]
+  
+  # Ensure the starting position is within the length of the sequence
+  if (start_pos > nchar(sequence)) {
+    return(0)
+  }
+  
+  # Subsequence from the start position to the end
+  subseq_dna <- subseq(dna, start = start_pos, width = nchar(sequence) - start_pos + 1)
+  
+  # Extract codons in the reading frame
+  codons <- as.character(Views(subseq_dna, start = seq(1, nchar(subseq_dna) - 2, by = 3), width = 3))
+  
+  # Count how many times the target codon appears
+  sum(codons == codon)
+}
+
+
+# Define the codon you want to count
+codon <- "ATG"
+
+# Add a new column to the dataframe with the codon count in the correct reading frame
+result_df <- result_df %>%
+  mutate(!!codon := sapply(Sequence, count_codon, codon = codon))
+
+result_df
+
+# Generate all possible codons
+bases <- c("A", "T", "G", "C")
+codons <- as.vector(outer(outer(bases, bases, paste0), bases, paste0))
+codons
+
+# Loop over all codons and add a column for each to the dataframe
+for (codon in codons) {
+  result_df <- result_df %>%
+    mutate(!!codon := sapply(Sequence, count_codon, codon = codon))
+}
+
+
+head(result_df)
+
+```
+
+``` {r silent-sites}
+
+silentGC
+
+result2 <- result_df %>% mutate(silentGC = (GTG+GTC+GCG+GCC+GAC+GAG+GGG+GGC+TTC+TTG+CTC+CTG+TCC+TCG+AGC+TAC+TAG+TGC+CCC+CCG+CAC+CAG+CGC+CGG+AGG+ATC+ACC+ACG+AAC+AAG+CTG+CTA+CGG+CGA)/(GTG+GTC+GTA+GTT+GCG+GCC+GCA+GCT+GAC+GAT+GAG+GAA+GGG+GGC+GGA+GGT+TTC+TTT+TTG+TTA+CTC+CTG+CTA+CTT+TCC+TCG+TCA+TCT+AGC+AGT+TAC+TAT+TAG+TAA+TGC+TGT+CCC+CCG+CCA+CCT+CAC+CAT+CAG+CAA+CGC+CGG+CGA+CGT+AGG+AGA+ATC+ATA+ATT+ACC+ACG+ACA+ACT+AAC+AAT+AAG+AAA+CTG+TTG+CTA+TTA+CGG+AGG+CGA+AGA))
+
+head(result2)
+
+write.csv(result2, file="../5162_silentGC.csv", quote=F, row.names=F)
+```
+``` {r analysis}
+sgc <- read.table("../silentgc-ns.csv", header=T, stringsAsFactors=F, sep=",")
+names(sgc)
+
+logitTransform <- function(p) { log(p/(1-p)) }
+
+sgc <- mutate(sgc, hilogiteqdiff = logitTransform(higc_glires)-logitTransform(higc_primatomorpha), midlogiteqdiff = logitTransform(midgc_glires)-logitTransform(midgc_primatomorpha), lowlogiteqdiff = logitTransform(lowgc_glires)-logitTransform(lowgc_primatomorpha))
+
+cor.test(sgc$pGC,sgc$higc_eqdiff, method='pearson') #R=0.59, R2=0.35, p=0.006
+cor.test(sgc$pGC,sgc$midgc_eqdiff, method='pearson') #R=0.77, R2=0.60, p=6e-05
+cor.test(sgc$pGC,sgc$lowgc_eqdiff, method='pearson') #R=0.81, R2=0.65, p=2e-05
+
+cor.test(sgc$pGC,sgc$hilogiteqdiff, method='pearson') #R=0.35, R2=0.12, p=0.13
+cor.test(sgc$pGC,sgc$midlogiteqdiff, method='pearson') #R=0.69, R2=0.48, p=0.0007
+cor.test(sgc$pGC,sgc$lowlogiteqdiff, method='pearson') #R=0.66, R2=0.43, p=0.001
+
+no_tryp <- rbind(sgc[1:18,], sgc[20,])
+cor.test(no_tryp$pGC, no_tryp$hilogiteqdiff, method='pearson') #R=0.73, R2=0.54, p=0.0003
+cor.test(no_tryp$pGC, no_tryp$midlogiteqdiff, method='pearson') #R=0.85, R2=0.73, p=3e-06
+cor.test(no_tryp$pGC, no_tryp$lowlogiteqdiff, method='pearson') #R=0.86, R2=0.73, p=3e-06
+
+
+
+
+cor.test(sgc$pGC,sgc$higc_eqdiff, method='spearman') #R=0.57, R2=0.33, p=0.009
+cor.test(sgc$pGC,sgc$midgc_eqdiff, method='spearman') #R=0.76, R2=0.58, p=0.0001
+cor.test(sgc$pGC,sgc$lowgc_eqdiff, method='spearman') #R=0.79, R2=0.62, p=4e-05
+
+cor.test(sgc$pGC,sgc$hilogiteqdiff, method='spearman') #R=0.56, R2=0.31, p=0.01
+cor.test(sgc$pGC,sgc$midlogiteqdiff, method='spearman') #R=0.66, R2=0.44, p=0.001
+cor.test(sgc$pGC,sgc$lowlogiteqdiff, method='spearman') #R=0.68, R2=0.47, p=0.0009
+
+himod <- lm(hilogiteqdiff ~ pGC, data = sgc)
+midmod <- lm(midlogiteqdiff ~ pGC, data = sgc)
+lomod <- lm(lowlogiteqdiff ~ pGC, data = sgc)
+
+summary(himod) #slope=0.26, stderr=0.17
+summary(midmod) #slope=0.58, stderr=0.14
+summary(lomod) #slope=0.56, stderr=0.15
+
+
+#no_tryp <- rbind(sgc[1:18,], sgc[20,])
+#cor.test(no_tryp$pGC, no_tryp$hilogiteqdiff, method='spearman') #R=0.73, R2=0.54, p=0.0003
+#cor.test(no_tryp$pGC, no_tryp$midlogiteqdiff, method='spearman') #R=0.85, R2=0.73, p=3e-06
+#cor.test(no_tryp$pGC, no_tryp$lowlogiteqdiff, method='spearman') #R=0.86, R2=0.73, p=3e-06
+
+
+
+hifig <- ggplot(sgc, aes(x=pGC, y=higc_eqdiff)) + 
+  labs( x = "%GC", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.2, y=0.01, parse=T, label="atop(R^2==0.33, p==0.009)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  scale_y_continuous(limits=c(-0.022,0.022), breaks=c(-0.02, -0.01, 0, 0.01, 0.02)) + 
+  mytheme
+
+midfig <- ggplot(sgc, aes(x=pGC, y=midgc_eqdiff)) + 
+  labs( x = "%GC", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.2, y=0.01, parse=T, label="atop(R^2==0.58, p==0.0001)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  scale_y_continuous(limits=c(-0.022,0.022), breaks=c(-0.02, -0.01, 0, 0.01, 0.02)) + 
+  mytheme
+
+lofig <- ggplot(sgc, aes(x=pGC, y=lowgc_eqdiff)) + 
+  labs( x = "%GC", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.2, y=0.01, parse=T, label="atop(R^2==0.62, p==4e-05)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  scale_y_continuous(limits=c(-0.022,0.022), breaks=c(-0.02, -0.01, 0, 0.01, 0.02)) + 
+  mytheme
+
+
+hilogitfig <- ggplot(sgc, aes(x=pGC, y=hilogiteqdiff)) + 
+  labs( x = "%GC", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.2, y=0.2, parse=T, label="atop(R^2==0.31, p==0.01)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  scale_y_continuous(limits=c(-0.65,0.35), breaks=c(-0.6, -0.4, -0.2, 0, 0.2)) + 
+  mytheme
+
+midlogitfig <- ggplot(sgc, aes(x=pGC, y=midlogiteqdiff)) + 
+  labs( x = "%GC", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.2, y=0.2, parse=T, label="atop(R^2==0.44, p==0.001)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  scale_y_continuous(limits=c(-0.65,0.35), breaks=c(-0.6, -0.4, -0.2, 0, 0.2)) + 
+  mytheme
+
+lologitfig <- ggplot(sgc, aes(x=pGC, y=lowlogiteqdiff)) + 
+  labs( x = "%GC", y = "Frequency difference (ML)") + 
+  annotate(geom="text", x=0.2, y=0.2, parse=T, label="atop(R^2==0.47, p==0.0009)", color="black", size=6) +
+  geom_point(size=3) + 
+  geom_text(aes(label=aa),hjust=-0.1, vjust=0, color="blue", size = 6) + 
+  scale_y_continuous(limits=c(-0.65,0.35), breaks=c(-0.6, -0.4, -0.2, 0, 0.2)) + 
+  mytheme
+
+hifig
+midfig
+lofig
+
+
+hilogitfig
+midlogitfig
+lologitfig
+
+myggsave_sq(hifig)
+myggsave_sq(midfig)
+myggsave_sq(lofig)
+
+myggsave_sq(hilogitfig)
+myggsave_sq(midlogitfig)
+myggsave_sq(lologitfig)
+
+
+
+```
+
+

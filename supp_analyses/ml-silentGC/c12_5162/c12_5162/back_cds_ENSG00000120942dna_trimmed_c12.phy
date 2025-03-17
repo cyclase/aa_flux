@@ -1,0 +1,603 @@
+85 674
+ailur_mel         gcgctccagtccggga--ataaatcagcgggaacgcaatcgggaaggactctggaagatgcggacagaagctcccacgtctgagcaaatggctctagtct
+anoli_car         atgagcgagagaatgaaagtcgatctaagggagacctcgcgcgcgagcctctgg--------tcccaagtccctaggggctgcgcaaatggctctagtct
+balae_acu         ccgcttcagtccgggaaaataaatcagcgggaacgcaagtgggaaggactctggaaggtgccgacagaagcccccacgtctgagcaaatggctctagtct
+bos_mut         ataagtactcatgcgaaaataaatcagcgggaacgcaagtgagaaggactctggaaggtgcccacagaagcccccacgtctgagcaaatggctctagtct
+bos_tau         accggcgctcatgcgaaaataaatcagcgggaacgcaagtgagaaggactctggaaggtgcccacagaagcccccacgtctgagcaaatggctctagtct
+calli_jac         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagtct
+camel_fer         gcgctccagtccgggaaaataaatcagcgggaacgcaagtgggaaggactctggaaggtgccgacagaagtccccacgtctgagcaaatggctctagtct
+canis_fam         gcgctccagcgcggga--gtaaatccgcgggagcggagccgggacggaccccggccgatgccgagcgacgccaccgcgtctgagcaaatggctctagtct
+capra_hir         ----------atgcgaaaataaatcagcgggaacgcaagtgagaaggactctggaaggtgcccacagaagcccccacgtctgagcaaatggctctagtct
+cavia_por         gcgcttcatcgcgggaagataaatcagcgggaacgcaagtgggaataatcctggaagatgccgatcgaagcccccacgtccgagcaaatggctctagtct
+cerat_sim         gcgctccagcccgggaaaataaatcagcgggaacgcaagcgggaaggaccctggaggatgccgacagaagccgccacgtctgagcaaatggctctagtct
+chinc_lan         gcgcttcagctcgggaagataaatcagggcgaacgcaagtgggaatgatcctggaggaagccgaccgaagcccccacgtccgagcaaatggctctagtct
+chlor_sab         gcgctcctgtctgggaaaataaatcttcgggaacgtaagcgcgaaggaccctggaagatgccgacagaagttcccacgtctgagcaaatggctctagttt
+cholo_hof         gcgctccagcccgggaaaataaatcagcgggaacgcaagcgggacagaccttgaaaggtaccgaccgacgcccccccgtctgagcaaatggctctagtct
+chrys_asi         gcgcaccagtccgggaaaatagataaacgggaacgcaaatgggaaggaccctagaaggtgtcggcagaaggtcccacgtctgagcaaatggctctagttt
+condy_cri         gcgctccagtccgggaaaataaatcagcgggagcgcaagcgggaaggactctggacgatgccgaccgaggccctcccgtctgagcaaatggctctagtct
+crice_gri         gcgcttcagcccgggaaaataaatcagcgggaacacaagtgggagggaccccgggagatgccgacagaagctcccacgtctgagcaaatggctctagtct
+danio_rer         ccgcgccttcggtcaaggctaagggctcggtctcgtcggt----------------cctgagcgcttccgcgatgcctgactcaagaatggcgctagtct
+dasyp_nov         ----------------------------------------------------------------------------------------------------
+daube_mad         ----------------------------------------------------------------------------------------------------
+dipod_ord         gcgcttccgcccggccaaataaatcagcgggaacgtcagcgggacggaccctggccggggccgacagaagcccccacgtctgagcaaatggctctagtct
+echin_tel         gcgcaccagtccgggaaaatagatcagcgggaacgcaggcgggaagcaccctggaagatgccggcagaagcccccacgtctgaacaaatggctctagttt
+eidol_hel         gcgctccagtccgggaaaatagatcagcgggaacgcaagcgggaaggactccggaagatgccgacggaagctctcacgtctgagcaaatggctctagtct
+eleph_edw         gcgcaccactttgggaaaatagatcaacgggaacgcaaccgggaaggactctggaagatgctggcagaagcctccatatctgagcaaatggctctagttt
+eptes_fus         gcgccccagtccgggaaaatagatcagcgggaacgccagcgggaaggactctggaagaggccgatggaaaccgtcccgtctgagcaaatggctctagtct
+equus_cab         gcgctccagtccgggaaaataaatcagcgggaacgcaagcgggaaggactctggaagatgctgacagaagcccccacgtctgagcaaatggctctagtct
+erina_eur         gcgcccgcgtgcgcgaaggtgggtcagcgggagcccgcgtgggtcgcgggcggg----------------cccccgcgcctgagcacgtggctctagtct
+felis_cat         ----------------------------------------------------------------------------------------------------
+galeo_var         gcgctccactccggga--ataagtgtgcgggaacgcaaacgggaaagactctggaagatgccgacagaagatcccacgtctgagcaaatggctctagtct
+gallu_gal         atggccgcgactgtcaaaatagataagc--gaagcccggggggaagaagatggggcgggc------gacgggccgcggggtgagcaaatggcgctagtct
+gaste_acu         ccgggc----------------------------------------------------------gctcagcggtgctcgagtagcaaatggctctagtat
+goril_gor         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+heter_gla         gcgcttcctctcgggaaaataaatcagcgggaacgcaagtgagaatgatcctggaagatgccgaccgaagcccccacgtccgggcaaatggctctagtct
+homo_sap         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+ictid_tri         gcgcttcagcccgggaaaataaatcaacgggaacgcaagcgggacggaccctggaagatgccgacagaagcccccacgtctgagcaaatggctctagtct
+jacul_jac         gcgcttttgcccgggaaaataaatcagcgggaacgtaagcgggaaggaccctagaagatgacgacagaagccctcccgtctgagaaaatggctctagttt
+latim_cha         acgtacaaatatgagaaaataaatagtcgacaggttcaaggg--gcgaggctataaggctaaaaatgaaacacgatcttcgtcgcaaatggcgctagtct
+lepto_wed         gcgctccagtctggga--ataagtcagcgggaacgcaagcgggaaggactctggaagatgccgactgaggctctcacgtctgagcaaatggctctagtct
+lipot_vex         agaactttgtccgggaaagtaaatcagcgggaacgcaagtgggaaggactctggaaggtgcccacagaagcccccacgtctgagcaaatggctctagtct
+loxod_afr         gcgcaccagtccgggaaaatagatcaacgggaacgcaagcgggaaggaccttggaagatgccggcagaagcccccacgtctgagcaaatggctctagttt
+macac_fas         gcgctccagtctgggaaaataaatcttcgggaatgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+macac_mul         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+manis_pen         ------------gggaaaataaatcagcgggaacgcaagcgggaaggattctgggagatgccgacagaagcacccacgtctgagcaaatggctctagtct
+megad_lyr         --------------------------------------------------ctggaagatgcggacggaagccctcacgtctgagcaaatggctctagtct
+melea_gal         ----------------------------------------------------------------------------------------------------
+mesoc_aur         gcgcttcagcccgggaaaataaatcagcgggatcacaagtgggaaggaccctggcagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+micro_och         gcgcttcagcccgggaaaataaatcagcgggaacacaagtgggaaggaccctgggagatgccgacagaagctcccccgtctgagcaaatggctctagttt
+monod_dom         gcgagcccagccgggaagataaatcagcaggaggccccgctcgggcaa--gtggaaggtgcctgaggaaccccgggcgtctgcgcaaatggctctagtct
+mus_mus         gcgcgtcagcccgggaaaataaatctgcgggaacgcaagtggga----cccaaaaagatgccgacagaagctccgacgtctgagcaaatggctctagttt
+muste_put         gcgctccagtccggga--ataaatcagcgggaacgcaatcgggaaggactctggaagatgccgagagaagctcccacgtctgagcaaatggctctagtct
+myoti_bra         --------gtccgggaaaatagatcagcgggaacgcccgcgagaaggactctggaagatgccgatggaaaccgtcccgtctgagcaaatggctctagtct
+myoti_luc         gcgctcccgtctgggaaaatagatcagcgggaacgcccgcgggaaggactctggaagaggccgatggaaaccgtcccgtctgagcaaatggctctagtct
+nomas_leu         ----------------------------------------------------------------------------------------------------
+ochot_pri         gcgcctccatgtgggaaaatagatcagcgggaactcgcgc--------ccctggcagatgacgagcgaaggcgcccagtctgagcaaatggctctagtct
+octod_deg         gcgcttcagctcgggaagataaatcagcgggaacgcaagtgggaaggatcctggaagaagccgaccgaagcccccacgtccgcgcacatggctctagtct
+odobe_ros         gcgctccagtccggga--ataaatcagcgggaacgcaagcgggaaggactctggaaggtgccgacagaggctctcacgtctgagcaaatggctctagtct
+orcin_orc         gcgctccagtccgggaaagtaaatcagcgggaacgcaagtgggaaggactctggaaggtgtcgacagaagcccccacgtctgagcaaatggctctagtct
+ornit_ana         ----------------------------------------------------------------------------------------------------
+oryct_afe         gcgtaccagtccgggaaagtagatcaacgggaacgcaagcgggaaggactctgtaagatgccggcagaggccctcacgtctgagcaaatggctctagttt
+oryct_cun         ----------------------------------------------------------------------------------------------------
+otole_gar         gcgcttgagcctgggaaaataaatctgagcgaacgtaagtgggaaggaccctggaagatgccgacaggagttcccacgtctgagcaaatggctctagtct
+ovis_ari         ----------atgcgaaaataaatcagcgggaacgcaagtgagaaggactctggaaggtgcccacagaagcccccacgtctgagcaaatggctctagtct
+pan_pan         gcgctccagtctggcaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+pan_tro         gcgctccagtctggcaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+panth_tig         gcgctccagtccggga--ataaatcagcgggaacgcaagtgggaaggactctggaagatgccgacagaagctcccacgtctgagcaaatggctctagtct
+panth_hod         ----------atgcgaaaataaattagcgggaacgcaagtgagaaggactctggaaggtgcccacagaagcccccacgtctgagcaaatggctctagtct
+papio_anu         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+pelod_sin         atgatcgagacaacgaaaatagataggc--gaagccagaggtgactgggactgggtggctctagtcgaaaagcaccggactgagcaaatggcgctagtct
+perom_man         gcgcttcagcccgggaagataaatcagcgggaacacaggtgagaaggaccctggaagatggcggcagaagctcccacgtctgagcaaatggctctagttt
+physe_mac         gcgctccagtccgggaaaataaatcagcgggaacgcaagtgggaaggactctggaaggtgccgacagaagcccccacgtctgagcaaatggctctagtct
+pongo_abe         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagttt
+proca_cap         gcgccccactccgggaaaatagatcaacgggaacgcaagcgggaaggaccttggaagatgcaggcagaagcctccacgtctgagcaaatggctctagttt
+ptero_par         ----------------------------------------------------------------------------------------------------
+ptero_ale         gcgctccagttcgggaaaatagatcagcgggaacgcaagcgggaaagactccgggagatgccgaaggaagctcccacgtctgaacaaatggctctagttt
+ptero_vam         gcgctccagttcgggaaaatagatcagcgggaacgcaagcgggaaggactccgggagatgccgaaggaagctcccacgtctgaacaaatggctctagttt
+rattu_nor         gcgcgtcagcccgggaaaataaatcagcgggaacaccagtgggaacgacacaagaagatgccgagagaagctccgacgtctgagcaaatggctctagttt
+rhino_fer         gcgctccagtccgggaaaatagatcgacgggatcgcaagcgggaaggactctggaagatgccgacggaagccctcacgtctgagcaaatggctctagtct
+saimi_bol         gcgctccagtctgggaaaataaatcttcgggaacgtaagcgggaaggaccctggaagatgccgacagaagctcccacgtctgagcaaatggctctagtct
+sus_scr         gcgctccagtccgggaaaataaatcagcgggaacgcaagtgggaaggactctggaaggtgccgacagaagccctcacgtctgagcaaatggctctagtct
+tarsi_syr         gcgctccact--gggaaaataaatctgcgggaccgcaagagggaaggaccctggaagatgtcgacagaagcccccacgtctgcgcaaatggctctagtct
+trich_man         gcgcaccagttcgggaaaatagattaacgggaacgcaagcgcgaaggatcttggaagatgccggcagaagtctccacgtctgagcaaatggctctagttt
+tupai_chi         gcgctccaacccgggaaaataaatcagcgtgaacgcaagtgggaaggactctggaagataccgacagaagccccctcgtctgagcaaatggctctagtct
+tursi_tru         gcgctccagtccgggaaagtaaatcaccgggaacgcaagtgggaaggactctggaaggtgtcgacagaagcccccacgtctgagcaaatggctctagtct
+vicug_pac         ----------------------------gggaacgcaagggggaaggattctggaaggtgccgacacaagtccccacgtctgagcaaatggctctagtct
+xenop_tro         ------ataaccgagatgatcaatgaacgactacaactacgggagccatctttcaaggatccttacgaaacgaagcacagttaacaaatggcactagtct
+
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcttacccgtgcctggaggcttgctacgtcagggtcttgaccggctctgtggaggcatacgtttgcgtcagggcggaactgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcatgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcatgcgtctgcgtcagggcggaattgt
+gcttagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcttgctacggccaggggctgacccgctctgcggtggcgtgcgtctgcgtcagggcggaactgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcatgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtttgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctacgtccagggtctgaccagttttgtggtggcgtgcgtcttcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctagccgtgcctggaggcctgctaagtccagggtttgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggactgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagttcagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaactgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaaactgaggtcgtgactctctctctgttggcgtgcgtctctgtcagggcggaactgt
+--------------------------------------------------------gaccagctctgtagtggcgtgcgtctgcgtcagggcggaattgt
+----------------------------------------------------------------------------------------------------
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagttctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggactgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttctggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctacgtccaggacctgaccagctttttggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctacgtccagggcctgacccgctctctggtggcgggcgtctgcgtcagggcggaactgt
+----------------------------------------------------------------------------------------------------
+gcttagcctgagttaggctcctacccgtgcctggaggcctgctaagttcagggtttgactagctttgtggtggcatgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcttgctacggcgagggcctgacccgctctgtggaggcgtgcgtctgcgtcagggcggaactgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcttgctaaattggggtcgtgattgtatctatgttggcgtacgtctgtgtcagggcggaactgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtacgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcttggaggcttgctaaggcgaggacatgattctatttatattggcatacgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggactgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcttggaggcctgctaagtccagggtctgacccgctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+----------------------------------------------------------------------------------------------------
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccaggatctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctagccgtgcctggaggcctgctacgtccagggcctcaccggctctctggaggcgtgcgtctgcgtcagggcggaactgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggtctgaccagctttttggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaactgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+----------------------------------------------------------------------------------------------------
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctacgtccaggtcctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtacagggtctgaccagttttgtggtggcgtgcgtcttcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+----------------------------------------------------------------------------------------------------
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccaggagctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+----------------------------------------------------------------------------------------------------
+gcttagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcatgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcttggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcatgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctacgtccaggtcctgaccggctctgtggaggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggcctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccaggggctgacccgctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+----------------------------------------------------------------------------------------------------
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttctggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttctggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcttgctaagtccagggtctgaccagctttttggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctacgtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcttagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctacgtccagggtttgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagttcagggactgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctagcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctctgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctacccgtgcctggaggcctgctaagtccagggtctgaccagctttgtggtggcgtgcgtctgcgtcagggcggaattgt
+gcctcgcctgagttaggctcctatccgtgcttggacgcatgctacgtcgaggtcctgattttctttgtgttggcgtgcgtctgcgtcagggcggaactgt
+
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtctttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatctgacccagagtgtagttgggtttcttaacttggtgcttcgcgcggcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccggagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtgtttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatctgacccagagtgtcgttgggtctcttaacctggtggttggcgcggcttatc
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtgattggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgacgatttgacccagagtgttgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtgattggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgaagatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacaatctaacccagagtgtatttgggcgtcttatcgcggtgcttggcacctcttatt
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+----------------------------------------------------------------------------------------------------
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgttgttgggtttcttaacctggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaattatagatttcaaggatgacaaaaaaggagacgacctgtgacgatctgacccagagtgtcgttgggtctcttaacctggtggttggcgg--tttatg
+----------------------------------------------------------------------------------------------------
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgacaatttgacccagagtgtcgttgggtttcttaacgtggtggttggcgcggcttagc
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgagaatttgccccagagtgtatttgggctttttatcttggtgtttggcacctcttttt
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatttgaccaagagtgtcgctgggtttcttaacttggtgattggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgaagatctgacccagagtgtcgttgggcttcttattttggtgtgtggcagtgcttatt
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggc----------
+--------------------------------------------------------------------------taacgtggtggttggcgcggcttagc
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatctgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgaagatctgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttata
+----------------------------------------------------------------------------------------------------
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggttgcttaacctggtggttggcgcggcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgaagatttgaccaagagtgtcgttgggtttcttaacttggtgattggcgctgctttta
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacaatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+----------------------------------------------------------------------------------------------------
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatt
+----------------------------------------------------------------------------------------------------
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgttgttgggtttcttaacttggtggttggcgctgcttatc
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagacgacttgtgacaatttgacccagagtgtcgttgggtttcttaacctggtggttggcgctgcttatg
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccggagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacttgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttatg
+----------------------------------------------------------------------------------------------------
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgaagatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctacttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtgtttggcgcggcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagtgtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgaagatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagaagacctgtgacgatttgacccagagtgtcgttgggtttcttaacttggtggttggcgctgcttata
+aaactatagatttcaaggatgacaaaaaaggagacgacttgtgacaatctgacccagagtgtcgttgggtttcttaacttggtgtttggcgctgcttatt
+
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcagtctttttaacggggatggttaatagtgcctgggactgtatctatacttggccttgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatactgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggctaatactgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggctaatactgcctgggactgtatctatacttggccctgcgtattt
+cttctcctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctagctgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggctaatactgcctgggactgtatctatacttggccctgcgtattt
+cttctcctaattgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggtttcggtcttcttcacgggnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+tttcccctaactgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+tttcccctaactgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcagctaactgacactgcctattattggggcttcagtcttcttaacggggatggctaatagtgcctgggagtgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggtttcggtcttcttaac--ggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+--------------------------------------------------ggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttctcctaactgacactgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+tttcccctagctgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+tttctcttaactgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+tttctcctcgctgacactgcctattatt--ggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+--------------------------------------------------ggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggtttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccttgcgtattt
+gttcacctaactgacactgcctgttattggggcttcagtcttcttaacggggatggttaatagtgcctgggagtgtatctatacttggccctgcgtattt
+cttcacctcgctgacactgcctattattggggcttcagtctttttaacggggatggctaatagtgcctgggagtgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccttaactgacattgcctattattggggtttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttctcctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccttgcgtattt
+cttcacttaactgacattgcctgttattggggcttcagtcttcttaacggggatggttaatagtgcctgggagtgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatactgcctgggactatatctatacttggccctgcgtattt
+cttcccctaattgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+tttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcttgggactgtatctatacttggccctgcgtattt
+----------------------------------------------------------------------------------------------------
+gttcacctaactgacactgcctgttattggggcttcagtcttcttaacggggatggttaatagtgcctgggagtgtatctatacttggccctgcgtattt
+cttcacctagctgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcacctaactgacactgcctatttttggggcttcagtcttcttaacggggatggttaatagtgcttgggactgtatctatacttggccctgcgtattt
+cttcgcctaattgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccttaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcgcctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+------------------nnctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctagctgacactgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtgttt
+tttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaattgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatactgcctgggactatatctatacttggccctgcgtattt
+----------------------------ggtccctccttcggttccacctggatggctaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+----------------------------------------------gcgcggatggttaatagtgcctgggactgtatctatacttggccctgcgtgttt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggctaatactgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggctaatactgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcacctaactgacactgcctattattggggcttcagtcttcttaacggggatggttaatagtgcctgggattgtatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatactgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacgg--------------------------------------------------
+tttcccctaattgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+--------------------------------------------------gggtggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+attcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttctcctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactatatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtgttt
+cttccgctaactgacattgcctattattggggcttcggtcttcttaacgggnnnnnnnnnnnnnnnnnnnnnnnnnnnnnatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctagctgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggccctgcgtattt
+cttcccctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatactgcctgggactatatctatacttggccctgcgtattt
+cttcacctaactgacattgcctattattggggcttcggtcttcttaacggggatggttaatagtgcctgggactgtatctatacttggcgctgcgtactt
+attcaattaactgacactgcctattattggggcttcagtcttcttaacggggatagataataggtcgtggtattgtacttatcaagatgcaaaaaacatt
+
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcgtctcatcaaaaacaggaatgatcgaaggagcggatgtacctgcatct
+gccagcgtcagtggtacttcgttcccctcttagcgtccttgcctagacgagcatctcaagaaaaaccggaatgatcgacgcagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggagtgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgaaggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaatcaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctattagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnngacagagcggatatatctgcacct
+gctagcgtcagtggtcctgcgtttcccttttagcatccctgcctagacgagcatctcatcaaaaacaggaatgttcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcgtccctgcctagacgagcatctcatcaaaaacaggaacgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcttgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gccagcgtcagtggtacttcgtctccctgttagcgtccctgcctaaacgagcatctcaagaaaaaccggaatgatcgaaacagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtatctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcgtctcatgaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatgaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccttgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccttgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggcgcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgaaggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gccagcgtcagtggtacttcgttcccctcttagcgtccctgcctagacgagcatctcaagaaaaaccggaatgatcgacacagcggatgtacttgcatct
+tccagcgtcagtggtacttcgtttccctgttagcgtccctgcctaaacgagcatctcaagaaaaacaggaatgatcgaaacagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctcttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgaaggagcggatgtacctgcatct
+gctatcatcagtggtatttgcttcccctattagcatccctgcctaaacgagcatctcaagaaaaacaggaatgatcgaaacagcggatgtacttgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgaaggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+----------------------------------------------------------------------------------------------------
+gccagcgtcagtggtacttcgttcccctcttagcgtccctgcctagacgagcatctcaagaaaaaccggaatgatcgacacagcggatgtacttgcatct
+gctagcgtcagtggtcttgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcttgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaagaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccttgcctagacgagcatctcatcaaaaaccggaatgatcgaaggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctattagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgaaggcgcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggcgcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcttgcatttccctgttagcatccttgcctagacgagcatctcatcaaaaacaggaatgatcgacggcgcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgaaggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcttgcgtttccctgttagcgtccttgcctagacgagcatctcatgaaaaaccggagtgatcgacggcgcggatgtacctgcatct
+gctagcgtcagtggtcttgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggagtgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatgaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgaaggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctcttagcatccctgcctagacgagcatctcatcaaaaaccggaatgatcgacggagcggatgtacctgcatct
+gctagcatcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gccagcgtcagtggtacttcgttcccctcttagcatccctgcctagacgagcatctcaagaaaaaccggaatgatcgacacagcggatgtacctgcatct
+gctagcgtcagtggtcttgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+----------------------------------------------------------------------------------------------------
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcttgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgagggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcgtctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacagagcggatgtacctgcatct
+gctagcgtcagtggtcctgcatttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+gctagcgtcagtggtcctgcgtttccctgttagcatccctgcctagacgagcatctcatcaaaaacaggaatgatcgacggagcggatgtacctgcatct
+tctaacctaacgggttcgtctt----aaatagcatggggaggagagagatcgtagcatattaaaaccggaatgatcgacgcagcggatgtacctgcatct
+
+atggccaccttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacgtccatgctttcctgaagcattcg
+atggccactttctagtcttaaaagctctttctcctactattttgctctgcaccgtaacatagatgcctccttctacatccatgctttcctgacgcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactgcttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactgcttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactgtttagatctgcatcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttagatctgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactgtttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactgtctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactctttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttccagtcttaaaagctctttctcctactattcagatctgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaacatctctttctcctactgtttagatctgcaccgtaagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaagatctctttctcctactatttagatctgcaccgtgaggtagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+ctggccaccttctagtattaaactctctttgtcctactcttttgatctgcaccgtaacatagatgcctccctttacctccatgcttccctgaagcattcg
+atggccaccttctagtcttaacacctctttctcctactatttagatctgcaccgtgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccgctttctaatcttaaaacctctttctcctactgtttagatctgcgtcgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaacatctctttctcctactagttagatctgcaccataagatagctgcctccctctacatccgtgctttcctgaagcattcg
+atggccgccttctagtcttaacacctctttctcctactgtttagatttgcaccgtgagatagctgcctccatctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaagacctctttctcctactatttagatctgcacaataagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaacatctctttctcctactatttacatttgcaccatgagatagctgcctccttctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccataagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccctctagtcttaaagcctctttctcctagtgcttaggtctgcactgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactgtttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccgctttctagtcttaacgtctctttttcctattattttggtttgcaccgtaacatagatgcttccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaactctctttgtcctagtcttttgatctgcaccgtaacatagatgcctccctctacctccatgcttccttgaaactttcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagcttcctccatctacatccatgctttcctgaagcattcg
+atggccatcttctaatcttaaaatttttttctcctaatattttgatttgcaccgtaacatagatgcttccctctacgtccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaacacctctttctcctactatttagatttgcaccgtgagatagctgcctccttctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactctttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+----------------------------------------------------------------------------------------------------
+atggccgctttctagtcttaacgtctctttttcctattattttggtttgcaccgtaacatagatgcttccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaacacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccgtgttttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccgtaacatagatgcctccctctacatccatgctttcctgaagcattag
+atggccactttctagtcttaaaacctctttgtcctactatttacatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccataagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccataagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaacgcctctttctcctactgtttagctctgcaccgtaagatagctgcctccctctacatccctgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactatttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+gtggccactttctagtcttaaaacctctttctcctactatttagctctgcaccgtaacctagatgcctccctctacatccgtgctttcctgaagcattcg
+atggccaccttctagtcttaacatctctttctcctactatttagatttgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactctctaatcttagcgcctctttctcctactgtttagatctgcaccgtgagatagctgcctccctctacatccgtgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcatcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactgtttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactgtttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgacatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccattttctaatcttaaaacctctttctcctactattttggtttgcaccgtaacatagatgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctagtcttaaaacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactatttagatctgcgtcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+----------------------------------------------------------------------------------------------------
+atggccaccttctagtcttaacatctctttctcctactatttagatttgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttaggtctgcatcatgagatagctgcctccctctacgtccatgctttcctgaagcattcg
+atggccactttctaatcttaaagcctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaagcctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctaatcttaaaacctctttctcctactatttacatctgcaccatgagatagctgcctccctctacagccatgctttcctgaagcattcg
+atggccactttctagtcttaacacctctttctcctactatttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctactcttaaagcctctttctcctactgtttagatctgcgtcatgaggtagctgcctccctctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactgtttagatctgcatcatgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaacacctctttctcctactatttagatttgcaccgtgagatagctgcctccctctacatccatgctttcctgaagcattcg
+atggccaccttctagtcttaaaacctctttctcctactctttagatctgcaccatgagatagctgcctccctctacatccatgctttcctgaaacattcg
+atggccaccttctagtctta--acctctttctcctactatttagatctgcgtcatgagatagctgc--gcatctacatccatgctttcctgaagcattcg
+atggccactttctaatcttaaaacctctttctcctactatttagatctgcaccgtgggagagctgcctcc--ctacgtccatgcttacctgaagcattcg
+gtggccattttctaatcttaaattctgtttctcctactattttcatctgcacagtaacatagatgcttccctctacatccctgctttcctgaagcattag
+
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaagttctaaatcccaagacgcaactaactctttggcttttagtttgcatctttgcccccggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttcagatgtctgcccgcggagctccaact
+agcaacttaaaactcccaaaacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaaaacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaaaacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccacggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttcaaactccctagacgcaattaactctctggatcttagtttgggtatct--ccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttagaactcccaaaacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+tgcgtgtagcaaatcccaaaacgcaactaactctatggcttttagtttggatatttgccccaggagctcctttt
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgtccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttgggatatctgcccccggagctccaact
+agcaacttagaactcccaaaacgcaactaactctctggcttttagtttagatttctgcccgcggagctccaact
+agcagcttaaaactcccaaaacgcaactaactttctggcttttagtttggatatctgcccgtggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttagaactcccacgacgcaactaactctctggcttttagtttggatatttgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatgtctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaaattaaaaatcccacgacgcaactaactctttggcttttagtttggatatctgcccgcgggcctccaact
+agcgtgtagcaaatcccaaaacgcaactaactctatggcttttagtttggatatctgcccccggagtt------
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaaat
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatat--------------------
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaaat
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgtggagctccaact
+agcagcttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgcggagttccagct
+agcaagtaagaaatcccaagacgcaactaactctct--------------------------------------
+agcaacttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttcagatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgtggagctccagct
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggag--------
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgtggagctccagct
+--------------------------------------------------------------------------
+agcaaattaaaaatcccacgacgcaactaactctttggcttttagtttggatatctgcccgcgggtctccgact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcaacttaaaattcccaagacgcaactaactctctggcttttagtttggatatttgcccgcggacctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgtggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaaat
+agcagcttaaaactcccacgacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaattcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgtggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttcagatatctgcccgcggagctccaact
+agcaaattaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggacctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatttgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgtggagctccaact
+agcaacttaaaactcccaaaacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaaat
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaaat
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatgtctgcccgcggagctccaact
+agcaacttaaaactcccaaaacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggag--------
+agcaagttagaactcccacgacgcaactaactttctggcttttagtttggatctctgcccccggacctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttcagatatctgcccgcggagctccaact
+--------------------------------------------------------------------------
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcagagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttgggatatctgcccgcggagctccagct
+agcaacttagaactcccaagacgcaactaactctctggcttttagtttggatttctgcccgcggagctccaact
+agcaacttagaactcccaagacgcaactaactctctggcttttagtttggatttctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccagct
+agcaacttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttagaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactttctggcttttagtttggatatctgcccgtggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcagcttaaaactcccaagacgcaactaactctctggcttttagtttggatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactaactctctggcttttagttcagatatctgcccgcggagctccaact
+agcaacttaaaactcccaagacgcaactagctctctggcttttagt--ggatatctgcccgcggagctccaact
+agcaaattaaaaatcccaagacgcaactaactctgtggcttttagtttggatgtctgcccgcggtcctcc----
+
