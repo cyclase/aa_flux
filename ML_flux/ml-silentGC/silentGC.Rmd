@@ -10,8 +10,11 @@ library("coRdon")
 library("tidyverse")
 library("Biostrings")
 
-knitr::opts_knit$set(root.dir = "C:/Users/hanon/Documents/GitHub/aa_flux/supp_analyses/ml-silentGC/homo_cds_5162")
+knitr::opts_knit$set(root.dir = "C:/Users/hanon/Documents/GitHub/aa_flux/ML_flux/ml-silentGC/homo_cds_5162")
 #setwd("C:/Users/hanon/Documents/GitHub/aa_flux/supp_analyses/ml-silentGC/homo_cds_5162")
+
+#theme
+mytheme <- theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.4, 0.4, 0.1, 0.1), "cm"))
 ```
 
 ``` {r read-data}
@@ -159,8 +162,6 @@ summary(lomod) #slope=0.56, stderr=0.15
 #cor.test(no_tryp$pGC, no_tryp$midlogiteqdiff, method='spearman') #R=0.85, R2=0.73, p=3e-06
 #cor.test(no_tryp$pGC, no_tryp$lowlogiteqdiff, method='spearman') #R=0.86, R2=0.73, p=3e-06
 
-
-
 hifig <- ggplot(sgc, aes(x=pGC, y=higc_eqdiff)) + 
   labs( x = "%GC", y = "Frequency difference (ML)") + 
   annotate(geom="text", x=0.2, y=0.01, parse=T, label="atop(R^2==0.33, p==0.009)", color="black", size=6) +
@@ -218,6 +219,13 @@ lofig
 hilogitfig
 midlogitfig
 lologitfig
+```
+
+```{r save}
+#Set your own paths!
+myggsave_sq <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/Figures", device="svg", height=5, width=5, units="in")
+}
 
 myggsave_sq(hifig)
 myggsave_sq(midfig)
@@ -226,9 +234,4 @@ myggsave_sq(lofig)
 myggsave_sq(hilogitfig)
 myggsave_sq(midlogitfig)
 myggsave_sq(lologitfig)
-
-
-
 ```
-
-
