@@ -1,0 +1,181 @@
+---
+title: "cais-expr"
+author: "Hanon McShea"
+date: "2024-09-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library("tidyverse")
+library("Biostrings")
+library("seqinr")
+library("ggplot2")
+library("scales")
+
+knitr::opts_knit$set(root.dir = "C:/Users/hanon/Documents/GitHub/aa_flux/CAIS/cais-expr/")
+getwd()
+
+mytheme <- theme(axis.title=element_text(size=16, face="bold"), axis.text=element_text(size=14), panel.background = element_rect(fill = "white", colour = "grey50"), panel.grid.major = element_line(colour = "grey90"), panel.grid.minor = element_blank(), panel.border = element_rect(color = "grey50", fill=NA), plot.margin = unit(c(0.4, 0.4, 0.1, 0.1), "cm"))
+```
+
+``` {r read-data}
+setwd("C:/Users/hanon/Documents/GitHub/aa_flux/CAIS/cais-expr/")
+allgenes <- readDNAStringSet("human_genes.fasta")
+
+#remove very short genes
+tooshort <- 300 
+longgenes <- allgenes[width(allgenes) >= tooshort]
+#write a new file with the subset
+#writeXStringSet(longgenes,'human_genes_100codons.fasta',format='fasta')
+
+#load in the long genes only
+genes <- readDNAStringSet("human_genes_100codons.fasta")
+headers <- names(genes)
+sequences <- as.character(genes)
+ENSP <- sapply(strsplit(headers, "\\|"), function(x) x[3])
+genes
+
+humdf <- data.frame(ENSP = ENSP, Sequence = sequences, stringsAsFactors = FALSE)
+humdf
+
+expression_data <- read.table("human_expr.txt", header = FALSE, skip = 12, stringsAsFactors = FALSE)
+colnames(expression_data) <- c("ENSP", "expr")
+expression_data$ENSP <- sapply(strsplit(expression_data$ENSP, "\\."), function(x) x[2])
+expression_data
+
+# Merge the dataframes based on the ENSMUSP column
+humdfi <- merge(humdf, expression_data, by = "ENSP")
+humdfi
+humdfi <- humdfi %>% drop_na()
+
+humdf2 <- arrange(humdfi, expr)
+humdf2
+```
+
+
+``` {r read-CAIG}
+caisg <- read.table("CAIS_ofgenes_human.txt", header=F, stringsAsFactors=F, sep=",")
+names(caisg)
+
+caisg2 <- caisg %>%
+  mutate(ENSP = sapply(strsplit(V1, "\\|"), function(x) x[3]))
+
+caig <- read.table("CAI_ofgenes_human.txt", header=F, stringsAsFactors=F, sep=",")
+names(caig)
+
+caig2 <- caig %>%
+  mutate(ENSP = sapply(strsplit(V1, "\\|"), function(x) x[3]))
+
+# Merge the two tables based on the "ENSMUSP" column
+humdf3 <- merge(humdf2, caisg2[, c("ENSP", "V2", "V3")], by = "ENSP", all.x = TRUE)
+
+names(humdf3)[4] <- "CAIS"
+names(humdf3)[5] <- "CAIS_unweighted"
+
+humdf4 <- merge(humdf3, caig2[, c("ENSP", "V2")], by = "ENSP", all.x = TRUE)
+
+names(humdf4)[6] <- "CAI"
+
+humdf4
+```
+
+
+``` {r plotting}
+ggplot(humdf4, aes(x=expr, y=CAIS)) + geom_point(alpha=0.05)
+ggplot(humdf4, aes(x=log10(expr), y=CAIS)) + geom_point(alpha=0.05)
+ggplot(humdf4, aes(x=log10(expr), y=log10(CAIS))) + geom_point(alpha=0.05)
+
+cais4lm <- lm(log10(CAIS) ~ log10(expr), data=subset(humdf4, log10(expr) > 1.5)) #slope=0.089, R2=0.041
+cai4lm <- lm(log10(CAI) ~ log10(expr), data=subset(humdf4, log10(expr) > 1.5)) #slope=0.022, R2=0.043
+
+hcais <- ggplot(humdf4, aes(x=log10(expr), y=log10(CAIS))) + 
+  labs( x = "Expression level (ppm)", y = "CAIS of gene") + 
+  annotate(geom="text", x=3, y=-1.25, parse=T, label="atop(R^2==0.04, p<2e-16)", color="black", size=6) +
+  geom_point(alpha=0.05, stroke=0, size=2) + 
+  geom_smooth(color="gray40") +
+  geom_segment(aes(x=1.5, 
+                 y=(0.088994*1.5)-0.858519, 
+                 xend=log10(max(expr)),
+                 yend=(0.088994*log10(max(expr)))-0.858519), linewidth=0.5) + 
+  scale_x_continuous(labels = label_math(10^.x), breaks = c(-6,-4,-2,0,2,4,6)) +
+  scale_y_continuous(labels = label_math(10^.x)) +
+  mytheme
+
+hcai <- ggplot(humdf4, aes(x=log10(expr), y=log10(CAI))) + 
+  labs( x = "Expression level (ppm)", y = "CAI of gene") + 
+  annotate(geom="text", x=3, y=0.2, parse=T, label="atop(R^2==0.04, p<2e-16)", color="black", size=6) +
+  geom_point(alpha=0.05, stroke=0, size=2) + 
+  geom_smooth(color="gray40") + 
+  geom_segment(aes(x=1.5, 
+                 y=(0.021967*1.5)+0.023367, 
+                 xend=log10(max(expr)),
+                 yend=(0.021967*log10(max(expr)))+0.023367), linewidth=0.5) + 
+  scale_x_continuous(labels = label_math(10^.x), breaks = c(-6,-4,-2,0,2,4,6)) +
+  scale_y_continuous(labels = label_math(10^.x)) +
+  mytheme
+
+hcais
+hcai
+
+names(humdf4)
+dim(humdf4)
+dim(subset(humdf4, expr>31.6))
+2591/17968 #14%
+```
+
+``` {r trna}
+setwd("C:/Users/hanon/Documents/GitHub/aa_flux/CAIS/cais-expr/")
+getwd()
+
+trna <- read.table("mean_anti.txt", header = TRUE, sep = "")
+trna
+
+codon_abundance <- setNames(trna$gao_mean, trna$codon)
+
+gene_abundance <- function(seq) {
+  codons <- substring(seq, seq(1, nchar(seq) - 2, 3), seq(3, nchar(seq), 3))
+  abundances <- codon_abundance[codons]
+  total <- sum(abundances, na.rm = TRUE)
+  avg <- mean(abundances, na.rm = TRUE)
+  return(c(total = total, average = avg))
+}
+
+# Apply to all genes
+abun <- t(sapply(humdf4$Sequence, gene_abundance))
+humdf4$total_abun <- abun[, "total"]
+humdf4$avg_abun <- abun[, "average"]
+
+humdf4
+
+ggplot(humdf4, aes(x=log10(total_abun), y=log10(expr))) + geom_point(alpha=0.05)
+ggplot(humdf4, aes(x=log10(total_abun), y=log10(CAIS))) + geom_point(alpha=0.05)
+ggplot(humdf4, aes(x=log10(total_abun), y=log10(CAI))) + geom_point(alpha=0.05)
+
+ggplot(subset(humdf4, log10(expr)>1.5), aes(x=log10(total_abun), y=log10(expr))) + geom_point(alpha=0.05)
+ggplot(subset(humdf4, log10(expr)>1.5), aes(x=log10(total_abun), y=log10(CAIS))) + geom_point(alpha=0.05)
+ggplot(subset(humdf4, log10(expr)>1.5), aes(x=log10(total_abun), y=log10(CAI))) + geom_point(alpha=0.05)
+
+
+abun4lm <- lm(avg_abun ~ log10(expr), data=subset(humdf4, log10(expr) > 1.5))
+summary(abun4lm)
+
+abun4lm <- lm(log10(total_abun) ~ log10(CAIS), data=subset(humdf4, log10(expr) > 1.5))
+summary(abun4lm)
+
+
+
+```
+
+
+
+``` {r save}
+myggsave_gr <- function(x){
+  ggsave(plot=x, filename=paste0(deparse(substitute(x)), ".svg"), path="C:/Users/hanon/Documents/Github/aa_flux/CAIS/cais-expr", device="svg", height=4, width=6, units="in")
+}
+
+myggsave_gr(hcais)
+myggsave_gr(hcai)
+```
+
+
+
