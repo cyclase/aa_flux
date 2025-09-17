@@ -13,6 +13,8 @@ Steps:
 
 2. Use the first couple blocks of organism_cais_expr.Rmd to create organism_genes_100codons.fasta
 
+OR UNZIP GENES.zip
+
 3. Concatenate all protein-coding genes over 100 codons in length
 awk '/^>/ {next} {seq = seq $0} END {print ">organism\n" seq}' organism_genes_100codons.fasta > organism_concat_100codons.fasta
 

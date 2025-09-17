@@ -11,6 +11,7 @@ library("Biostrings")
 library("seqinr")
 library("ggplot2")
 library("scales")
+library("see")
 
 knitr::opts_knit$set(root.dir = "C:/Users/hanon/Documents/GitHub/aa_flux/cais/cais-expr")
 getwd()
@@ -120,7 +121,7 @@ mcais <- ggplot(mousedf4, aes(x=log10(expr), y=log10(CAIS))) +
   labs( x = "Expression level (ppm)", y = "CAIS of gene") + 
   annotate(geom="text", x=3, y=-1.25, parse=T, label="atop(R^2==0.1, p<2e-16)", color="black", size=6) +
   geom_point(alpha=0.05, stroke=0, size=2) + 
-  geom_smooth(color="gray40") +
+  geom_smooth(color="gray60", size=1) +
   geom_segment(aes(x=1.5, 
                  y=(0.141966*1.5)-1.016878, 
                  xend=log10(max(expr)),
@@ -131,9 +132,9 @@ mcais <- ggplot(mousedf4, aes(x=log10(expr), y=log10(CAIS))) +
 
 mcai <- ggplot(mousedf4, aes(x=log10(expr), y=log10(CAI))) + 
   labs( x = "Expression level (ppm)", y = "CAI of gene") + 
-  annotate(geom="text", x=3, y=-0.05, parse=T, label="atop(R^2==0.1, p<2e-16)", color="black", size=6) +
-  geom_point(alpha=0.05, stroke=0, size=2) + 
-  geom_smooth(color="gray40") + 
+  annotate(geom="text", x=3, y=0.2, parse=T, label="atop(R^2==0.1, p<2e-16)", color="black", size=6) +
+  geom_point2(alpha=0.05, size=2) + 
+  geom_smooth(color="gray60", size=1) + 
   geom_segment(aes(x=1.5, 
                  y=(0.035847*1.5)-0.017775, 
                  xend=log10(max(expr)),
