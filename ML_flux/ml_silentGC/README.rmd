@@ -1,0 +1,17 @@
+# ML_flux/ml_silentGC
+
+Data and R script to calculate GC content at silent sites, whereby to bin genes and calculate ML flux differences of bins. 
+
+Steps:
+0. Unzip homo_cds_5162.zip
+
+1. Use silentGC.Rmd to calculate silent site GC of each protein-coding gene in the human genome (run line by line)
+	Input	files in homo_cds_5162/ 
+	Script	silentGC.Rmd
+	Output	5162_silentGC.csv 
+
+2. Split 5162_silentGC.csv into three files with an equal number of genes each ("high", "mid", and "low" .tsv files, created via 5162_silentGCbins.xlsx
+
+3. Calculate ML amino acid frequencies as usual for each bin (results in silentgc_ns.csv)
+
+4. Analyze data using silentGC.Rmd
